@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Noun Genitive Single
+		</title>
+		<style>
+		
+		</style>
+		<script type="text/javascript">
+			var samplesAsJson = '[{"English":"I","Lithuanian":"As"},{"English":"You (single)","Lithuanian":"Tu"},{"English":"He","Lithuanian":"Jis"},{"English":"She","Lithuanian":"Ji"},{"English":"We","Lithuanian":"Mes"},{"English":"You (plural)","Lithuanian":"Jus"},{"English":"They (masc.)","Lithuanian":"Jie"},{"English":"They (mixed or fem.)","Lithuanian":"Jos"}]';
+			
+			// Get array of objects {Chunk1, NounToChange, Answer}
+			var result = JSON.parse(samplesAsJson);
+			
+			var currentSample = result[0];
+		
+			Array.prototype.random = function () {
+			return this[Math.floor((Math.random()*this.length))];
+			}
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Lithuanian');
+				answerDiv.innerHTML = currentSample.Lithuanian;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Lithuanian');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = result.random();
+				currentSample = randomSample;
+				
+				// Setup question div
+				var divToAmend = document.getElementById('English');
+				divToAmend.innerHTML = currentSample.English;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='table'>
+			<div id='English' style="font-size:40px; height:50px; text-align: center;">	I	</div>	
+			<div id='Lithuanian' style="font-size:40px; height:50px; text-align: center;">	As	</div>			
+			<div id='Button' style="text-align: center;"> 
+				<button id='NextActionButton'
+					style="height:150px;width:400px;font-size:40px;"
+					onclick="onNextActionButtonClick()">
+					Next
+				</button>
+			</div>
+			
+		</div>
+	</body>
+</html>
