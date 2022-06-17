@@ -6,9 +6,9 @@
 		</title>
 		<link rel="stylesheet" href="css/style.css">
 		<script type="text/javascript">
-			var samplesAsJson = '[{"Nominative":"Parkas","Accusative":" Parka"},{"Nominative":"Universitetas","Accusative":" Universiteta"},{"Nominative":"Restoranas","Accusative":" Restorana"},{"Nominative":"Baras","Accusative":" Bara"},{"Nominative":"Bankas","Accusative":" Banka"},{"Nominative":"Knygynas","Accusative":" Knygyna"},{"Nominative":"Klubas","Accusative":" Kluba"},{"Nominative":"Baseinas","Accusative":" Baseina"},{"Nominative":"Teatras","Accusative":" Teatra"},{"Nominative":"Pastas","Accusative":" Pasta"},{"Nominative":"Viesbutis","Accusative":" Viesbuti"},{"Nominative":"Bendrabutis","Accusative":" Bendrabuti"},{"Nominative":"Stotis","Accusative":" Stoti"},{"Nominative":"Pilis","Accusative":" Pili"},{"Nominative":"Lentvaris","Accusative":" Lentvari"},{"Nominative":"Radviliškis","Accusative":" Radviliski"},{"Nominative":"Rokiskis","Accusative":" Rokiski"},{"Nominative":"Joniskis","Accusative":" Joniski"},{"Nominative":"Gelgaudiskis","Accusative":" Gelgaudiski"},{"Nominative":"Kambarys","Accusative":" Kambari"},{"Nominative":"Panevezis","Accusative":" Panevezi"},{"Nominative":"Palavlys","Accusative":" Palavli"},{"Nominative":"Svencionys","Accusative":" Svencioni"},{"Nominative":"Kaisadorys","Accusative":" Kaisadori"},{"Nominative":"Pandelys","Accusative":" Pandeli"}]';
+			var samplesAsJson = '[{"Nominative":"Parkas","Accusative":" Parką"},{"Nominative":"Universitetas","Accusative":" Universitetą"},{"Nominative":"Restoranas","Accusative":" Restoraną"},{"Nominative":"Baras","Accusative":" Barą"},{"Nominative":"Bankas","Accusative":" Banką"},{"Nominative":"Knygynas","Accusative":" Knygyną"},{"Nominative":"Klubas","Accusative":" Klubą"},{"Nominative":"Baseinas","Accusative":" Baseiną"},{"Nominative":"Teatras","Accusative":" Teatrą"},{"Nominative":"Paštas","Accusative":" Paštą"},{"Nominative":"Viešbutis","Accusative":" Viešbutį"},{"Nominative":"Bendrabutis","Accusative":" Bendrabutį"},{"Nominative":"Stotis","Accusative":" Stotį"},{"Nominative":"Pilis","Accusative":" Pilį"},{"Nominative":"Lentvaris","Accusative":" Lentvarį"},{"Nominative":"Radviliškis","Accusative":" Radviliškį"},{"Nominative":"Rokiškis","Accusative":" Rokiškį"},{"Nominative":"Joniškis","Accusative":" Joniškį"},{"Nominative":"Gelgaudiškis","Accusative":" Gelgaudiškį"},{"Nominative":"Kambarys","Accusative":" Kambarį"},{"Nominative":"Panevėžis","Accusative":" Panevėžį"},{"Nominative":"Palavlys","Accusative":" Palavlį"},{"Nominative":"Švenčionys","Accusative":" Švenčionį"},{"Nominative":"Kaisadorys","Accusative":" Kaisadorį"},{"Nominative":"Pandėlys","Accusative":" Pandėlį"}]';
 			
-			var sampleVerbs = ['Einame', 'Povaziuojame', 'Povykstame'];
+			var sampleVerbs = ['Einame', 'Považiuojame', 'Povykstame'];
 			
 			// Get array of objects {Chunk1, NounToChange, Answer}
 			var result = JSON.parse(samplesAsJson);
@@ -59,7 +59,7 @@
 				
 				// Setup question div
 				var divToAmend = document.getElementById('Question');
-				divToAmend.innerHTML = sampleVerbs.random() + " i " + currentSample.Nominative;
+				divToAmend.innerHTML = sampleVerbs.random() + " į " + currentSample.Nominative;
 			}
 		</script>
 	</head>
