@@ -68,7 +68,7 @@
 			<script>
 				function loadFile(filePath) {
 					var result = null;
-					var xmlhttp = new XMLHttpRequest();
+					var xmlhttp = new XMLHttpRequest();					
 					xmlhttp.open("GET", filePath, false);
 					xmlhttp.send();
 					if (xmlhttp.status==200) {
@@ -76,9 +76,14 @@
 					}
 					return result;
 				}
-			<!-- var divToC = document.getElementById('ToC'); -->
-			<!-- var ToCHTML = loadFile('ToC.html'); -->
-			<!-- divToC.innerHTML = ToCHTML; -->
+			
+			// On file system CORS will block ToC upload. 
+			// Please use docker to test ToC
+			if(window.location.href.startsWith('http')){			
+				var divToC = document.getElementById('ToC');
+				var ToChtml = loadFile('ToC.html');
+				divToC.innerHTML = ToChtml;
+			}
 			</script>
 			<div id='Chunk1'>	As is Vilnius	</div>	
 			<div id='Answer'>	As is Vilniaus	</div>			
