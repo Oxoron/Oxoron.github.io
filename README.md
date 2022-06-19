@@ -11,3 +11,5 @@ Docker build command : docker build . -t my-apache2
 Docker run command : docker run -dit --name LtMaterial -p 8080:80 my-apache2
 
 Then run http://localhost:8080/
+
+Don's forget to update browser cache! 
