@@ -20,10 +20,3 @@ function uploadToC()
 		divToC.innerHTML = ToChtml;
 	}
 }
-
-
-function Test(){
-	alert('Ololo');
-}
-
-console.log('ToC upload is done');

@@ -6,6 +6,7 @@
 		</title>
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
 		<style>
 		
 		</style>
@@ -66,21 +67,22 @@
 		</script>
 	</head>
 	<body>
-		<div id='table'>		
+		<div id='pageStructure' class="pageStructure">
 			<div id='ToC' class='ToC'></div>		
-			<script type="text/javascript" src="js/ToC.js"> </script>				
-			<script> uploadToC(); </script>
-			
-			
-			<div id='English'>	I	</div>	
-			<div id='Lithuanian'>	Aš	</div>			
-			<div id='Button'> 
-				<button id='NextActionButton'
-					onclick="onNextActionButtonClick()">
-					Next
-				</button>
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>		
+				<div id='English'>	I	</div>	
+				<div id='Lithuanian'>	Aš	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
 			</div>
-			
 		</div>
 	</body>
 </html>

@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/tooltip.css">
 		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
 		
 		<script type="text/javascript">
 			var samplesAsJson = '[{"Nominative":"parkas","Accusative":" parką"},{"Nominative":"universitetas","Accusative":" universitetą"},{"Nominative":"restoranas","Accusative":" restoraną"},{"Nominative":"baras","Accusative":" barą"},{"Nominative":"bankas","Accusative":" banką"},{"Nominative":"knygynas","Accusative":" knygyną"},{"Nominative":"klubas","Accusative":" klubą"},{"Nominative":"baseinas","Accusative":" baseiną"},{"Nominative":"teatras","Accusative":" teatrą"},{"Nominative":"paštas","Accusative":" paštą"},{"Nominative":"biuras","Accusative":" biurą"},{"Nominative":"Kaunas","Accusative":" Kauną"},{"Nominative":"viešbutis","Accusative":" viešbutį"},{"Nominative":"bendrabutis","Accusative":" bendrabutį"},{"Nominative":"stotis","Accusative":" stotį"},{"Nominative":"pilis","Accusative":" pilį"},{"Nominative":"Lentvaris","Accusative":" Lentvarį"},{"Nominative":"Radviliškis","Accusative":" Radviliškį"},{"Nominative":"Rokiškis","Accusative":" Rokiškį"},{"Nominative":"Joniškis","Accusative":" Joniškį"},{"Nominative":"Gelgaudiškis","Accusative":" Gelgaudiškį"},{"Nominative":"kambarys","Accusative":" kambarį"},{"Nominative":"Panevėžys","Accusative":" Panevėžį"},{"Nominative":"Palavlys","Accusative":" Palavlį"},{"Nominative":"Švenčionys","Accusative":" Švenčionį"},{"Nominative":"Kaisadorys","Accusative":" Kaisadorį"},{"Nominative":"Pandėlys","Accusative":" Pandėlį"},{"Nominative":"muziejus","Accusative":" muziejų"},{"Nominative":"turgus","Accusative":" turgų"},{"Nominative":"Vilnius","Accusative":" Vilnių"},{"Nominative":"Alytus","Accusative":" Alytų"},{"Nominative":"Subačius","Accusative":" Subačių"},{"Nominative":"ambasada","Accusative":" ambasadą"},{"Nominative":"bažničia","Accusative":" bažničią"},{"Nominative":"biblioteka","Accusative":" biblioteką"},{"Nominative":"ekskursija","Accusative":" eksjursiją"},{"Nominative":"karas","Accusative":" karą"},{"Nominative":"katedra","Accusative":" katedrą"},{"Nominative":"mokykla","Accusative":" mokyklą"},{"Nominative":"paskaita","Accusative":" paskaitą"},{"Nominative":"kirpykla","Accusative":" kirpyklą"},{"Nominative":"Nida","Accusative":" Nidą"},{"Nominative":"kavinė","Accusative":" kavinę"},{"Nominative":"kepyklėlė","Accusative":" kepyklėlę"},{"Nominative":"ligoninė","Accusative":" ligoninę"},{"Nominative":"parduotuvė","Accusative":" parduotuvę"},{"Nominative":"rotušė","Accusative":" rotušę"},{"Nominative":"stotelė","Accusative":" stotelę"},{"Nominative":"upė","Accusative":" upę"},{"Nominative":"Tauragė","Accusative":" Tauragę"},{"Nominative":"Ukmergė","Accusative":" Ukmergę"},{"Nominative":"Plungė","Accusative":" Plungę"}]';
@@ -75,21 +76,21 @@
 		</script>
 	</head>
 	<body>
-		<div id='table'>
+		<div id='pageStructure' class="pageStructure">
 			<div id='ToC' class='ToC'></div>		
-			<script type="text/javascript" src="js/ToC.js"> </script>				
-			<script> uploadToC(); </script>
-			
-			
-			<div id='Question'>	Einame į Parkas	</div>	
-			<div id='Answer'>	Parką	</div>			
-			<div id='Button'> 
-				<button id='NextActionButton'
-					onclick="onNextActionButtonClick()">
-					Next
-				</button>
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	Einame į Parkas	</div>	
+				<div id='Answer'>	Parką	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
 			</div>
-			
 		</div>
 	</body>
 </html>

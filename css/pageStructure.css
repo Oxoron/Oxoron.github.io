@@ -1,0 +1,20 @@
+.pageStructure {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;  
+  
+  background-color: DodgerBlue;  
+  min-height : 400px;
+}
+
+.pageStructure > div {
+  background-color: #f1f1f1;
+  margin: 10px;
+  padding: 20px;
+  font-size: 30px;  
+}
+
+.content{
+	text-align: center;
+	width: 100%;
+}
