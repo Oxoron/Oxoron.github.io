@@ -7,9 +7,17 @@
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/ToC.css">
 		<link rel="stylesheet" href="css/pageStructure.css">
-		<style>
-		
-		</style>
+		<script type="text/javascript">
+			if (window.addEventListener) { // Mozilla, Netscape, Firefox
+				window.addEventListener('load', WindowLoad, false);
+			} else if (window.attachEvent) { // IE
+				window.attachEvent('onload', WindowLoad);
+			}
+
+			function WindowLoad(event) {
+				document.getElementById("NextActionButton").focus();
+			}
+		</script>
 		<script type="text/javascript">
 			var samplesAsJson = '[{"English":"I","Lithuanian":"Aš"},{"English":"You (single)","Lithuanian":"Tu"},{"English":"He","Lithuanian":"Jis"},{"English":"She","Lithuanian":"Ji"},{"English":"We","Lithuanian":"Mes"},{"English":"You (plural)","Lithuanian":"Jųs"},{"English":"They (masc.)","Lithuanian":"Jie"},{"English":"They (mixed or fem.)","Lithuanian":"Jos"}]';
 			
