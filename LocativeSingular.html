@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Locative Singular
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		<script type="text/javascript">
+			if (window.addEventListener) { // Mozilla, Netscape, Firefox
+				window.addEventListener('load', WindowLoad, false);
+			} else if (window.attachEvent) { // IE
+				window.attachEvent('onload', WindowLoad);
+			}
+
+			function WindowLoad(event) {
+				document.getElementById("NextActionButton").focus();
+			}
+		</script>
+		<script type="text/javascript">
+			var samplesAsJson = '[{"Ending":"as","Nominative":" universitetas","Locative":" universitete"},{"Ending":"as","Nominative":" biuras","Locative":" biure"},{"Ending":"as","Nominative":" bankas","Locative":" banke"},{"Ending":"as","Nominative":" prospektas","Locative":" prospekte"},{"Ending":"as","Nominative":" parkas","Locative":" parke"},{"Ending":"as","Nominative":" bokštas","Locative":" bokšte"},{"Ending":"as","Nominative":" restoranas","Locative":" restorane"},{"Ending":"as","Nominative":" kioskas","Locative":" kioske"},{"Ending":"as","Nominative":" paminklas","Locative":" paminkle"},{"Ending":"as","Nominative":" knygynas","Locative":" knygyne"},{"Ending":"as","Nominative":" Kaunas","Locative":" Kaune"},{"Ending":"is","Nominative":" bendrabutis","Locative":" bendrabutyje"},{"Ending":"is","Nominative":" viešbutis","Locative":" viešbutyje"},{"Ending":"is","Nominative":" pilis","Locative":" pilyje"},{"Ending":"is","Nominative":" Lentvaris","Locative":" Lentvaryje"},{"Ending":"is","Nominative":" Radviliškis","Locative":" Radviliškyje"},{"Ending":"is","Nominative":" Rokiškis","Locative":" Rokiškyje"},{"Ending":"is","Nominative":" Joniškis","Locative":" Joniškyje"},{"Ending":"is","Nominative":" Gelgaudiškis","Locative":" Gelgaudiškyje"},{"Ending":"ys","Nominative":" kambarys","Locative":" kambaryje"},{"Ending":"ys","Nominative":" Panevėžys","Locative":" Panevežyje"},{"Ending":"ys","Nominative":" Palavlys","Locative":" Palavlyje"},{"Ending":"ys","Nominative":" Švenčionys","Locative":" Švenčionyje"},{"Ending":"ys","Nominative":" Kaisadorys","Locative":" Kaisadoryje"},{"Ending":"ys","Nominative":" Pandėlys","Locative":" Pandėlyje"},{"Ending":"a","Nominative":" katedra","Locative":" katedroje"},{"Ending":"a","Nominative":" bažnyčia","Locative":" bažničioje"},{"Ending":"a","Nominative":" sankryža","Locative":" sankryžoje"},{"Ending":"a","Nominative":" biblioteka","Locative":" bibliotekoje"},{"Ending":"a","Nominative":" paskaita","Locative":" paskaitoje"},{"Ending":"a","Nominative":" gimnazija","Locative":" gimnazijoje"},{"Ending":"a","Nominative":" jūra","Locative":" jūroje"},{"Ending":"a","Nominative":" paskaita","Locative":" paskaitoje"},{"Ending":"a","Nominative":" Klaipeda","Locative":" Klaipedoje"},{"Ending":"us","Nominative":" muziejus","Locative":" muziejuje"},{"Ending":"us","Nominative":" turgus","Locative":" turguje"},{"Ending":"us","Nominative":" Vilnius","Locative":" Vilniuje"},{"Ending":"us","Nominative":" Alytus","Locative":" Alytuje"},{"Ending":"us","Nominative":" Subačius","Locative":" Subačiuje"},{"Ending":"ė","Nominative":" kavinė","Locative":" kavinėje"},{"Ending":"ė","Nominative":" aikstė","Locative":" aikstėje"},{"Ending":"ė","Nominative":" gatvė","Locative":" gatvėje"},{"Ending":"ė","Nominative":" upė","Locative":" upėje"},{"Ending":"ė","Nominative":" kepiklėlė","Locative":" kepiklėlėje"},{"Ending":"ė","Nominative":" ligoninė","Locative":" ligoninėje"},{"Ending":"ė","Nominative":" stotelė","Locative":" stotelėje"},{"Ending":"ė","Nominative":" rotušė","Locative":" rotušėje"},{"Ending":"ė","Nominative":" parduotuvė","Locative":" parduotuvėje"}]';
+			
+			var starters = [
+				{"Lt":"Aš laukiau", "En": "I wait "}, 
+				{"Lt":"Aš dirbu", "En" : "I work "},
+				{"Lt":"Mes susitinkame", "En" : "We meet "},				
+				{"Lt":"Aš esu", "En": "I am "}
+				];
+				
+			var result = JSON.parse(samplesAsJson);
+			
+			var currentSample = result[0];
+		
+			Array.prototype.random = function () {
+			return this[Math.floor((Math.random()*this.length))];
+			}
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = currentSample.Locative;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = result.random();
+				currentSample = randomSample;
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');
+				var starter = starters.random();
+				divToAmend.innerHTML = '<div class="tooltip">' + starter.Lt +'  <span class="tooltiptext">' + starter.En + ' </span> </div>' + currentSample.Nominative;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	Aš dirbu kepiklėlė	</div>	
+				<div id='Answer'>	kepiklėlėje	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
