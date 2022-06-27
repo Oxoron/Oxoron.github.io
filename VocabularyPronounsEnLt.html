@@ -7,18 +7,13 @@
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/ToC.css">
 		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
 		<script type="text/javascript">
-			if (window.addEventListener) { // Mozilla, Netscape, Firefox
-				window.addEventListener('load', WindowLoad, false);
-			} else if (window.attachEvent) { // IE
-				window.attachEvent('onload', WindowLoad);
-			}
-
-			function WindowLoad(event) {
-				document.getElementById("NextActionButton").focus();
-			}
-		</script>
-		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayRandomFunction();
+			
 			var samplesAsJson = '[{"English":"I","Lithuanian":"Aš"},{"English":"You (single)","Lithuanian":"Tu"},{"English":"He","Lithuanian":"Jis"},{"English":"She","Lithuanian":"Ji"},{"English":"We","Lithuanian":"Mes"},{"English":"You (plural)","Lithuanian":"Jųs"},{"English":"They (masc.)","Lithuanian":"Jie"},{"English":"They (mixed or fem.)","Lithuanian":"Jos"}]';
 			
 			// Get array of objects {Chunk1, NounToChange, Answer}
@@ -26,9 +21,6 @@
 			
 			var currentSample = result[0];
 		
-			Array.prototype.random = function () {
-			return this[Math.floor((Math.random()*this.length))];
-			}
 			
 			function onNextActionButtonClick(){
 				// Check if it's answer request or next sample request
