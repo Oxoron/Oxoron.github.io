@@ -38,7 +38,7 @@
 			
 			function onAnswerRequest(){
 				// Show answer
-				var answerDiv = document.getElementById('Plural');
+				var answerDiv = document.getElementById('Answer');
 				answerDiv.innerHTML = currentSample.Plural;
 				
 				// Amend button text
@@ -48,7 +48,7 @@
 			
 			function onNextSampleRequest(){
 				// Clean up answer
-				var answerDiv = document.getElementById('Plural');
+				var answerDiv = document.getElementById('Answer');
 				answerDiv.innerHTML = '';
 				
 				// Amend button text
@@ -60,7 +60,7 @@
 				currentSample = randomSample;
 				
 				// Setup question div
-				var divToAmend = document.getElementById('Single');
+				var divToAmend = document.getElementById('Question');
 				divToAmend.innerHTML = currentSample.Single;
 			}
 		</script>
@@ -73,8 +73,8 @@
 				
 				
 			<div id='table' class='content'>
-				<div id='Single'>	Draugas	</div>	
-				<div id='Plural'>	Draugai	</div>			
+				<div id='Question'>	Draugas	</div>	
+				<div id='Answer'>	Draugai	</div>			
 				<div id='Button'> 
 					<button id='NextActionButton'
 						onclick="onNextActionButtonClick()">
