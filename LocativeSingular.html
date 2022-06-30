@@ -24,9 +24,11 @@
 				{"Lt":"Aš esu", "En": "I am "}
 				];
 				
-			var result = JSON.parse(samplesAsJson);
+			var result = JSON
+				.parse(samplesAsJson)
+				.GroupBy((elem) => (elem.Ending), "Ending");
 			
-			var currentSample = result[0];
+			var currentSample = result.random().values.random();
 		
 			
 			
@@ -65,7 +67,7 @@
 				button.innerText = 'Check answer';
 				
 				// Setup new sample
-				var randomSample = result.random();
+				var randomSample = result.random().values.random();
 				currentSample = randomSample;
 				
 				// Setup question div
