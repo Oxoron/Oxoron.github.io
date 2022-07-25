@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/ToC.css">
 		<link rel="stylesheet" href="css/pageStructure.css">
+		<link rel="stylesheet" href="css/tooltip.css">
 		
 		<script type="text/javascript" src="js/Common.js"> </script>
 		
@@ -63,7 +64,8 @@
 				
 				// Setup question div
 				var divToAmend = document.getElementById('Question');
-				divToAmend.innerHTML = currentSample.Single;
+				//divToAmend.innerHTML = currentSample.Single;				
+				divToAmend.innerHTML = '<div class="tooltip">' + currentSample.Single +'  <span class="tooltiptext">' + currentSample.En + ' </span> </div>';
 			}
 		</script>
 	</head>
