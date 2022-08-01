@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Noun Plurals
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>		
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayRandomFunction();
+			
+			var samplesAsJson = '[{"En":"to wear (clothes)", "ThirdSingularPresentForm":"dėvi", "Base":"dėv", "FirstSingular":"dėviu", "SecondSingular":"dėvi", "ThirdSingular":"dėvi", "FirstPlural":"dėvime", "SecondPlural":"dėvite", "ThirdPlural":"dėvi"},{"En":"to be able", "ThirdSingularPresentForm":"gali", "Base":"gal", "FirstSingular":"galiu", "SecondSingular":"gali", "ThirdSingular":"gali", "FirstPlural":"galime", "SecondPlural":"galite", "ThirdPlural":"gali"},{"En":"to cough", "ThirdSingularPresentForm":"kosti", "Base":"kost", "FirstSingular":"kosčiu", "SecondSingular":"kosti", "ThirdSingular":"kosti", "FirstPlural":"kostime", "SecondPlural":"kostite", "ThirdPlural":"kosti"},{"En":"to win", "ThirdSingularPresentForm":"laimi", "Base":"laim", "FirstSingular":"laimiu", "SecondSingular":"laimi", "ThirdSingular":"laimi", "FirstPlural":"laimime", "SecondPlural":"laimite", "ThirdPlural":"laimi"},{"En":"to want", "ThirdSingularPresentForm":"nori", "Base":"nor", "FirstSingular":"noriu", "SecondSingular":"nori", "ThirdSingular":"nori", "FirstPlural":"norime", "SecondPlural":"norite", "ThirdPlural":"nori"},{"En":"to notice", "ThirdSingularPresentForm":"pastebi", "Base":"pasteb", "FirstSingular":"pastebiu", "SecondSingular":"pastebi", "ThirdSingular":"pastebi", "FirstPlural":"pastebime", "SecondPlural":"pastebite", "ThirdPlural":"pastebi"},{"En":"to sit", "ThirdSingularPresentForm":"sėdi", "Base":"sėd", "FirstSingular":"sėdžiu", "SecondSingular":"sėdi", "ThirdSingular":"sėdi", "FirstPlural":"sėdime", "SecondPlural":"sėdite", "ThirdPlural":"sėdi"},{"En":"to stand", "ThirdSingularPresentForm":"stovi", "Base":"stov", "FirstSingular":"stoviu", "SecondSingular":"stovi", "ThirdSingular":"stovi", "FirstPlural":"stovime", "SecondPlural":"stovite", "ThirdPlural":"stovi"},{"En":"to have", "ThirdSingularPresentForm":"turi", "Base":"tur", "FirstSingular":"turiu", "SecondSingular":"turi", "ThirdSingular":"turi", "FirstPlural":"turime", "SecondPlural":"turite", "ThirdPlural":"turi"},{"En":"to watch", "ThirdSingularPresentForm":"žiūri", "Base":"žiūr", "FirstSingular":"žiūriu", "SecondSingular":"žiūri", "ThirdSingular":"žiūri", "FirstPlural":"žiūrime", "SecondPlural":"žiūrite", "ThirdPlural":"žiūri"}]';
+			
+			var pronouns = [
+				[{En : "I", Lt : "Aš"}],
+				[{En : "You (sing.)", Lt : "Tu"}], 
+				[{En : "He", Lt : "Jis" }, {En : "She", Lt : "Ji"}],
+				
+				[{En : "We", Lt : "Mes"}],
+				[{En : "You (plur.)", Lt : "Jūs"}], 
+				[{En : "They (masc.)", Lt : "Jie" }, {En : "They (mixed of fem.)", Lt : "Jos"}]			
+			];
+			
+			// Get array of objects {Chunk1, NounToChange, Answer}
+			var iTypeVerbs = JSON.parse(samplesAsJson);
+			
+			var currentSample = {pronoun : pronouns.random(), verb : iTypeVerbs.random()};
+			
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				var answer = "";
+				
+				// Conjugate pronoun and a verb. Choose right verb form based on pronoun. 				
+				switch(currentSample.pronoun[0].Lt) {
+					case "Aš":
+						answer = currentSample.verb.FirstSingular;
+						break;
+					case "Tu":
+						answer = currentSample.verb.SecondSingular;
+						break;
+					case "Jis":
+						answer = currentSample.verb.ThirdSingular;
+						break;
+						
+					case "Mes":
+						answer = currentSample.verb.FirstPlural;
+						break;
+					case "Jūs":
+						answer = currentSample.verb.SecondPlural;
+						break;
+					case "Jie":
+						answer = currentSample.verb.ThirdPlural;
+						break;				  
+				};				
+				answerDiv.innerHTML = answer.toLowerCase();
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample				
+				currentSample = {pronoun : pronouns.random(), verb : iTypeVerbs.random()};
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');		
+				var pronoun = currentSample.pronoun.random();
+				var verb = currentSample.verb;
+				divToAmend.innerHTML = '<div class="tooltip">' + pronoun.Lt +'  <span class="tooltiptext"> ' + pronoun.En + ' </span> </div> ' + verb.ThirdSingularPresentForm.toLowerCase();
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	Aš gali	</div>	
+				<div id='Answer'>	galiu	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
