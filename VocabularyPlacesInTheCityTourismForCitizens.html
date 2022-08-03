@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Places in the City -- For Citizens
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayRandomFunction();
+			
+			var samplesAsJson = '[{"En":"bookshop", "Lt":"knygynas"},{"En":"town hall", "Lt":"rotušė"},{"En":"room", "Lt":"kambarys"},{"En":"bakery", "Lt":"kepiklėlė"},{"En":"cinema", "Lt":"kina teatras"},{"En":"hospital", "Lt":"ligoninė"},{"En":"shool", "Lt":"mokykla"},{"En":"dormitory", "Lt":"bendrabutis"},{"En":"pool", "Lt":"baseinas"},{"En":"crossroad", "Lt":"sankryža"},{"En":"traffic lights", "Lt":"šviesoforas"},{"En":"library", "Lt":"biblioteka"},{"En":"office", "Lt":"biuras"}]';
+			
+			// Get wording data
+			var result = JSON.parse(samplesAsJson);			
+			var currentSample = result[0];
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = currentSample.Lt;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = result.random();
+				currentSample = randomSample;
+				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');
+				var question = currentSample.En;				
+				divToAmend.innerHTML = question;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>		
+				<div id='Question'>	bookshop	</div>	
+				<div id='Answer'>	knygynas	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
