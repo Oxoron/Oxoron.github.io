@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- O-Type Verbs
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>		
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayRandomFunction();
+			
+			var samplesAsJson = '[{"En":"to visit", "ThirdSingularPresentForm":"aplanko", "Base":"aplank", "FirstSingular":"aplankau", "SecondSingular":"aplankai", "ThirdSingular":"aplanko", "FirstPlural":"aplankome", "SecondPlural":"aplankime", "ThirdPlural":"aplanko"},{"En":"to open", "ThirdSingularPresentForm":"atidaro", "Base":"atidar", "FirstSingular":"atidarau", "SecondSingular":"atidarai", "ThirdSingular":"atidaro", "FirstPlural":"atidarome", "SecondPlural":"atidarime", "ThirdPlural":"atidaro"},{"En":"to look", "ThirdSingularPresentForm":"atrodo", "Base":"atrod", "FirstSingular":"atrodau", "SecondSingular":"atrodai", "ThirdSingular":"atrodo", "FirstPlural":"atrodome", "SecondPlural":"atrodime", "ThirdPlural":"atrodo"},{"En":"to try", "ThirdSingularPresentForm":"bando", "Base":"band", "FirstSingular":"bandau", "SecondSingular":"bandai", "ThirdSingular":"bando", "FirstPlural":"bandome", "SecondPlural":"bandime", "ThirdPlural":"bando"},{"En":"to do", "ThirdSingularPresentForm":"daro", "Base":"dar", "FirstSingular":"darau", "SecondSingular":"darai", "ThirdSingular":"daro", "FirstPlural":"darome", "SecondPlural":"darime", "ThirdPlural":"daro"},{"En":"to look for", "ThirdSingularPresentForm":"ieško", "Base":"iešk", "FirstSingular":"ieškau", "SecondSingular":"ieškai", "ThirdSingular":"ieško", "FirstPlural":"ieškome", "SecondPlural":"ieškime", "ThirdPlural":"ieško"},{"En":"to hang", "ThirdSingularPresentForm":"kabo/kabo", "Base":"kabo/kab", "FirstSingular":"kabo/kabau", "SecondSingular":"kabo/kabai", "ThirdSingular":"kabo/kabo", "FirstPlural":"kabo/kabome", "SecondPlural":"kabo/kabime", "ThirdPlural":"kabo/kabo"},{"En":"to listen to", "ThirdSingularPresentForm":"klauso", "Base":"klaus", "FirstSingular":"klausau", "SecondSingular":"klausai", "ThirdSingular":"klauso", "FirstPlural":"klausome", "SecondPlural":"klausime", "ThirdPlural":"klauso"},{"En":"to listen", "ThirdSingularPresentForm":"klauso", "Base":"klaus", "FirstSingular":"klausau", "SecondSingular":"klausai", "ThirdSingular":"klauso", "FirstPlural":"klausome", "SecondPlural":"klausime", "ThirdPlural":"klauso"},{"En":"to hold", "ThirdSingularPresentForm":"laiko", "Base":"laik", "FirstSingular":"laikau", "SecondSingular":"laikai", "ThirdSingular":"laiko", "FirstPlural":"laikome", "SecondPlural":"laikime", "ThirdPlural":"laiko"}]';
+			
+			var pronouns = [
+				[{En : "I", Lt : "Aš"}],
+				[{En : "You (sing.)", Lt : "Tu"}], 
+				[{En : "He", Lt : "Jis" }, {En : "She", Lt : "Ji"}],
+				
+				[{En : "We", Lt : "Mes"}],
+				[{En : "You (plur.)", Lt : "Jūs"}], 
+				[{En : "They (masc.)", Lt : "Jie" }, {En : "They (mixed of fem.)", Lt : "Jos"}]			
+			];
+			
+			// Get array of objects verb {En, Infinitive, 1-2-3-Singular-Plural}
+			var iTypeVerbs = JSON.parse(samplesAsJson);
+			
+			var currentSample = {pronoun : pronouns.random(), verb : iTypeVerbs.random()};
+			
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				var answer = "";
+				
+				// Conjugate pronoun and a verb. Choose right verb form based on pronoun. 				
+				switch(currentSample.pronoun[0].Lt) {
+					case "Aš":
+						answer = currentSample.verb.FirstSingular;
+						break;
+					case "Tu":
+						answer = currentSample.verb.SecondSingular;
+						break;
+					case "Jis":
+						answer = currentSample.verb.ThirdSingular;
+						break;
+						
+					case "Mes":
+						answer = currentSample.verb.FirstPlural;
+						break;
+					case "Jūs":
+						answer = currentSample.verb.SecondPlural;
+						break;
+					case "Jie":
+						answer = currentSample.verb.ThirdPlural;
+						break;				  
+				};				
+				answerDiv.innerHTML = answer.toLowerCase();
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample				
+				currentSample = {pronoun : pronouns.random(), verb : iTypeVerbs.random()};
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');		
+				var pronoun = currentSample.pronoun.random();
+				var verb = currentSample.verb;
+				divToAmend.innerHTML = '<div class="tooltip">' + pronoun.Lt +'  <span class="tooltiptext"> ' + pronoun.En + ' </span> </div> ' + 
+				'<div class="tooltip">' + verb.ThirdSingularPresentForm.toLowerCase() +'  <span class="tooltiptext rightTooltip"> ' + verb.En + ' </span> </div> ';
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	Ji bando	</div>	
+				<div id='Answer'>	bando	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
