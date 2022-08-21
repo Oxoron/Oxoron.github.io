@@ -73,7 +73,9 @@
 				// Setup question div
 				var divToAmend = document.getElementById('Question');
 				var starter = starters.random();
-				divToAmend.innerHTML = '<div class="tooltip">' + starter.Lt +'  <span class="tooltiptext"> ' + starter.En + ' </span> </div> ' + currentSample.Nominative;
+				//divToAmend.innerHTML = '<div class="tooltip">' + starter.Lt +'  <span class="tooltiptext"> ' + starter.En + ' </span> </div> ' + currentSample.Nominative;
+				divToAmend.innerHTML = '<div class="tooltip">' + starter.Lt +'  <span class="tooltiptext"> ' + starter.En + ' </span> </div> ' + 
+				'<div class="tooltip">' + currentSample.Nominative +'  <span class="tooltiptext rightTooltip"> '+ currentSample.En + ' </span> </div> ';
 			}
 		</script>
 	</head>
