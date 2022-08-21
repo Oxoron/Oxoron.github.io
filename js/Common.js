@@ -26,6 +26,14 @@ function SetupArrayRandomFunction(){
 			}
 }
 
+// Return a random element of the array if it's not equal to previuousValue
+function SetupArrayNonRepeatingRandomFunction(){
+	Array.prototype.notRepeatingRandom = function (previousValue) {
+		// TODO return not repeating value
+		return null;
+		}
+}
+
 
 
 /* Converts array of objects to array keys-objects. For.ex.
