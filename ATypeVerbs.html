@@ -98,7 +98,8 @@
 				var divToAmend = document.getElementById('Question');		
 				var pronoun = currentSample.pronoun.random();
 				var verb = currentSample.verb;
-				divToAmend.innerHTML = '<div class="tooltip">' + pronoun.Lt +'  <span class="tooltiptext">' + pronoun.En + ' </span> </div>' + verb.ThirdSingularPresentForm.toLowerCase();
+				divToAmend.innerHTML = '<div class="tooltip"> ' + pronoun.Lt +'  <span class="tooltiptext"> ' + pronoun.En + ' </span> </div> ' + 
+				'<div class="tooltip"> ' + verb.ThirdSingularPresentForm.toLowerCase() +'  <span class="tooltiptext rightTooltip"> ' + verb.En + ' </span> </div> ';
 			}
 		</script>
 	</head>
