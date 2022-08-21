@@ -47,14 +47,14 @@
 			}
 			
 			// This one is used in a few places, so extracted it to the single function.
-			function buildQuestion(pronoun, formOfToBeVerb, location){
-				return pronoun + ' ' + formOfToBeVerb + ' ' + location;
+			function buildSentence(pronoun, en, formOfToBeVerb, location){
+				return '<div class="tooltip">' + pronoun + ' ' + formOfToBeVerb + '  <span class="tooltiptext"> ' + en + ' </span> </div> ' + location ; 
 			}
 			
 			function onAnswerRequest(){
 				// Show answer
 				var answerDiv = document.getElementById('Answer');
-				answerDiv.innerHTML = buildQuestion(currentSample.question.Pronoun, currentSample.question.Answer, currentSample.location);
+				answerDiv.innerHTML = buildSentence(currentSample.question.Pronoun, currentSample.question.En, currentSample.question.Answer, currentSample.location);
 				
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
@@ -75,7 +75,7 @@
 				
 				// Setup question div
 				var divToAmend = document.getElementById('Question');				
-				divToAmend.innerHTML = buildQuestion(currentSample.question.Pronoun, ' ... ', currentSample.location);  
+				divToAmend.innerHTML = buildSentence(currentSample.question.Pronoun, currentSample.question.En, ' ... ', currentSample.location);  
 			}
 		</script>
 	</head>
