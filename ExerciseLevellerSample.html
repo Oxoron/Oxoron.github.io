@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Noun Plurals
+		</title>
+		<script type="text/javascript" src="js/Common.js"> </script>
+		<script>
+			SetupArrayRandomFunction();
+			var levelledArray = {};
+
+			// Build constructor
+			levelledArray.Create = function(arr, functionToLevel){								
+				this.Elements = arr.GroupBy((elem) => (functionToLevel(elem)), "Level");
+				this.Buttons = this.Elements.map((elem) => ({
+					id: 'BtnChooseLevel' + elem.Level,
+					html: '<button class="buttonNotActive" onclick="ButtonClicked(this)" value="' + elem.Level + '">' + elem.Level + '</button>'
+				}));
+				this.CurrentLevel = Math.min(...this.Elements.map(elem => elem.Level));
+			};
+
+			// Build button generation
+			levelledArray.GenerateButtonsDiv = function(){
+				let result = '<div>';
+				this.Buttons.forEach(button => result += button.html);
+				result += '</div>'
+				return result;
+			};
+			
+			// Setup current level
+			levelledArray.SetupLevel = function(newLevelToSetup){
+				this.CurrentLevel = newLevelToSetup;												
+			}
+
+			// Setup content generation based on the level
+			levelledArray.GetContent = function(){
+				return this.Elements
+					.filter(group => group.Level <= this.CurrentLevel)
+					.reduce((
+						total, current) => [...total, ...current.values],
+						[]);
+			}
+
+			var source = ['one', 'two', 'three', 'four', 'five', 'six'];
+			levelledArray.Create(source, (elem)=> 1 + Math.floor(source.indexOf(elem) / 2));
+			var buttonsHtml = levelledArray.GenerateButtonsDiv();
+			console.log(levelledArray);
+
+			function ButtonClicked(btn){		
+				levelledArray.SetupLevel(btn.value);		
+				console.log(levelledArray.GetContent());	
+				btn.className = "buttonActive";				
+			}
+		</script>
+	<style>
+	.buttonNotActive {	  
+		border: none;	  
+		padding: 15px 32px;
+		text-align: center;
+		font-size: 16px;
+		margin: 4px 2px;		
+	}
+	
+	.buttonActive {	  
+		border: 2px solid green;	  
+		padding: 15px 32px;
+		text-align: center;
+		font-size: 16px;
+		margin: 4px 2px;		
+	}
+</style>
+	</head>
+	<body>
+		<div id="LevelButtons">
+			<button class="buttonNotActive" onclick="ButtonClicked(this)" value="1">1</button>
+			<button class="buttonNotActive" value="2"> 2 </button>
+			<button class="buttonActive" value="3"> 3 </button>
+			<button class="buttonActive" value="4"> 4 </button>
+			<button class="buttonActive" value="5"> 5 </button>
+			<button class="buttonActive" value="6"> 6 </button>
+			<button class="buttonActive" value="7"> 7 </button>			
+		</div>
+
+		<script>
+			var buttonsElement = document.getElementById("LevelButtons");
+			buttonsElement.innerHTML = buttonsHtml;
+		</script>
+	</body>
+</html>
