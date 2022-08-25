@@ -5,66 +5,13 @@
 			LT Exercise -- Noun Plurals
 		</title>
 		<script type="text/javascript" src="js/Common.js"> </script>
+		
 		<script>
-			SetupArrayRandomFunction();
-			var levelledArray = {};
-
-			// Build constructor
-			levelledArray.Create = function(arr, functionToLevel){								
-				this.Elements = arr.GroupBy((elem) => (functionToLevel(elem)), "Level");
-				this.CurrentLevel = Math.min(...this.Elements.map(elem => elem.Level));
-			};
-
-			// Build button object
-			levelledArray.GenerateLevelButton = function(level, isActive){
-				return {
-					level,
-					isActive
-				};
-			};
-
-			// Returns button's html
-			levelledArray.GenerateButtonHtml = function(buttonObject, onClickFunctionName){
-				let className = buttonObject.isActive ? "buttonActive" : "buttonNotActive";
-				let level = buttonObject.level;
-				let id = 'BtnChooseLevel' + level;
-				let onClick = onClickFunctionName + '(this)';
-
-				var result = '<button class="' + className +'" onclick="' + onClickFunctionName + '(this)" value="' + level + '">' + level + '</button>'
-
-				return result;
-			}
-
-			// Function returns the full html for the buttonsDiv element
-			levelledArray.RegenerateButtons = function(functionToCallOnClick_Name){
-				var result = '<div>';
-
-				let buttonHtmls = this.Elements
-					.map((elem) => this.GenerateLevelButton(elem.Level, elem.Level == this.CurrentLevel))
-					.map(button => this.GenerateButtonHtml(button, functionToCallOnClick_Name));
-
-				result += buttonHtmls
-					.reduce((total, current) => total + current, '');
-
-				result += '</div>';
-
-				return result;
-			}			
+			SetupArrayFunctions();
 			
-			// Setup current level
-			levelledArray.SetupLevel = function(newLevelToSetup){
-				this.CurrentLevel = newLevelToSetup;												
-			}			
-
-			// Get content according to the level
-			levelledArray.GetContent = function(){
-				return this.Elements
-					.filter(elem => elem.Level <= this.CurrentLevel)
-					.reduce((total, current) => [...total, ...current.values], []);
-			}
 
 			var source = ['one', 'two', 'three', 'four', 'five', 'six'];
-			levelledArray.Create(source, (elem)=> 1 + Math.floor(source.indexOf(elem) / 2));			
+			levelledArray = CreateLevelledArray(source, elem => 1 + Math.floor(source.indexOf(elem) / 2)); 		
 			console.log(levelledArray);
 
 			function ButtonClicked(btn){		

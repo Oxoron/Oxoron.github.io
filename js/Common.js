@@ -19,14 +19,6 @@ function WindowLoad(event) {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// Array functions
-function SetupArrayRandomFunction(){	
-	Array.prototype.random = function () {
-			return this[Math.floor((Math.random()*this.length))];
-			}
-}
-
-
 
 /* Converts array of objects to array keys-objects. For.ex.
 	[{a,b,c}, {d,e,f}, {g,h,i}] may be transformed to
@@ -61,28 +53,114 @@ function ToKeyObjectArray(originalArray, keySelector, keyFieldName)
 	}
 }
 
+// .Random() and .GroupBy(keySelector, keyFieldName)
+function SetupArrayFunctions(){
 
+	// Setup Random
+	Array.prototype.random = function () {
+		return this[Math.floor((Math.random()*this.length))];
+		};
 
-Array.prototype.GroupBy = function (keySelector, keyFieldName)
-{
-	if(!this) { return []; }
-	
-	return this.reduce((result, current) => {
-		var currentKey = keySelector(current);
-		if(!result.find((elem) => (elem[keyFieldName] === currentKey))){
-			var elementToAdd = {};
-			elementToAdd[keyFieldName] = currentKey;
-			elementToAdd["values"] = [];
-			
-			result.push(elementToAdd);
-		}
+	// Setup GroupBy
+	Array.prototype.GroupBy = function (keySelector, keyFieldName)
+	{
+		if(!this) { return []; }
 		
-		result
-			.find((elem) => (elem[keyFieldName] === currentKey))
-			.values
-			.push(current);
+		return this.reduce((result, current) => {
+			var currentKey = keySelector(current);
+			if(!result.find((elem) => (elem[keyFieldName] === currentKey))){
+				var elementToAdd = {};
+				elementToAdd[keyFieldName] = currentKey;
+				elementToAdd["values"] = [];
+				
+				result.push(elementToAdd);
+			}
 			
-		return result;
-	}, []);
-}
+			result
+				.find((elem) => (elem[keyFieldName] === currentKey))
+				.values
+				.push(current);
+				
+			return result;
+		}, []);
+	};
+};
 
+
+
+/* Leveller is a JS object to filter array elements according to their level.
+
+It's purpose to simplify learning, splitting elements by groups, and allowing to add them to the question pool one by one. As a result, instead of learning 70 new AType verbs, you can learn 10 today, additional 10 tomorrow, etc.*/
+
+
+
+/* arr : array of elements to be levelled
+
+functionToLevel - function calculating a level based on the element. 
+	Sample : (elem) => 1 + Math.floor(source.indexOf(elem) / 2)
+
+Returns : a leveller object containing original array of elements grouped by level.
+
+How to use : 4 functions enough to use the object.
+	var leveller = CreateLevelledArray(yourArray, (elem) => 1 + Math.floor(source.indexOf(elem) / 10));
+	var content = leveller.GetContent();
+	var levelButtonsHtml = leveller.RegenerateButtons(functionToCallOnClick_Name);
+	leveller.SetupLevel(2);
+*/	
+function CreateLevelledArray(arr, functionToLevel){
+	
+	SetupArrayFunctions();
+	
+	let levelledArray = {};		
+	levelledArray.Elements = arr.GroupBy(elem => functionToLevel(elem), "Level");
+	levelledArray.CurrentLevel = Math.min(...levelledArray.Elements.map(elem => elem.Level));
+	
+
+	// Build button object
+	levelledArray.GenerateLevelButton = function(level, isActive){
+		return {
+			level,
+			isActive
+		};
+	};
+
+	// Returns button's html
+	levelledArray.GenerateButtonHtml = function(buttonObject, onClickFunctionName){
+		let className = buttonObject.isActive ? "buttonActive" : "buttonNotActive";
+		let level = buttonObject.level;		
+
+		var result = '<button class="' + className +'" onclick="' + onClickFunctionName + '(this)" value="' + level + '">' + level + '</button>'
+
+		return result;
+	}
+
+	// Function returns the full html for the buttonsDiv element
+	levelledArray.RegenerateButtons = function(functionToCallOnClick_Name){
+		var result = '<div>';
+
+		let buttonHtmls = this.Elements
+			.map((elem) => this.GenerateLevelButton(elem.Level, elem.Level == this.CurrentLevel))
+			.map(button => this.GenerateButtonHtml(button, functionToCallOnClick_Name));
+
+		result += buttonHtmls
+			.reduce((total, current) => total + current, '');
+
+		result += '</div>';
+
+		return result;
+	}			
+	
+	// Setup current level
+	levelledArray.SetupLevel = function(newLevelToSetup){
+		this.CurrentLevel = newLevelToSetup;												
+	}			
+
+	// Get content according to the level
+	levelledArray.GetContent = function(){
+		return this.Elements
+			.filter(elem => elem.Level <= this.CurrentLevel)
+			.reduce((total, current) => [...total, ...current.values], []);
+	}
+
+	return levelledArray;
+}
