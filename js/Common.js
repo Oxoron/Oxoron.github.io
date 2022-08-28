@@ -29,8 +29,13 @@ function SetupArrayRandomFunction(){
 // Return a random element of the array if it's not equal to previuousValue
 function SetupArrayNonRepeatingRandomFunction(){
 	Array.prototype.notRepeatingRandom = function (previousValue) {
-		// TODO return not repeating value
-		return null;
+		var result = this[Math.floor((Math.random()*this.length))];
+		if (result != previousValue) return result;
+			else {
+				result = this[Math.floor((Math.random()*this.length))];
+				if (result != previousValue) return result;
+			};
+		return undefined;
 		}
 }
 
