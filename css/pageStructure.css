@@ -1,20 +1,48 @@
 .pageStructure {
   display: flex;
   flex-wrap: nowrap;
-  justify-content: space-between;  
+  justify-content: space-between; 
   
   background-color: DodgerBlue;  
-  min-height : 400px;
 }
 
 .pageStructure > div {
   background-color: #f1f1f1;
-  margin: 10px;
-  padding: 20px;
+  margin: 2px;
+  padding: 10px;  
   font-size: 30px;  
 }
 
+.exercise{
+  min-height: 400px;  
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
 .content{
-	text-align: center;
-	width: 100%;
+  width: 100%;
+	text-align: center;	
+}
+
+.levelButtonsDiv{
+  text-align: center; 
+}
+
+.levelButtonsDiv > div > button{
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 30px; 
+}
+
+.levelButtonActive{
+  border: solid green 3px;
+}
+
+.levelButtonNotActive{
+  border: solid grey 2px;
 }
