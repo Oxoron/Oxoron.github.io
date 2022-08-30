@@ -126,7 +126,7 @@ function CreateLevelledArray(arr, functionToLevel){
 
 	// Returns button's html
 	levelledArray.GenerateButtonHtml = function(buttonObject, onClickFunctionName){
-		let className = buttonObject.isActive ? "buttonActive" : "buttonNotActive";
+		let className = buttonObject.isActive ? "levelButtonActive" : "levelButtonNotActive";
 		let level = buttonObject.level;		
 
 		var result = '<button class="' + className +'" onclick="' + onClickFunctionName + '(this)" value="' + level + '">' + level + '</button>'

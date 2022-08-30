@@ -92,7 +92,7 @@
 
 				// Update innerHtml for level buttons div
 				let newHtml = leveller.RegenerateButtons("OnLevelButtonClick");
-				var buttonsElement = document.getElementById("LevelButtons");
+				var buttonsElement = document.getElementById("levelButtonsDiv");
 				buttonsElement.innerHTML = newHtml;
 
 				// Update content
@@ -108,26 +108,26 @@
 				<script type="text/javascript" src="js/ToC.js"> </script>				
 				<script> uploadToC(); </script>
 				
-				
-			<div id='table' class='content'>		
-				<div id='Question'>	to wait	</div>	
-				<div id='Answer'>	laukti laukia laukė	</div>			
-				<div id='Button'> 
-					<button id='NextActionButton'
-						onclick="onNextActionButtonClick()">
-						Next
-					</button>
-				</div>				
-			</div>
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	to wait	</div>	
+					<div id='Answer'>	laukti laukia laukė	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
 
-			<div>
-				<div id="LevelButtons"> </div>
-		
+				
+				<div id="levelButtonsDiv" class="levelButtonsDiv">		
 				<script>
-					var buttonsElement = document.getElementById("LevelButtons");
+					var buttonsElement = document.getElementById("levelButtonsDiv");
 					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
 				</script>
-			</div>
+				
+			</div>	
 		</div>
 	</body>
 </html>
