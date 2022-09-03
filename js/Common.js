@@ -29,14 +29,23 @@ function SetupArrayRandomFunction(){
 // Return a random element of the array if it's not equal to previuousValue
 function SetupArrayNonRepeatingRandomFunction(){
 	Array.prototype.notRepeatingRandom = function (previousValue) {
-		var result = this[Math.floor((Math.random()*this.length))];
-		if (result != previousValue) return result;
-			else {
-				result = this[Math.floor((Math.random()*this.length))];
-				if (result != previousValue) return result;
-			};
-		return undefined;
+		if (this == null || this == undefined || this.lenght == 0) {
+			console.log('Error: Array is null or empty');
+			return previousValue;}
+		else {
+			var result = this[Math.floor((Math.random()*this.length))];
+			var i = 0;
+			do {
+				if (result != previousValue) {
+					return result;}
+				else {
+					result = this[Math.floor((Math.random()*this.length))];
+					i++;}
+			} while (i<10)
+			console.log('Error: Can not find a different value');
+			return previousValue;
 		}
+	}
 }
 
 
