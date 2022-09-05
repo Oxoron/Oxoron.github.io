@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Noun Genitive Single
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"Nominative":"Aš","Genitive":"Mano"},{"Nominative":"Tu","Genitive":"Tavo"},{"Nominative":"Jis","Genitive":"Jo"},{"Nominative":"Ji","Genitive":"Jos"},{"Nominative":"Mes","Genitive":"Mūsų"},{"Nominative":"Jūs","Genitive":"Jūsų"},{"Nominative":"Jie","Genitive":"Jų"},{"Nominative":"Jos","Genitive":"Jų"}]';
+			
+			// Get array of objects {Chunk1, NounToChange, Answer}
+			var result = JSON.parse(samplesAsJson);
+			
+			var currentSample = result[0];
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = currentSample.Genitive;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = result.notRepeatingRandom(currentSample);
+				currentSample = randomSample;
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');
+				divToAmend.innerHTML = currentSample.Nominative;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>		
+				<div id='Question'>	I	</div>	
+				<div id='Answer'>	Aš	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
