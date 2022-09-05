@@ -17,9 +17,6 @@ function WindowLoad(event) {
 
 
 
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
 /* Converts array of objects to array keys-objects. For.ex.
 	[{a,b,c}, {d,e,f}, {g,h,i}] may be transformed to
 	[{abc, {a,b,c}}, {ghi, {g,h,i}}, {def, {d,e,f}}
@@ -60,6 +57,29 @@ function SetupArrayFunctions(){
 	Array.prototype.random = function () {
 		return this[Math.floor((Math.random()*this.length))];
 		};
+
+	// Return a random element of the array if it's not equal to previuousValue
+	Array.prototype.notRepeatingRandom = function (previousValue) {
+		if (this == null || this == undefined || this.lenght == 0) {
+			console.log('Error: Array is null or empty');
+			return previousValue;
+		}
+		else {
+			var result = this[Math.floor((Math.random()*this.length))];
+			var i = 0;
+			do {
+				if (result != previousValue) {
+					return result;
+				}
+				else {
+					result = this[Math.floor((Math.random()*this.length))];
+					i++;
+				}
+			} while (i<10)
+			console.log('Error: Can not find a different value');
+			return previousValue;
+		}
+	}
 
 	// Setup GroupBy
 	Array.prototype.GroupBy = function (keySelector, keyFieldName)
