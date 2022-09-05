@@ -11,20 +11,20 @@
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 3px 0;
 
   position: absolute;
   z-index: 1;
   /* By default tooltip appears at the left of the element. 
   If you want to show the tooltip at the right, use additional .rightTooltip class on your element */
-  top: -5px;
-  right: 105%;
+  top: -35px;
+  right: 0%;
 }
 
 /* Please keep consistent with the .tooltip .tooltiptext positioning */
 .rightTooltip{
-  top: -5px;
-  left: 105%;
+  top: -35px;
+  left: 0%;
 }
 
 .tooltip:hover .tooltiptext {
