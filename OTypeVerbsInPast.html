@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- O-Type Verbs In The Past
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>		
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"ThirdSingularPast":"buvo", "Base":"buv", "FirstSingular":"buvau", "SecondSingular":"buvai", "ThirdSingular":"buvo", "FirstPlural":"buvome", "SecondPlural":"buvote", "ThirdPlural":"buvo", "Infinitive":"būti", "En":"to be"},{"ThirdSingularPast":"gyveno", "Base":"gyven", "FirstSingular":"gyvenau", "SecondSingular":"gyvenai", "ThirdSingular":"gyveno", "FirstPlural":"gyvenome", "SecondPlural":"gyvenote", "ThirdPlural":"gyveno", "Infinitive":"gyventi", "En":"to live somewhere"},{"ThirdSingularPast":"dirbo", "Base":"dirb", "FirstSingular":"dirbau", "SecondSingular":"dirbai", "ThirdSingular":"dirbo", "FirstPlural":"dirbome", "SecondPlural":"dirbote", "ThirdPlural":"dirbo", "Infinitive":"dirbti", "En":"to work"},{"ThirdSingularPast":"suprato", "Base":"suprat", "FirstSingular":"supratau", "SecondSingular":"supratai", "ThirdSingular":"suprato", "FirstPlural":"supratome", "SecondPlural":"supratote", "ThirdPlural":"suprato", "Infinitive":"suprasti", "En":"to understand"},{"ThirdSingularPast":"ėjo", "Base":"ėj", "FirstSingular":"ėjau", "SecondSingular":"ėjai", "ThirdSingular":"ėjo", "FirstPlural":"ėjome", "SecondPlural":"ėjote", "ThirdPlural":"ėjo", "Infinitive":"eiti", "En":"to go"},{"ThirdSingularPast":"turėjo", "Base":"turėj", "FirstSingular":"turėjau", "SecondSingular":"turėjai", "ThirdSingular":"turėjo", "FirstPlural":"turėjome", "SecondPlural":"turėjote", "ThirdPlural":"turėjo", "Infinitive":"turėti", "En":"to have"},{"ThirdSingularPast":"galėjo", "Base":"galėj", "FirstSingular":"galėjau", "SecondSingular":"galėjai", "ThirdSingular":"galėjo", "FirstPlural":"galėjome", "SecondPlural":"galėjote", "ThirdPlural":"galėjo", "Infinitive":"galėti", "En":"to be able"},{"ThirdSingularPast":"girdėjo", "Base":"girdėj", "FirstSingular":"girdėjau", "SecondSingular":"girdėjai", "ThirdSingular":"girdėjo", "FirstPlural":"girdėjome", "SecondPlural":"girdėjote", "ThirdPlural":"girdėjo", "Infinitive":"girdėti", "En":"to hear"},{"ThirdSingularPast":"žiūrėjo", "Base":"žiūrėj", "FirstSingular":"žiūrėjau", "SecondSingular":"žiūrėjai", "ThirdSingular":"žiūrėjo", "FirstPlural":"žiūrėjome", "SecondPlural":"žiūrėjote", "ThirdPlural":"žiūrėjo", "Infinitive":"žiūrėti", "En":"to look"},{"ThirdSingularPast":"mylėjo", "Base":"mylėj", "FirstSingular":"mylėjau", "SecondSingular":"mylėjai", "ThirdSingular":"mylėjo", "FirstPlural":"mylėjome", "SecondPlural":"mylėjote", "ThirdPlural":"mylėjo", "Infinitive":"mylėti", "En":"to love"},{"ThirdSingularPast":"reikėjo", "Base":"reikėj", "FirstSingular":"reikėjau", "SecondSingular":"reikėjai", "ThirdSingular":"reikėjo", "FirstPlural":"reikėjome", "SecondPlural":"reikėjote", "ThirdPlural":"reikėjo", "Infinitive":"reikėti", "En":"to need/must"}]';
+			
+			var pronouns = [
+				[{En : "I", Lt : "Aš"}],
+				[{En : "You (sing.)", Lt : "Tu"}], 
+				[{En : "He", Lt : "Jis" }, {En : "She", Lt : "Ji"}],
+				
+				[{En : "We", Lt : "Mes"}],
+				[{En : "You (plur.)", Lt : "Jūs"}], 
+				[{En : "They (mixed or masc.)", Lt : "Jie" }, {En : "They (fem.)", Lt : "Jos"}]			
+			];
+			
+			// Parse verbs and group it by past type
+			var verbs = JSON.parse(samplesAsJson);			
+			var currentSample = {pronoun : pronouns.random(), verb : verbs.random()};
+			
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				var answer = "";
+				
+				// Conjugate pronoun and a verb. Choose right verb form based on pronoun. 				
+				switch(currentSample.pronoun[0].Lt) {
+					case "Aš":
+						answer = currentSample.verb.FirstSingular;
+						break;
+					case "Tu":
+						answer = currentSample.verb.SecondSingular;
+						break;
+					case "Jis":
+						answer = currentSample.verb.ThirdSingular;
+						break;
+						
+					case "Mes":
+						answer = currentSample.verb.FirstPlural;
+						break;
+					case "Jūs":
+						answer = currentSample.verb.SecondPlural;
+						break;
+					case "Jie":
+						answer = currentSample.verb.ThirdPlural;
+						break;				  
+				};				
+				answerDiv.innerHTML = answer.toLowerCase();
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample				
+				currentSample = {pronoun : pronouns.random(), verb : verbs.random()};
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');		
+				var pronoun = currentSample.pronoun.random();
+				var verb = currentSample.verb;
+				divToAmend.innerHTML = '<div class="tooltip"> ' + pronoun.Lt +'  <span class="tooltiptext"> ' + pronoun.En + ' </span> </div> ' + 
+				'<div class="tooltip"> ' + verb.ThirdSingularPast.toLowerCase() +'  <span class="tooltiptext rightTooltip"> ' + verb.En + ' </span> </div> ';
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	 Tu gyveno 	</div>	
+				<div id='Answer'>	gyvenote	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
