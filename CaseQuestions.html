@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Case Questions
+		</title>
+		<link rel="stylesheet" href="css/style.css">		
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>		
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var dataSource = '[{"Question":"kas?", "Case":"nominative"},{"Question":"ko?", "Case":"genitive"},{"Question":"kam?", "Case":"dative"},{"Question":"ką?", "Case":"accusative"},{"Question":"su kuo?", "Case":"instrumental"},{"Question":"kur?", "Case":"locative"}]';
+			var cases = JSON.parse(dataSource);			
+			var currentCase = cases.random();
+			
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				var answer = currentCase.Case;
+				answerDiv.innerHTML = answer;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample				
+				currentCase = cases.notRepeatingRandom(currentCase);
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');						
+				divToAmend.innerHTML = currentCase.Question;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	kas?	</div>	
+				<div id='Answer'>	nominative	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
