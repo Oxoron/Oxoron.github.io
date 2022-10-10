@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- E-Type Verbs In The Past
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>		
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"ThirdSingularPast":"davė", "Base":"dav", "FirstSingular":"daviau", "SecondSingular":"davėi", "ThirdSingular":"davė", "FirstPlural":"davėme", "SecondPlural":"davėte", "ThirdPlural":"davė", "Infinitive":"dav", "En":"to give"},{"ThirdSingularPast":"ėmė", "Base":"ėm", "FirstSingular":"ėmiau", "SecondSingular":"ėmėi", "ThirdSingular":"ėmė", "FirstPlural":"ėmėme", "SecondPlural":"ėmėte", "ThirdPlural":"ėmė", "Infinitive":"ėm", "En":"to take"},{"ThirdSingularPast":"virė", "Base":"vir", "FirstSingular":"viriau", "SecondSingular":"virėi", "ThirdSingular":"virė", "FirstPlural":"virėme", "SecondPlural":"virėte", "ThirdPlural":"virė", "Infinitive":"vir", "En":"to cook"},{"ThirdSingularPast":"kepė", "Base":"kep", "FirstSingular":"kepiau", "SecondSingular":"kepėi", "ThirdSingular":"kepė", "FirstPlural":"kepėme", "SecondPlural":"kepėte", "ThirdPlural":"kepė", "Infinitive":"kep", "En":"to fry"},{"ThirdSingularPast":"pardavė", "Base":"pardav", "FirstSingular":"pardaviau", "SecondSingular":"pardavėi", "ThirdSingular":"pardavė", "FirstPlural":"pardavėme", "SecondPlural":"pardavėte", "ThirdPlural":"pardavė", "Infinitive":"pardav", "En":"to sell"},{"ThirdSingularPast":"klausė", "Base":"klaus", "FirstSingular":"klausiau", "SecondSingular":"klausėi", "ThirdSingular":"klausė", "FirstPlural":"klausėme", "SecondPlural":"klausėte", "ThirdPlural":"klausė", "Infinitive":"klaus", "En":"to ask"},{"ThirdSingularPast":"laukė", "Base":"lauk", "FirstSingular":"laukiau", "SecondSingular":"laukėi", "ThirdSingular":"laukė", "FirstPlural":"laukėme", "SecondPlural":"laukėte", "ThirdPlural":"laukė", "Infinitive":"lauk", "En":"to wait"},{"ThirdSingularPast":"žaidė", "Base":"žaid", "FirstSingular":"žaidiau", "SecondSingular":"žaidėi", "ThirdSingular":"žaidė", "FirstPlural":"žaidėme", "SecondPlural":"žaidėte", "ThirdPlural":"žaidė", "Infinitive":"žaid", "En":"to play"},{"ThirdSingularPast":"kvietė", "Base":"kviet", "FirstSingular":"kvietiau", "SecondSingular":"kvietėi", "ThirdSingular":"kvietė", "FirstPlural":"kvietėme", "SecondPlural":"kvietėte", "ThirdPlural":"kvietė", "Infinitive":"kviet", "En":"to invite"},{"ThirdSingularPast":"darė", "Base":"dar", "FirstSingular":"dariau", "SecondSingular":"darėi", "ThirdSingular":"darė", "FirstPlural":"darėme", "SecondPlural":"darėte", "ThirdPlural":"darė", "Infinitive":"dar", "En":"to do"},{"ThirdSingularPast":"valgė", "Base":"valg", "FirstSingular":"valgiau", "SecondSingular":"valgėi", "ThirdSingular":"valgė", "FirstPlural":"valgėme", "SecondPlural":"valgėte", "ThirdPlural":"valgė", "Infinitive":"valg", "En":"to eat"},{"ThirdSingularPast":"sakė", "Base":"sak", "FirstSingular":"sakiau", "SecondSingular":"sakėi", "ThirdSingular":"sakė", "FirstPlural":"sakėme", "SecondPlural":"sakėte", "ThirdPlural":"sakė", "Infinitive":"sak", "En":"to say"},{"ThirdSingularPast":"manė", "Base":"man", "FirstSingular":"maniau", "SecondSingular":"manėi", "ThirdSingular":"manė", "FirstPlural":"manėme", "SecondPlural":"manėte", "ThirdPlural":"manė", "Infinitive":"man", "En":"to assume"},{"ThirdSingularPast":"prašė", "Base":"praš", "FirstSingular":"prašiau", "SecondSingular":"prašėi", "ThirdSingular":"prašė", "FirstPlural":"prašėme", "SecondPlural":"prašėte", "ThirdPlural":"prašė", "Infinitive":"praš", "En":"to ask"},{"ThirdSingularPast":"gėrė", "Base":"gėr", "FirstSingular":"gėriau", "SecondSingular":"gėrėi", "ThirdSingular":"gėrė", "FirstPlural":"gėrėme", "SecondPlural":"gėrėte", "ThirdPlural":"gėrė", "Infinitive":"gėr", "En":"to drink"}]';
+			
+			var pronouns = [
+				[{En : "I", Lt : "Aš"}],
+				[{En : "You (sing.)", Lt : "Tu"}], 
+				[{En : "He", Lt : "Jis" }, {En : "She", Lt : "Ji"}],
+				
+				[{En : "We", Lt : "Mes"}],
+				[{En : "You (plur.)", Lt : "Jūs"}], 
+				[{En : "They (mixed or masc.)", Lt : "Jie" }, {En : "They (fem.)", Lt : "Jos"}]			
+			];
+			
+			// Parse verbs and group it by past type
+			var verbs = JSON.parse(samplesAsJson);			
+			var currentSample = {pronoun : pronouns.random(), verb : verbs.random()};
+			
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				var answer = "";
+				
+				// Conjugate pronoun and a verb. Choose right verb form based on pronoun. 				
+				switch(currentSample.pronoun[0].Lt) {
+					case "Aš":
+						answer = currentSample.verb.FirstSingular;
+						break;
+					case "Tu":
+						answer = currentSample.verb.SecondSingular;
+						break;
+					case "Jis":
+						answer = currentSample.verb.ThirdSingular;
+						break;
+						
+					case "Mes":
+						answer = currentSample.verb.FirstPlural;
+						break;
+					case "Jūs":
+						answer = currentSample.verb.SecondPlural;
+						break;
+					case "Jie":
+						answer = currentSample.verb.ThirdPlural;
+						break;				  
+				};				
+				answerDiv.innerHTML = answer.toLowerCase();
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample				
+				currentSample = {pronoun : pronouns.random(), verb : verbs.random()};
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');		
+				var pronoun = currentSample.pronoun.random();
+				var verb = currentSample.verb;
+				divToAmend.innerHTML = '<div class="tooltip"> ' + pronoun.Lt +'  <span class="tooltiptext"> ' + pronoun.En + ' </span> </div> ' + 
+				'<div class="tooltip"> ' + verb.ThirdSingularPast.toLowerCase() +'  <span class="tooltiptext rightTooltip"> ' + verb.En + ' </span> </div> ';
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	 Aš davė 	</div>	
+				<div id='Answer'>	daviau	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
