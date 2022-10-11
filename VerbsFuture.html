@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- O-Type Verbs In The Past
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>		
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"En":"to be", "Infinitive":"būti", "FirstSingular":"būsiu", "SecondSingular":"būsi", "ThirdSingular":"būs", "FirstPlural":"būsime", "SecondPlural":"būsite", "ThirdPlural":"būs"},{"En":"to live somewhere", "Infinitive":"gyventi", "FirstSingular":"gyvensiu", "SecondSingular":"gyvensi", "ThirdSingular":"gyvens", "FirstPlural":"gyvensime", "SecondPlural":"gyvensite", "ThirdPlural":"gyvens"},{"En":"to work", "Infinitive":"dirbti", "FirstSingular":"dirbsiu", "SecondSingular":"dirbsi", "ThirdSingular":"dirbs", "FirstPlural":"dirbsime", "SecondPlural":"dirbsite", "ThirdPlural":"dirbs"},{"En":"to understand", "Infinitive":"suprasti", "FirstSingular":"suprassiu", "SecondSingular":"suprassi", "ThirdSingular":"suprass", "FirstPlural":"suprassime", "SecondPlural":"suprassite", "ThirdPlural":"suprass"},{"En":"to go", "Infinitive":"eiti", "FirstSingular":"eisiu", "SecondSingular":"eisi", "ThirdSingular":"eis", "FirstPlural":"eisime", "SecondPlural":"eisite", "ThirdPlural":"eis"},{"En":"to give", "Infinitive":"duoti", "FirstSingular":"duosiu", "SecondSingular":"duosi", "ThirdSingular":"duos", "FirstPlural":"duosime", "SecondPlural":"duosite", "ThirdPlural":"duos"},{"En":"to take", "Infinitive":"imti", "FirstSingular":"imsiu", "SecondSingular":"imsi", "ThirdSingular":"ims", "FirstPlural":"imsime", "SecondPlural":"imsite", "ThirdPlural":"ims"},{"En":"to put", "Infinitive":"dėti", "FirstSingular":"dėsiu", "SecondSingular":"dėsi", "ThirdSingular":"dės", "FirstPlural":"dėsime", "SecondPlural":"dėsite", "ThirdPlural":"dės"},{"En":"to like", "Infinitive":"mėgti", "FirstSingular":"mėgsiu", "SecondSingular":"mėgsi", "ThirdSingular":"mėgs", "FirstPlural":"mėgsime", "SecondPlural":"mėgsite", "ThirdPlural":"mėgs"},{"En":"to like", "Infinitive":"patikti", "FirstSingular":"patiksiu", "SecondSingular":"patiksi", "ThirdSingular":"patiks", "FirstPlural":"patiksime", "SecondPlural":"patiksite", "ThirdPlural":"patiks"},{"En":"to meet", "Infinitive":"susitikti", "FirstSingular":"susitiksiu", "SecondSingular":"susitiksi", "ThirdSingular":"susitiks", "FirstPlural":"susitiksime", "SecondPlural":"susitiksite", "ThirdPlural":"susitiks"},{"En":"to drive", "Infinitive":"važiuoti", "FirstSingular":"važiuosiu", "SecondSingular":"važiuosi", "ThirdSingular":"važiuos", "FirstPlural":"važiuosime", "SecondPlural":"važiuosite", "ThirdPlural":"važiuos"},{"En":"to be late", "Infinitive":"vėluoti", "FirstSingular":"vėluosiu", "SecondSingular":"vėluosi", "ThirdSingular":"vėluos", "FirstPlural":"vėluosime", "SecondPlural":"vėluosite", "ThirdPlural":"vėluos"},{"En":"to speak", "Infinitive":"kalbėti", "FirstSingular":"kalbėsiu", "SecondSingular":"kalbėsi", "ThirdSingular":"kalbės", "FirstPlural":"kalbėsime", "SecondPlural":"kalbėsite", "ThirdPlural":"kalbės"},{"En":"to learn", "Infinitive":"studijuoti", "FirstSingular":"studijuosiu", "SecondSingular":"studijuosi", "ThirdSingular":"studijuos", "FirstPlural":"studijuosime", "SecondPlural":"studijuosite", "ThirdPlural":"studijuos"},{"En":"to call", "Infinitive":"skambinti", "FirstSingular":"skambinsiu", "SecondSingular":"skambinsi", "ThirdSingular":"skambins", "FirstPlural":"skambinsime", "SecondPlural":"skambinsite", "ThirdPlural":"skambins"},{"En":"to familiarize", "Infinitive":"susipažinti", "FirstSingular":"susipažinsiu", "SecondSingular":"susipažinsi", "ThirdSingular":"susipažins", "FirstPlural":"susipažinsime", "SecondPlural":"susipažinsite", "ThirdPlural":"susipažins"},{"En":"to miss", "Infinitive":"pasiilgti", "FirstSingular":"pasiilgsiu", "SecondSingular":"pasiilgsi", "ThirdSingular":"pasiilgs", "FirstPlural":"pasiilgsime", "SecondPlural":"pasiilgsite", "ThirdPlural":"pasiilgs"},{"En":"to go on vacation", "Infinitive":"atostogauti", "FirstSingular":"atostogausiu", "SecondSingular":"atostogausi", "ThirdSingular":"atostogaus", "FirstPlural":"atostogausime", "SecondPlural":"atostogausite", "ThirdPlural":"atostogaus"},{"En":"to taste", "Infinitive":"ragauti", "FirstSingular":"ragausiu", "SecondSingular":"ragausi", "ThirdSingular":"ragaus", "FirstPlural":"ragausime", "SecondPlural":"ragausite", "ThirdPlural":"ragaus"},{"En":"to eat", "Infinitive":"pietauti", "FirstSingular":"pietausiu", "SecondSingular":"pietausi", "ThirdSingular":"pietaus", "FirstPlural":"pietausime", "SecondPlural":"pietausite", "ThirdPlural":"pietaus"},{"En":"to cook", "Infinitive":"virti", "FirstSingular":"virsiu", "SecondSingular":"virsi", "ThirdSingular":"virs", "FirstPlural":"virsime", "SecondPlural":"virsite", "ThirdPlural":"virs"},{"En":"to fry", "Infinitive":"kepti", "FirstSingular":"kepsiu", "SecondSingular":"kepsi", "ThirdSingular":"keps", "FirstPlural":"kepsime", "SecondPlural":"kepsite", "ThirdPlural":"keps"},{"En":"to produce", "Infinitive":"gaminti", "FirstSingular":"gaminsiu", "SecondSingular":"gaminsi", "ThirdSingular":"gamins", "FirstPlural":"gaminsime", "SecondPlural":"gaminsite", "ThirdPlural":"gamins"},{"En":"to cost", "Infinitive":"kainuoti", "FirstSingular":"kainuosiu", "SecondSingular":"kainuosi", "ThirdSingular":"kainuos", "FirstPlural":"kainuosime", "SecondPlural":"kainuosite", "ThirdPlural":"kainuos"},{"En":"to know/to pay", "Infinitive":"mokėti", "FirstSingular":"mokėsiu", "SecondSingular":"mokėsi", "ThirdSingular":"mokės", "FirstPlural":"mokėsime", "SecondPlural":"mokėsite", "ThirdPlural":"mokės"},{"En":"to sell", "Infinitive":"parduoti", "FirstSingular":"parduosiu", "SecondSingular":"parduosi", "ThirdSingular":"parduos", "FirstPlural":"parduosime", "SecondPlural":"parduosite", "ThirdPlural":"parduos"},{"En":"to buy", "Infinitive":"pirkti", "FirstSingular":"pirksiu", "SecondSingular":"pirksi", "ThirdSingular":"pirks", "FirstPlural":"pirksime", "SecondPlural":"pirksite", "ThirdPlural":"pirks"},{"En":"to have", "Infinitive":"turėti", "FirstSingular":"turėsiu", "SecondSingular":"turėsi", "ThirdSingular":"turės", "FirstPlural":"turėsime", "SecondPlural":"turėsite", "ThirdPlural":"turės"},{"En":"to be able", "Infinitive":"galėti", "FirstSingular":"galėsiu", "SecondSingular":"galėsi", "ThirdSingular":"galės", "FirstPlural":"galėsime", "SecondPlural":"galėsite", "ThirdPlural":"galės"},{"En":"to ask", "Infinitive":"klausyti", "FirstSingular":"klausysiu", "SecondSingular":"klausysi", "ThirdSingular":"klausys", "FirstPlural":"klausysime", "SecondPlural":"klausysite", "ThirdPlural":"klausys"},{"En":"to hear", "Infinitive":"girdėti", "FirstSingular":"girdėsiu", "SecondSingular":"girdėsi", "ThirdSingular":"girdės", "FirstPlural":"girdėsime", "SecondPlural":"girdėsite", "ThirdPlural":"girdės"},{"En":"to look", "Infinitive":"žiūrėti", "FirstSingular":"žiūrėsiu", "SecondSingular":"žiūrėsi", "ThirdSingular":"žiūrės", "FirstPlural":"žiūrėsime", "SecondPlural":"žiūrėsite", "ThirdPlural":"žiūrės"},{"En":"to love", "Infinitive":"mylėti", "FirstSingular":"mylėsiu", "SecondSingular":"mylėsi", "ThirdSingular":"mylės", "FirstPlural":"mylėsime", "SecondPlural":"mylėsite", "ThirdPlural":"mylės"},{"En":"to stand", "Infinitive":"stovėti", "FirstSingular":"stovėsiu", "SecondSingular":"stovėsi", "ThirdSingular":"stovės", "FirstPlural":"stovėsime", "SecondPlural":"stovėsite", "ThirdPlural":"stovės"},{"En":"to sit", "Infinitive":"sėdėti", "FirstSingular":"sėdėsiu", "SecondSingular":"sėdėsi", "ThirdSingular":"sėdės", "FirstPlural":"sėdėsime", "SecondPlural":"sėdėsite", "ThirdPlural":"sėdės"},{"En":"to want", "Infinitive":"norėti", "FirstSingular":"norėsiu", "SecondSingular":"norėsi", "ThirdSingular":"norės", "FirstPlural":"norėsime", "SecondPlural":"norėsite", "ThirdPlural":"norės"},{"En":"to drink", "Infinitive":"gerti", "FirstSingular":"gersiu", "SecondSingular":"gersi", "ThirdSingular":"gers", "FirstPlural":"gersime", "SecondPlural":"gersite", "ThirdPlural":"gers"},{"En":"to wait", "Infinitive":"laukti", "FirstSingular":"lauksiu", "SecondSingular":"lauksi", "ThirdSingular":"lauks", "FirstPlural":"lauksime", "SecondPlural":"lauksite", "ThirdPlural":"lauks"},{"En":"to play", "Infinitive":"žaisti", "FirstSingular":"žaissiu", "SecondSingular":"žaissi", "ThirdSingular":"žaiss", "FirstPlural":"žaissime", "SecondPlural":"žaissite", "ThirdPlural":"žaiss"},{"En":"to invite", "Infinitive":"kviesti", "FirstSingular":"kviessiu", "SecondSingular":"kviessi", "ThirdSingular":"kviess", "FirstPlural":"kviessime", "SecondPlural":"kviessite", "ThirdPlural":"kviess"},{"En":"to need/must", "Infinitive":"reikėti", "FirstSingular":"reikėsiu", "SecondSingular":"reikėsi", "ThirdSingular":"reikės", "FirstPlural":"reikėsime", "SecondPlural":"reikėsite", "ThirdPlural":"reikės"},{"En":"to do", "Infinitive":"daryti", "FirstSingular":"darysiu", "SecondSingular":"darysi", "ThirdSingular":"darys", "FirstPlural":"darysime", "SecondPlural":"darysite", "ThirdPlural":"darys"},{"En":"to eat", "Infinitive":"valgyti", "FirstSingular":"valgysiu", "SecondSingular":"valgysi", "ThirdSingular":"valgys", "FirstPlural":"valgysime", "SecondPlural":"valgysite", "ThirdPlural":"valgys"},{"En":"to say", "Infinitive":"sakyti", "FirstSingular":"sakysiu", "SecondSingular":"sakysi", "ThirdSingular":"sakys", "FirstPlural":"sakysime", "SecondPlural":"sakysite", "ThirdPlural":"sakys"},{"En":"to assume", "Infinitive":"manyti", "FirstSingular":"manysiu", "SecondSingular":"manysi", "ThirdSingular":"manys", "FirstPlural":"manysime", "SecondPlural":"manysite", "ThirdPlural":"manys"},{"En":"to ask", "Infinitive":"prašyti", "FirstSingular":"prašysiu", "SecondSingular":"prašysi", "ThirdSingular":"prašys", "FirstPlural":"prašysime", "SecondPlural":"prašysite", "ThirdPlural":"prašys"},{"En":"to propose", "Infinitive":"siūlyti", "FirstSingular":"siūlysiu", "SecondSingular":"siūlysi", "ThirdSingular":"siūlys", "FirstPlural":"siūlysime", "SecondPlural":"siūlysite", "ThirdPlural":"siūlys"},{"En":"to order", "Infinitive":"užsisakyti", "FirstSingular":"užsisakysiu", "SecondSingular":"užsisakysi", "ThirdSingular":"užsisakys", "FirstPlural":"užsisakysime", "SecondPlural":"užsisakysite", "ThirdPlural":"užsisakys"}]';
+			
+			var pronouns = [
+				[{En : "I", Lt : "Aš"}],
+				[{En : "You (sing.)", Lt : "Tu"}], 
+				[{En : "He", Lt : "Jis" }, {En : "She", Lt : "Ji"}],
+				
+				[{En : "We", Lt : "Mes"}],
+				[{En : "You (plur.)", Lt : "Jūs"}], 
+				[{En : "They (mixed or masc.)", Lt : "Jie" }, {En : "They (fem.)", Lt : "Jos"}]			
+			];
+			
+			// Parse verbs and group it by past type
+			var verbs = JSON.parse(samplesAsJson);			
+			var currentSample = {pronoun : pronouns.random(), verb : verbs.random()};
+			
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				var answer = "";
+				
+				// Conjugate pronoun and a verb. Choose right verb form based on pronoun. 				
+				switch(currentSample.pronoun[0].Lt) {
+					case "Aš":
+						answer = currentSample.verb.FirstSingular;
+						break;
+					case "Tu":
+						answer = currentSample.verb.SecondSingular;
+						break;
+					case "Jis":
+						answer = currentSample.verb.ThirdSingular;
+						break;
+						
+					case "Mes":
+						answer = currentSample.verb.FirstPlural;
+						break;
+					case "Jūs":
+						answer = currentSample.verb.SecondPlural;
+						break;
+					case "Jie":
+						answer = currentSample.verb.ThirdPlural;
+						break;				  
+				};				
+				answerDiv.innerHTML = answer.toLowerCase();
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample				
+				currentSample = {pronoun : pronouns.random(), verb : verbs.random()};
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');		
+				var pronoun = currentSample.pronoun.random();
+				var verb = currentSample.verb;
+				divToAmend.innerHTML = '<div class="tooltip"> ' + pronoun.Lt +'  <span class="tooltiptext"> ' + pronoun.En + ' </span> </div> ' + 
+				'<div class="tooltip"> ' + verb.Infinitive.toLowerCase() +'  <span class="tooltiptext rightTooltip"> ' + verb.En + ' </span> </div> ';
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	 Tu gyveno 	</div>	
+				<div id='Answer'>	gyvenote	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
