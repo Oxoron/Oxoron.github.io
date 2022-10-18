@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Numbers Ordinal Nominative
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			// All samples
+			var samples0_9 = '{"Numbers":[{"Number":0,"Forms":[{"Gender":"Neutral","Form":"Nulis"}]},{"Number":1,"Forms":[{"Gender":"Masculine","Form":"Vienas"},{"Gender":"Feminine","Form":"Viena"}]},{"Number":2,"Forms":[{"Gender":"Masculine","Form":"Du"},{"Gender":"Feminine","Form":"Dvi"}]},{"Number":3,"Forms":[{"Gender":"Masculine","Form":"Trys"},{"Gender":"Feminine","Form":"Trys"}]},{"Number":4,"Forms":[{"Gender":"Masculine","Form":"Keturi"},{"Gender":"Feminine","Form":"Keturios"}]},{"Number":5,"Forms":[{"Gender":"Masculine","Form":"Penki"},{"Gender":"Feminine","Form":"Penkios"}]},{"Number":6,"Forms":[{"Gender":"Masculine","Form":"Šeši"},{"Gender":"Feminine","Form":"Šešios"}]},{"Number":7,"Forms":[{"Gender":"Masculine","Form":"Septyni"},{"Gender":"Feminine","Form":"Septynios"}]},{"Number":8,"Forms":[{"Gender":"Masculine","Form":"Aštuoni"},{"Gender":"Feminine","Form":"Aštuonios"}]},{"Number":9,"Forms":[{"Gender":"Masculine","Form":"Devyni"},{"Gender":"Feminine","Form":"Devynios"}]}]}';
+			var samples10_19 = '{"Numbers":[{"Number":10,"Forms":[{"Gender":"Neutral","Form":"dešimt"}]},{"Number":11,"Forms":[{"Gender":"Neutral","Form":"vienuolika"}]},{"Number":12,"Forms":[{"Gender":"Neutral","Form":"dvylika"}]},{"Number":13,"Forms":[{"Gender":"Neutral","Form":"trylika"}]},{"Number":14,"Forms":[{"Gender":"Neutral","Form":"keturiolika"}]},{"Number":15,"Forms":[{"Gender":"Neutral","Form":"penkiolika"}]},{"Number":16,"Forms":[{"Gender":"Neutral","Form":"šešiolika"}]},{"Number":17,"Forms":[{"Gender":"Neutral","Form":"septyniolika"}]},{"Number":18,"Forms":[{"Gender":"Neutral","Form":"aštuoniolika"}]},{"Number":19,"Forms":[{"Gender":"Neutral","Form":"devyniolika"}]}]}';
+			var samples20_90 = '{"Numbers":[{"Number":20,"Forms":[{"Gender":"Neutral","Form":"dvidešimt"}]},{"Number":30,"Forms":[{"Gender":"Neutral","Form":"trisdešimt"}]},{"Number":40,"Forms":[{"Gender":"Neutral","Form":"keturiasdešimt"}]},{"Number":50,"Forms":[{"Gender":"Neutral","Form":"penkiasdešimt"}]},{"Number":60,"Forms":[{"Gender":"Neutral","Form":"šešiadešimt"}]},{"Number":70,"Forms":[{"Gender":"Neutral","Form":"septyniasdešimt"}]},{"Number":80,"Forms":[{"Gender":"Neutral","Form":"aštuoniasdešimt"}]},{"Number":90,"Forms":[{"Gender":"Neutral","Form":"devyniasdešimt"}]}]}';
+			
+
+
+			// Sample : {"Number":1,"Forms":[{"Gender":"Masculine","Form":"Vienas"},{"Gender":"Feminine","Form":"Viena"}]}
+			// Result : [{Number, Gender, Text}, {Number, Gender, Text}]
+			function mapNumberToExercisesArray(sample){
+				var number = sample.Number;
+				var result = sample.Forms.map(
+					(form) => ({
+						Number:number,
+						Gender:form.Gender,
+						Text:form.Form
+					})
+				);
+
+				return result;
+			}
+
+		
+			// Prepare basic exercies			
+			var exercises0_9 = JSON.parse(samples0_9).Numbers
+				.reduce((totalValue, currentNumber) => [...totalValue, ...mapNumberToExercisesArray(currentNumber)], []);
+			var exercises10_19 = JSON.parse(samples10_19).Numbers
+				.reduce((totalValue, currentNumber) => [...totalValue, ...mapNumberToExercisesArray(currentNumber)], []);
+			var exercises20_90 = JSON.parse(samples20_90).Numbers
+				.reduce((totalValue, currentNumber) => [...totalValue, ...mapNumberToExercisesArray(currentNumber)], []);	
+
+			// Build a set of exercises including all numbers from 0 till 99			
+			var exercises0_99 = [];
+			exercises0_99 = [...exercises0_99, ...exercises0_9];
+			exercises0_99 = [...exercises0_99, ...exercises10_19];
+			for(i=0; i<exercises20_90.length; i++){
+				for(j=0; j<exercises0_9.length; j++){
+					var mostNumber = exercises20_90[i];
+					var leastNumber = exercises0_9[j];
+
+					var number = mostNumber.Number + leastNumber.Number;
+					var gender = leastNumber.Gender;
+					var text = mostNumber.Text; ;
+					if(leastNumber.Number != 0){text += ' ' + leastNumber.Text;}
+
+					exercises0_99.push({
+						Number: number,
+						Gender: gender,
+						Text: text
+					});
+				}
+			}
+
+			
+			// Setup levels manually
+			exercises0_9 = exercises0_9.map(exercise => ({...exercise, Level:1}));
+			exercises10_19 = exercises10_19.map(exercise => ({...exercise, Level:2}));
+			exercises20_90 = exercises20_90.map(exercise => ({...exercise, Level:3}));
+			exercises0_99 = exercises0_99.map(exercise => ({...exercise, Level:4}));
+
+			// Build leveller
+			var leveller = CreateLevelledArray(
+				[...exercises0_9, ...exercises10_19, ...exercises20_90, ...exercises0_99], 
+				elem => elem.Level
+			); 	
+			var content = leveller.GetContent();
+			var fullButtonsElementHtml = leveller.RegenerateButtons();
+
+			
+			// Setup first sample
+			var currentSample = content.random();
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = currentSample.Text.toLowerCase();
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;
+				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');
+				var question = currentSample.Number.toString();	
+				if(currentSample.Gender != "Neutral"){
+					question += ' '+ currentSample.Gender;
+				}
+				divToAmend.innerHTML = question.toLowerCase();
+			}
+
+
+			function OnLevelButtonClick(button){
+				// Setup  level
+				leveller.SetupLevel(button.value);
+
+				// Update innerHtml for level buttons div
+				let newHtml = leveller.RegenerateButtons("OnLevelButtonClick");
+				var buttonsElement = document.getElementById("levelButtonsDiv");
+				buttonsElement.innerHTML = newHtml;
+
+				// Update content
+				content = leveller.GetContent()
+					.filter(elem => elem.Level == leveller.CurrentLevel);
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	5 feminine </div>	
+					<div id='Answer'> penkios </div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+				
+				<div id="levelButtonsDiv" class="levelButtonsDiv">		
+				<script>
+					var buttonsElement = document.getElementById("levelButtonsDiv");
+					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
+				</script>				
+			</div>	
+		</div>
+	</body>
+</html>
