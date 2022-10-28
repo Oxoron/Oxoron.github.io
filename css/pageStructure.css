@@ -46,3 +46,13 @@
 .levelButtonNotActive{
   border: solid grey 2px;
 }
+
+
+.issueNotificationDiv{}
+
+.issueNotificationDiv > button{ 
+  float: right;
+  height: 60px;
+  width: 60px;
+  word-wrap: break-word;
+}
