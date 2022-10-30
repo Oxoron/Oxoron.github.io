@@ -85,6 +85,7 @@
 			
 			// Setup first sample
 			var currentSample = content.random();
+			notification = {};
 		
 			
 			function onNextActionButtonClick(){
@@ -110,6 +111,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = currentSample.Text;
 			}
 			
 			function onNextSampleRequest(){
@@ -133,6 +137,10 @@
 					question += ' '+ currentSample.Gender;
 				}
 				divToAmend.innerHTML = question.toLowerCase();
+
+				// Notification
+				notification.Question = question;
+				notification.Answer = null;
 			}
 
 
@@ -169,11 +177,18 @@
 					</div>				
 				</div>
 				
-				<div id="levelButtonsDiv" class="levelButtonsDiv">		
+				<div id="levelButtonsDiv" class="levelButtonsDiv">	</div>	
 				<script>
 					var buttonsElement = document.getElementById("levelButtonsDiv");
 					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
-				</script>				
+				</script>	
+				
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
 			</div>	
 		</div>
 	</body>

@@ -30,6 +30,7 @@
 			// Parse verbs and group it by past type
 			var verbs = JSON.parse(samplesAsJson);			
 			var currentSample = {pronoun : pronouns.random(), verb : verbs.random()};
+			var notification = {};
 			
 			
 			function onNextActionButtonClick(){
@@ -79,6 +80,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = answerDiv.innerHTML;
 			}
 			
 			function onNextSampleRequest(){
@@ -99,6 +103,10 @@
 				var verb = currentSample.verb;
 				divToAmend.innerHTML = '<div class="tooltip"> ' + pronoun.Lt +'  <span class="tooltiptext"> ' + pronoun.En + ' </span> </div> ' + 
 				'<div class="tooltip"> ' + verb.ThirdSingularPast.toLowerCase() +'  <span class="tooltiptext rightTooltip"> ' + verb.En + ' </span> </div> ';
+
+				// Notification
+				notification.Question = pronoun.Lt + ' ' + verb.ThirdSingularPast.toLowerCase();
+				notification.Answer = null;
 			}
 		</script>
 	</head>
@@ -115,6 +123,12 @@
 					<button id='NextActionButton'
 						onclick="onNextActionButtonClick()">
 						Next
+					</button>
+				</div>	
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
 					</button>
 				</div>				
 			</div>

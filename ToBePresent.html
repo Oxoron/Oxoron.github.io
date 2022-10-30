@@ -29,6 +29,7 @@
 			}
 			
 			var currentSample = buildNextSample();
+			var notification = {};
 		
 			
 			
@@ -59,6 +60,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Notification 
+				notification.Answer = answerDiv.innerHTML;
 			}
 			
 			function onNextSampleRequest(){
@@ -76,6 +80,10 @@
 				// Setup question div
 				var divToAmend = document.getElementById('Question');				
 				divToAmend.innerHTML = buildSentence(currentSample.question.Pronoun, currentSample.question.En, ' ... ', currentSample.location);  
+
+				// Notification
+				notification.Question = divToAmend.innerHTML;
+				notification.Answer = null;
 			}
 		</script>
 	</head>
@@ -92,6 +100,12 @@
 					<button id='NextActionButton'
 						onclick="onNextActionButtonClick()">
 						Next
+					</button>
+				</div>	
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
 					</button>
 				</div>				
 			</div>

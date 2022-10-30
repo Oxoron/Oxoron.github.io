@@ -23,6 +23,7 @@
 				.GroupBy((elem) => (elem.Ending), "Ending");
 			
 			var currentSample = result.random().values.random();
+			var notification = {};
 			
 			function onNextActionButtonClick(){
 				// Check if it's answer request or next sample request
@@ -47,6 +48,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = currentSample.Plural;
 			}
 			
 			function onNextSampleRequest(){
@@ -66,6 +70,10 @@
 				var divToAmend = document.getElementById('Question');
 				//divToAmend.innerHTML = currentSample.Single;				
 				divToAmend.innerHTML = '<div class="tooltip">' + currentSample.Single +'  <span class="tooltiptext">' + currentSample.En + ' </span> </div>';
+
+				// Amend notification
+				notification.Question = currentSample.Single;
+				notification.Answer = null;
 			}
 		</script>
 	</head>
@@ -85,7 +93,12 @@
 						Next
 					</button>
 				</div>
-				
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
 			</div>
 		</div>
 	</body>

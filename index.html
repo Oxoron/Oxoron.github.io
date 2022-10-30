@@ -21,7 +21,7 @@
 				.parse(samplesAsJson)
 				.GroupBy((elem) => (elem.Ending), "Ending");			
 			var currentSample = result.random().values.random();
-			
+			var notification = {};
 			
 			function onNextActionButtonClick(){
 				// Check if it's answer request or next sample request
@@ -46,6 +46,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
 			}
 			
 			function onNextSampleRequest(){
@@ -64,6 +67,10 @@
 				// Setup question div
 				var divToAmend = document.getElementById('Question');
 				divToAmend.innerHTML = currentSample.Chunk1 + ' ' + currentSample.NounToChange;
+
+				// Amend notification
+				notification.Question = divToAmend.innerHTML;
+				notification.Answer = null;
 			}
 		</script>
 	</head>
@@ -81,7 +88,13 @@
 						onclick="onNextActionButtonClick()">
 						Next
 					</button>
-				</div>				
+				</div>		
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>			
 			</div>
 		</div>
 	</body>

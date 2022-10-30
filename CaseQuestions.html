@@ -17,6 +17,7 @@
 			var dataSource = '[{"Question":"kas?", "Case":"nominative"},{"Question":"ko?", "Case":"genitive"},{"Question":"kam?", "Case":"dative"},{"Question":"ką?", "Case":"accusative"},{"Question":"su kuo?", "Case":"instrumental"},{"Question":"kur?", "Case":"locative"}]';
 			var cases = JSON.parse(dataSource);			
 			var currentCase = cases.random();
+			var notification = {};
 			
 			
 			function onNextActionButtonClick(){
@@ -43,6 +44,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answer;
 			}
 			
 			function onNextSampleRequest(){
@@ -60,6 +64,10 @@
 				// Setup question div
 				var divToAmend = document.getElementById('Question');						
 				divToAmend.innerHTML = currentCase.Question;
+
+				// Amend notification
+				notification.Question = currentCase.Question;
+				notification.Answer = null;
 			}
 		</script>
 	</head>
@@ -76,6 +84,12 @@
 					<button id='NextActionButton'
 						onclick="onNextActionButtonClick()">
 						Next
+					</button>
+				</div>	
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
 					</button>
 				</div>				
 			</div>

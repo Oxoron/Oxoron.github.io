@@ -20,7 +20,7 @@
 			var result = JSON.parse(samplesAsJson);
 			
 			var currentSample = result[0];
-		
+			var notification = {};
 			
 			function onNextActionButtonClick(){
 				// Check if it's answer request or next sample request
@@ -45,6 +45,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = answerDiv.innerHTML;
 			}
 			
 			function onNextSampleRequest(){
@@ -72,30 +75,14 @@
 				var question = currentSample["Gender"] == "Masc" ? currentSample.EnMasc : currentSample.EnFem;
 				if(currentSample.EnMasc == currentSample.EnFem) { question += ' (' + currentSample["Gender"].toLowerCase() + ') '; }
 				divToAmend.innerHTML = question;
+
+				// Notification
+				notification.Question = question;
+				notification.Answer = null;
 			}
 
 
-			var notificationCollectorUrl = 'https://neblogas.bsite.net/notification/post'; 
-			// Notify admin about an issue on the page
-			function notify()
-			{
-				var currentUrl = window.location.href;
-				
-				
-				let xhr = new XMLHttpRequest();
-				xhr.open("POST", notificationCollectorUrl);
-
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-
-				xhr.onload = () => console.log(xhr.responseText);
-
-				let data = JSON.stringify({
-				  "resource": currentUrl				  
-				});
-
-				xhr.send(data);
-			}
+			
 		</script>
 	</head>
 	<body>
@@ -116,7 +103,7 @@
 				</div>	
 				<div class="issueNotificationDiv">
 					<button id='notifyButton'
-						onclick="notify()">
+						onclick="notify(notification.Question, notification.Answer)">
 						Tell about an error
 					</button>
 				</div>			

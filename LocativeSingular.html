@@ -29,6 +29,7 @@
 				.GroupBy((elem) => (elem.Ending), "Ending");
 			
 			var currentSample = result.random().values.random();
+			var notification = {};
 		
 			
 			
@@ -55,6 +56,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = currentSample.Locative;
 			}
 			
 			function onNextSampleRequest(){
@@ -76,6 +80,10 @@
 				//divToAmend.innerHTML = '<div class="tooltip">' + starter.Lt +'  <span class="tooltiptext"> ' + starter.En + ' </span> </div> ' + currentSample.Nominative;
 				divToAmend.innerHTML = '<div class="tooltip">' + starter.Lt +'  <span class="tooltiptext"> ' + starter.En + ' </span> </div> ' + 
 				'<div class="tooltip">' + currentSample.Nominative +'  <span class="tooltiptext rightTooltip"> '+ currentSample.En + ' </span> </div> ';
+
+				// Amend notification
+				notification.Question = starter.Lt + ' ' + currentSample.Nominative;
+				notification.Answer = null;
 			}
 		</script>
 	</head>
@@ -93,7 +101,13 @@
 						onclick="onNextActionButtonClick()">
 						Next
 					</button>
-				</div>				
+				</div>		
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>			
 			</div>
 		</div>
 	</body>

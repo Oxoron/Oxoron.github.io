@@ -14,7 +14,38 @@ function WindowLoad(event) {
 	document.getElementById("NextActionButton").focus();
 }
 
+var notificationCollectorUrl = 'https://neblogas.bsite.net/notification/post'; 
+//notificationCollectorUrl = 'https://localhost:44389/notification/post';
 
+// Notify admin about an issue on the page
+function notify(param1, param2)
+{
+	var currentUrl = window.location.href;	
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", notificationCollectorUrl);
+
+	xhr.setRequestHeader("Accept", "application/json");
+	xhr.setRequestHeader("Content-Type", "application/json");
+
+	//xhr.onload = () => console.log(xhr.responseText);
+
+	let notificationToSend = {
+		"resource": currentUrl
+	};
+	if(!!param1){
+		notificationToSend.param1 = param1;
+	}
+	if(!!param2){
+		notificationToSend.param2 = param2;
+	}
+	let data = JSON.stringify(
+		notificationToSend		  
+	);
+
+	xhr.send(data);
+}
+////////////////////////////////////////////////////////////////////////////////////////////
 
 
 /* Converts array of objects to array keys-objects. For.ex.
@@ -105,6 +136,9 @@ function SetupArrayFunctions(){
 		}, []);
 	};
 };
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
 
 
 

@@ -19,6 +19,7 @@
 			// Get wording data
 			var result = JSON.parse(samplesAsJson);			
 			var currentSample = result[0];
+			var notification = {};
 		
 			
 			function onNextActionButtonClick(){
@@ -44,6 +45,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Notificaiton
+				notification.Answer = currentSample.Lt;
 			}
 			
 			function onNextSampleRequest(){
@@ -64,6 +68,10 @@
 				var divToAmend = document.getElementById('Question');
 				var question = currentSample.En;				
 				divToAmend.innerHTML = question;
+
+				// NOtification
+				notification.Question = question;
+				notification.Answer = null;
 			}
 		</script>
 	</head>
@@ -81,6 +89,12 @@
 					<button id='NextActionButton'
 						onclick="onNextActionButtonClick()">
 						Next
+					</button>
+				</div>	
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
 					</button>
 				</div>				
 			</div>

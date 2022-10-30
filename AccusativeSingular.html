@@ -32,6 +32,7 @@
 				.GroupBy((elem) => (elem.Ending), "Ending");
 			
 			var currentSample = result.random().values.random();
+			var sampleVerb = sampleVerbs.random();
 			
 			function onNextActionButtonClick(){
 				// Check if it's answer request or next sample request
@@ -73,7 +74,7 @@
 				
 				// Setup question div
 				var divToAmend = document.getElementById('Question');
-				var sampleVerb = sampleVerbs.random();
+				sampleVerb = sampleVerbs.random();
 				divToAmend.innerHTML = '<div class="tooltip">' + sampleVerb.Lt +'  <span class="tooltiptext">' + sampleVerb.En + ' </span> </div>' + " į " + currentSample.Nominative;
 			}
 		</script>
@@ -92,7 +93,13 @@
 						onclick="onNextActionButtonClick()">
 						Next
 					</button>
-				</div>				
+				</div>		
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(sampleVerb.Lt + ' į ' + currentSample.Nominative, document.getElementById('Answer').innerHTML)">
+						Tell about an error
+					</button>
+				</div>			
 			</div>
 		</div>
 	</body>

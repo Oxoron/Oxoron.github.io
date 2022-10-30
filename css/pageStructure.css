@@ -48,10 +48,13 @@
 }
 
 
-.issueNotificationDiv{}
+.issueNotificationDiv{
+  text-align: center;
+  margin-top: 15px;
+}
 
 .issueNotificationDiv > button{ 
-  float: right;
+  
   height: 60px;
   width: 60px;
   word-wrap: break-word;

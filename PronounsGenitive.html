@@ -21,7 +21,8 @@
 				.GroupBy((elem) => (elem.Type + elem.Count), "Form");
 			
 			var currentSample = result.random().values.random();
-			
+			var notification = {};
+
 			function onNextActionButtonClick(){
 				// Check if it's answer request or next sample request
 				var isAnswerRequest = false;
@@ -45,6 +46,9 @@
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = currentSample.Genitive;
 			}
 			
 			function onNextSampleRequest(){
@@ -63,6 +67,10 @@
 				// Setup question div
 				var divToAmend = document.getElementById('Question');
 				divToAmend.innerHTML = currentSample.Nominative;
+
+				// Notification
+				notification.Question = currentSample.Nominative;
+				notification.Answer = null;
 			}
 		</script>
 	</head>
@@ -80,6 +88,12 @@
 					<button id='NextActionButton'
 						onclick="onNextActionButtonClick()">
 						Next
+					</button>
+				</div>	
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
 					</button>
 				</div>				
 			</div>
