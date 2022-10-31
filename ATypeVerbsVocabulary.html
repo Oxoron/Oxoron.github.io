@@ -46,7 +46,7 @@
 			// Returns a string containing HTML like <div> Infinitive, Present, Past</div>
 			function BuildAnswer(sample){
 				var infinitive = "<span style='margin-right:30px'>" + sample.Infinitive + '</span>';
-				var present = "<span style='margin-right:30px'>" + sample.PresentSingleThird + '</span>';
+				var present = "<span style='margin-right:30px'>" + sample.Present + '</span>';
 				var past = "<span>" + sample.Past + '</span>';
 				
 				var content = '<div>' + infinitive + present + past + '</div>';
@@ -55,7 +55,7 @@
 
 			// Returns a string containing HTML like <div> Verb in Ennglish </div>
 			function BuildQuestion(sample){
-				return '<div>' + sample.En + '</div>';
+				return '<div>' + sample.Translation + '</div>';
 			}
 
 			function onAnswerRequest(){
