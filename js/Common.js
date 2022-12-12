@@ -75,7 +75,9 @@ function ToKeyObjectArray(originalArray, keySelector, keyFieldName)
 	function KeyExtractor(object, keySelector, keyFieldName)
 	{	 
 		var result = {value:object};
-		result[keyFieldName ?? arrayKey] = keySelector(object);
+		var revisedKeyFieldName = keyFieldName;
+		if(!!!keyFieldName){revisedKeyFieldName = 'arrayKey';}
+		result[revisedKeyFieldName] = keySelector(object);
 
 		return result;	
 	}
