@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Colours
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var coloursAsJson = '[{"En":"White","Lt":"Baltas","Color":"grey","LtFem":"Balta"},{"En":"Black","Lt":"Juodas","Color":"black","LtFem":"Jouda"},{"En":"Red","Lt":"Raudonas","Color":"red","LtFem":"Raudona"},{"En":"Yellow","Lt":"Geltonas","Color":"gold","LtFem":"Geltona"},{"En":"Green","Lt":"Žalias","Color":"green","LtFem":"Žalė"},{"En":"Orange","Lt":"Oranžinis","Color":"orange","LtFem":"Oranžinė"},{"En":"Blue","Lt":"Mėlynas","Color":"blue","LtFem":"Mėlyna"},{"En":"Violet","Lt":"Violetinis","Color":"orchid","LtFem":"Violetinė"},{"En":"Brown","Lt":"Rudas","Color":"sienna","LtFem":"Ruda"}]';
+			
+			// Get array of objects {Chunk1, NounToChange, Answer}
+			var colours = JSON.parse(coloursAsJson);
+			
+			var currentSample = colours[0];
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '<div style="color:'+currentSample.Color+'">' + currentSample.Lt + '</div>';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = currentSample.Lt;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = colours.random();
+				currentSample = randomSample;
+			
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');							
+				divToAmend.innerHTML = '<div style="color:'+currentSample.Color+'">' + currentSample.En + '</div>';
+
+				// Notification
+				notification.Question = question;
+				notification.Answer = null;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>		
+				<div id='Question'>	Black	</div>	
+				<div id='Answer'>	Juodas	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>	
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
