@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Adjectives Nominative Singular
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var adjectivesAsJson = '[{"En":"high","FemLt":"auksta","MascLt":"aukstas"},{"En":"young","FemLt":"jauna","MascLt":"jaunas"},{"En":"slim","FemLt":"liekna","MascLt":"lieknas"},{"En":"old","FemLt":"sena","MascLt":"senas"},{"En":"low","FemLt":"žema","MascLt":"žemas"},{"En":"wooden","FemLt":"medinė","MascLt":"medinis"},{"En":"cotton","FemLt":"medvilninė","MascLt":"medvilninis"},{"En":"leather","FemLt":"odinė","MascLt":"odinis"},{"En":"synthetic","FemLt":"sintetinė","MascLt":"sintetinis"},{"En":"woolen","FemLt":"vilnonė","MascLt":"vilnonis"},{"En":"big","FemLt":"didelė","MascLt":"didelis"},{"En":"chubby","FemLt":"apkūni","MascLt":"apkūnus"},{"En":"beautiful","FemLt":"graži","MascLt":"gražus"},{"En":"bright","FemLt":"šviesi","MascLt":"šviesus"},{"En":"dark","FemLt":"tamsi","MascLt":"tamsus"},{"En":"interesting","FemLt":"įdomi","MascLt":"įdomus"}]';
+			
+			// Get array of objects {En, FemLt, MascLt}
+			var adjectives = JSON.parse(adjectivesAsJson);
+			
+			var currentSample = adjectives[0];
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = currentSample.answer;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = currentSample.Lt;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = adjectives.random();
+				var isMascSeed = Math.floor(Math.random() * 2);
+				var isMasc = isMascSeed == 0 ? true : false;
+				currentSample = {
+					question: isMasc ? randomSample.MascLt : randomSample.FemLt,
+					answer: isMasc? randomSample.FemLt : randomSample.MascLt,
+					en: randomSample.En
+				};
+			
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');							
+				divToAmend.innerHTML = '<div class="tooltip">' + currentSample.question +'  <span class="tooltiptext"> ' + currentSample.en + ' </span> </div> '; 
+				
+				// Notification
+				notification.Question = currentSample.question;
+				notification.Answer = null;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>		
+				<div id='Question'>	aukstas	</div>	
+				<div id='Answer'>	auksta	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>	
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
