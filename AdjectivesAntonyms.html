@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Adjectives Antonyms
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var adjectivesAsJson = '[{"En":"Tall","EnAntonym":"short","Lt":"aukštas","LtAntonym":"žemas"},{"En":"old","EnAntonym":"young","Lt":"senas","LtAntonym":"jaunas"},{"En":"funny","EnAntonym":"sad","Lt":"linksmas","LtAntonym":"liūdnas"},{"En":"talk??","EnAntonym":"silent","Lt":"šnekus","LtAntonym":"tylus"},{"En":"interesting","EnAntonym":"boring","Lt":"įdomus","LtAntonym":"nuobodus"},{"En":"fast","EnAntonym":"slow","Lt":"greitas","LtAntonym":"lėtas"},{"En":"black","EnAntonym":"white","Lt":"juodas","LtAntonym":"baltas"}]';
+			
+			// Parse json and duplicate array elements (aukstas+zemas => zemas+aukstas)
+			var adjectives = JSON.parse(adjectivesAsJson);
+			var reversedAdjectives = adjectives.map(function(adj) {
+				return {
+					En: adj.EnAntonym,
+					EnAntonym: adj.En,
+					Lt: adj.LtAntonym,
+					LtAntonym: adj.Lt
+				};
+			});
+			adjectives.push(...reversedAdjectives);
+			
+			// Build initial sample
+			var currentSample = adjectives.random();
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Extract answer
+				var answer = currentSample.LtAntonym;
+
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '<div class="tooltip"> ' + answer 
+					+'  <span class="tooltiptext rightTooltip"> ' + currentSample.EnAntonym + ' </span> </div> ';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = answer;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = adjectives.notRepeatingRandom(currentSample);
+				currentSample = randomSample;
+			
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');							
+				divToAmend.innerHTML = '<div class="tooltip">' + currentSample.Lt +'  <span class="tooltiptext"> ' + currentSample.En + ' </span> </div> '; 
+				
+				// Notification
+				notification.Question = currentSample.Lt;
+				notification.Answer = null;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>		
+				<div id='Question'>	aukštas	</div>	
+				<div id='Answer'>	žemas	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>	
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
