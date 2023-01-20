@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Adjectives Vocabulary
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			// All samples : just 3 different groups of adjectives
+			var samples1 = '[{"En":"chubby","FemLt":"apkūni","MascLt":"apkūnus"},{"En":"slim","FemLt":"liekna","MascLt":"lieknas"},{"En":"high","FemLt":"aukšta","MascLt":"aukštas"},{"En":"low","FemLt":"žema","MascLt":"žemas"},{"En":"beautiful","FemLt":"graži","MascLt":"gražus"},{"En":"old","FemLt":"sena","MascLt":"senas"},{"En":"young","FemLt":"jauna","MascLt":"jaunas"},{"En":"bright","FemLt":"šviesi","MascLt":"šviesus"},{"En":"dark","FemLt":"tamsi","MascLt":"tamsus"}]';
+			var samples2 = '[{"En":"interesting","FemLt":"įdomi","MascLt":"įdomus"},{"En":"boring","FemLt":"nuobodi","MascLt":"nuobodus"},{"En":"happy","FemLt":"laiminga","MascLt":"laimingas"},{"En":"unhappy","FemLt":"nelaiminga","MascLt":"nelaimingas"},{"En":"funny","FemLt":"linksma","MascLt":"linksmas"},{"En":"sad","FemLt":"liūdna","MascLt":"liūdnas"},{"En":"stupid","FemLt":"kvaila","MascLt":"kvailas"},{"En":"smart","FemLt":"protinga","MascLt":"protingas"},{"En":"nice","FemLt":"maloni","MascLt":"malonus"},{"En":"unpleasant","FemLt":"nemaloni","MascLt":"nemalonus"},{"En":"talkative","FemLt":"šneki","MascLt":"šnekus"},{"En":"silent","FemLt":"tyli","MascLt":"tylus"}]';
+			var samples3 = '[{"En":"wooden","FemLt":"medinė","MascLt":"medinis"},{"En":"cotton","FemLt":"medvilninė","MascLt":"medvilninis"},{"En":"leather","FemLt":"odinė","MascLt":"odinis"},{"En":"synthetic","FemLt":"sintetinė","MascLt":"sintetinis"},{"En":"woolen","FemLt":"vilnonė","MascLt":"vilnonis"},{"En":"big","FemLt":"didelė","MascLt":"didelis"},{"En":"small","FemLt":"maža","MascLt":"mažas"}]';
+			
+			// Extend samples with level
+			samples1 = JSON.parse(samples1).map((sample) => ({...sample, Level:1}));
+			samples2 = JSON.parse(samples2).map((sample) => ({...sample, Level:2}));
+			samples3 = JSON.parse(samples3).map((sample) => ({...sample, Level:3}));
+
+// TODO build 4 levels : sample1, sample2, sample3, all together
+
+			// Build leveller
+			var leveller = CreateLevelledArray(
+				[...samples1, ...samples2, ...samples3], 
+				elem => elem.Level
+			); 	
+			var content = leveller.GetContent();
+			var fullButtonsElementHtml = leveller.RegenerateButtons();
+
+			// Setup content
+			var content = leveller.GetContent();
+			var fullButtonsElementHtml = leveller.RegenerateButtons();
+
+			var currentSample = content[0];
+			var notification = {};
+		
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			// Returns a string containing HTML like <div> MascForm/FemForm</div>
+			function BuildAnswer(sample){
+				var content = '<div>' + sample.MascLt + ' / ' + sample.FemLt + '</div>';
+				return content;				
+			}
+
+			// Returns a string containing HTML like <div> Adjective in English </div>
+			function BuildQuestion(sample){
+				return '<div>' + sample.En + '</div>';
+			}
+
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = BuildAnswer(currentSample);
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');				
+				divToAmend.innerHTML = BuildQuestion(currentSample);
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
+			}
+
+			function OnLevelButtonClick(button){
+				// Setup  level
+				leveller.SetupLevel(button.value);
+
+				// Update innerHtml for level buttons div
+				let newHtml = leveller.RegenerateButtons("OnLevelButtonClick");
+				var buttonsElement = document.getElementById("levelButtonsDiv");
+				buttonsElement.innerHTML = newHtml;
+
+				// Update content
+				content = leveller.GetContent()
+					.filter(elem => elem.Level == leveller.CurrentLevel);				
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	dark	</div>	
+					<div id='Answer'>	tamsus / tamsi	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+
+				
+				<div id="levelButtonsDiv" class="levelButtonsDiv"></div>		
+				<script>
+					var buttonsElement = document.getElementById("levelButtonsDiv");
+					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
+				</script>
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</body>
+</html>
+
+
