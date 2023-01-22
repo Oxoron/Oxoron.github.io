@@ -4,16 +4,21 @@ function FocusNextButtonOnPageLoad()
 {
 	if (window.addEventListener) 
 	{ // Mozilla, Netscape, Firefox
-		window.addEventListener('load', WindowLoad, false);
+		window.addEventListener('load', FocusButtonNext, false);
 	} else if (window.attachEvent) { // IE
-		window.attachEvent('onload', WindowLoad);
+		window.attachEvent('onload', FocusButtonNext);
 	}
 }
 
-function WindowLoad(event) {
+function FocusButtonNext(event) {
 	document.getElementById("NextActionButton").focus();
 }
 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Notify admin about an issue on the page
 var notificationCollectorUrl = 'https://neblogas.bsite.net/notification/post'; 
 //notificationCollectorUrl = 'https://localhost:44384/notification/post';
 
@@ -185,7 +190,7 @@ function CreateLevelledArray(arr, functionToLevel){
 		let className = buttonObject.isActive ? "levelButtonActive" : "levelButtonNotActive";
 		let level = buttonObject.level;		
 
-		var result = '<button class="' + className +'" onclick="' + onClickFunctionName + '(this)" value="' + level + '">' + level + '</button>'
+		var result = '<button class="' + className +'" onclick="' + onClickFunctionName + '(this);FocusButtonNext();" value="' + level + '">' + level + '</button>'
 
 		return result;
 	}
