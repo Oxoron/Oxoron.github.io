@@ -97,7 +97,7 @@ function SetupArrayFunctions(){
 		};
 
 	// Return a random element of the array if it's not equal to previuousValue
-	Array.prototype.notRepeatingRandom = function (previousValue) {
+	Array.prototype.notRepeatingRandom = function (previousValue, transformFunc) {
 		if (this == null || this == undefined || this.lenght == 0) {
 			console.log('Error: Array is null or empty');
 			return previousValue;
