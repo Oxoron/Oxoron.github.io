@@ -23,8 +23,8 @@
 			
 			function buildNextSample(){
 				return {
-					question : questions.random(),
-					location : locations.random()
+					question : questions.notRepeatingRandom(),
+					location : locations.notRepeatingRandom()
 				};
 			}
 			
