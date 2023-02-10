@@ -64,9 +64,10 @@
 				var randomSample = colours.random();
 				currentSample = randomSample;
 			
-				// Setup question div				
+				// Setup question div	
+				var question = currentSample.Color; 			
 				var divToAmend = document.getElementById('Question');							
-				divToAmend.innerHTML = '<div style="color:'+currentSample.Color+'">' + currentSample.En + '</div>';
+				divToAmend.innerHTML = '<div style="color:'+question+'">' + currentSample.En + '</div>';
 
 				// Notification
 				notification.Question = question;
