@@ -97,27 +97,35 @@ function SetupArrayFunctions(){
 		};
 
 	// Return a random element of the array if it's not equal to previuousValue
-	Array.prototype.notRepeatingRandom = function (previousValue) {
+	// Sample 1: return arr.notRepeatingRandom('prev')
+	// Sample 2: return arr.notRepeatingRandom('prevMascForm', (elem) => (elem.MascForm))
+	// A call [1,2,3].notRepeatingRandom(4, (elem) => (elem*2)) will return you 1 or 3 in 99% of the cases	
+	Array.prototype.notRepeatingRandom = function (previousValue, transform) {
+		// If a calling array is empty/null - return null
 		if (this == null || this == undefined || this.lenght == 0) {
 			console.log('Error: Array is null or empty');
-			return previousValue;
+			return null;
 		}
-		else {
-			var result = this[Math.floor((Math.random()*this.length))];
-			var i = 0;
-			do {
-				if (result != previousValue) {
-					return result;
-				}
-				else {
-					result = this[Math.floor((Math.random()*this.length))];
-					i++;
-				}
-			} while (i<10)
-			console.log('Error: Can not find a different value');
-			return previousValue;
-		}
+
+		// If transform is null/under -- make it self-to-self function
+		if(!transform){transform = (a) => (a);}
+		
+		// Make 10 attempts to call a .random, comparing transformed result with a previousValue
+		var result = this[Math.floor((Math.random()*this.length))];			
+		var i = 0;
+		do {
+			if (transform(result) != previousValue) {
+				return result;
+			}
+			else {
+				result = this[Math.floor((Math.random()*this.length))];					
+				i++;
+			}
+		} while (i<10)
+		console.log('Error: Can not find a different value');
+		return result;
 	}
+
 
 	// Setup GroupBy
 	Array.prototype.GroupBy = function (keySelector, keyFieldName)

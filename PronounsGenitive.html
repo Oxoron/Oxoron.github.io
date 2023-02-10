@@ -15,10 +15,10 @@
 			SetupArrayFunctions();
 			
 			var samplesAsJson = '[{"Nominative":"Aš","Genitive":"Mano","Type":"1","Count":"Singular"},{"Nominative":"Tu","Genitive":"Tavo","Type":"2","Count":"Singular"},{"Nominative":"Jis","Genitive":"Jo","Type":"3","Count":"Singular"},{"Nominative":"Ji","Genitive":"Jos","Type":"3","Count":"Singular"},{"Nominative":"Mes","Genitive":"Mūsų","Type":"1","Count":"Plural"},{"Nominative":"Jūs","Genitive":"Jūsų","Type":"2","Count":"Plural"},{"Nominative":"Jie","Genitive":"Jų","Type":"3","Count":"Plural"},{"Nominative":"Jos","Genitive":"Jų","Type":"3","Count":"Plural"}]';
-			
+			var sampleGroupKeySelector = function(q) { return q.Type + q.Count;};
 			// Get array of objects {Form:1Singular, [{Nominative, Genitive}]}
 			var result = JSON.parse(samplesAsJson)
-				.GroupBy((elem) => (elem.Type + elem.Count), "Form");
+				.GroupBy(sampleGroupKeySelector, "Form");
 			
 			var currentSample = result.random().values.random();
 			var notification = {};
@@ -61,7 +61,7 @@
 				button.innerText = 'Check answer';
 				
 				// Setup new sample
-				var randomSample = result.notRepeatingRandom(result[currentSample.Type+currentSample.Count]);
+				var randomSample = result.notRepeatingRandom(sampleGroupKeySelector(currentSample), (group) => (sampleGroupKeySelector(group.values[0])));
 				currentSample = randomSample.values.random();
 				
 				// Setup question div
