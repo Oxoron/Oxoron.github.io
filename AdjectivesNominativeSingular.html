@@ -66,16 +66,14 @@
 				button.innerText = 'Check answer';
 				
 				// Setup new sample
-				var randomSample = adjectives.random().values.random();
-				while(randomSample.En == currentSample.en){
-					randomSample = adjectives.random().values.random();
-				}
+				var randomSample = adjectives.notRepeatingRandom(currentSample.type, (group) => (group.Type)).values.random();
 				var isMascSeed = Math.floor(Math.random() * 2);
 				var isMasc = isMascSeed == 0 ? true : false;
 				currentSample = {
 					question: isMasc ? randomSample.MascLt : randomSample.FemLt,
 					answer: isMasc? randomSample.FemLt : randomSample.MascLt,
-					en: randomSample.En
+					en: randomSample.En,
+					type: randomSample.Type
 				};
 			
 				// Setup question div				

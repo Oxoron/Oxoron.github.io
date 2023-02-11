@@ -95,7 +95,10 @@
 				button.innerText = 'Check answer';
 				
 				// Setup new sample				
-				currentSample = {pronoun : pronouns.random(), verb : verbs.random()};
+				currentSample = {
+					pronoun : pronouns.notRepeatingRandom(currentSample.pronoun), 
+					verb : verbs.notRepeatingRandom(currentSample.verb)
+				};
 				
 				// Setup question div
 				var divToAmend = document.getElementById('Question');		
