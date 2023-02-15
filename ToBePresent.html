@@ -21,10 +21,13 @@
 							
 			var questions = JSON.parse(samplesAsJson);
 			
-			function buildNextSample(){
+			function buildNextSample(previousQuestion, previousLocation){
+				if(!!!previousLocation){previousLocation = locations[0];}
+				if(!!!previousQuestion){previousQuestion = questions[0];}
+
 				return {
-					question : questions.random(),
-					location : locations.random()
+					question : questions.notRepeatingRandom(previousQuestion),
+					location : locations.notRepeatingRandom(previousLocation)
 				};
 			}
 			
@@ -75,7 +78,7 @@
 				button.innerText = 'Check answer';
 				
 				// Setup new sample				
-				currentSample = buildNextSample();
+				currentSample = buildNextSample(currentSample.question, currentSample.location);
 				
 				// Setup question div
 				var divToAmend = document.getElementById('Question');				
