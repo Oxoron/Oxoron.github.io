@@ -15,16 +15,20 @@
 			FocusNextButtonOnPageLoad();
 			SetupArrayFunctions();
 			
-			var subjects = '[{"NounToChange":"Mano dukra","Answer":"Mano dukrai","Ending":"a","En":"daughter"},{"NounToChange":"Mano mama","Answer":"Mano mamai","Ending":"a","daughter":"mother"},{"NounToChange":"Mano mokytoja","Answer":"Mano mokytojai","Ending":"a","mother":"teacher"},{"NounToChange":"Mano teta","Answer":"Mano tetai","Ending":"a","teacher":"aunt"},{"NounToChange":"Mano draugas","Answer":"Mano draugui","Ending":"as","aunt":"friend"},{"NounToChange":"Mano kirpėjas","Answer":"Mano kirpėjui","Ending":"as","friend":"hairdresser"},{"NounToChange":"Mano mokytojas","Answer":"Mano mokytojui","Ending":"as","hairdresser":"teacher"},{"NounToChange":"Mano odontologas","Answer":"Mano odontologui","Ending":"as","teacher":"dantist"},{"NounToChange":"Mano anūkė","Answer":"Mano anūkei","Ending":"ė","dantist":"granddaughter"},{"NounToChange":"Mano dėdė","Answer":"Mano dėdei","Ending":"ė","granddaughter":"uncle"},{"NounToChange":"Mano draugė","Answer":"Mano draugei","Ending":"ė","uncle":"friend"},{"NounToChange":"Mano duktė","Answer":"Mano duktei","Ending":"ė","friend":"daughter"},{"NounToChange":"Mano močiutė","Answer":"Mano močiutei","Ending":"ė","daughter":"grandmother"},{"NounToChange":"Mano senelis","Answer":"Mano seneliui","Ending":"is","grandmother":"grandfather"},{"NounToChange":"Mano tetis","Answer":"tėčiui","Ending":"is","grandfather":"father"},{"NounToChange":"Mano brolis","Answer":"Mano broliui","Ending":"is","father":"brother"},{"NounToChange":"Mano giminaitis","Answer":"giminaičiui","Ending":"is","brother":"relative"},{"NounToChange":"Mano direktorius","Answer":"Mano direktoriui","Ending":"us","relative":"director, principal"},{"NounToChange":"Mano sūnus","Answer":"Mano sūnui","Ending":"us","director, principal":"son"},{"NounToChange":"Andrius","Answer":"Andriui","Ending":"us","son":"LT name"},{"NounToChange":"Saulius","Answer":"Sauliui","Ending":"us","LT name":"LT name"},{"NounToChange":"Paulius","Answer":"Pauliui","Ending":"us","LT name":"LT name"},{"NounToChange":"Balys","Answer":"Baliui","Ending":"ys","LT name":"LT name"},{"NounToChange":"Kazys","Answer":"Kaziui","Ending":"ys","LT name":"LT name"},{"NounToChange":"Stasys","Answer":"Stasiui","Ending":"ys","LT name":"LT name"}]';			
-			var objects = [{"Object":"automobiliai","En":"Cars"},{"Object":"saldainiai","En":"Candies"},{"Object":"teatras","En":"Theater"},{"Object":"obuoliai","En":"Apples"},{"Object":"alaus","En":"Beer"},{"Object":"šokti","En":"To Dance"},{"Object":"išmokti","En":"To Learn"},{"Object":"bėgti","En":"To Run"},{"Object":"vairuoti","En":"To Drive"},{"Object":"skaityti","En":"To Read"}];
+			var subjects = '[{"NounToChange":"Mano dukra","Answer":"Mano dukrai","Ending":"a","En":"daughter"},{"NounToChange":"Mano mama","Answer":"Mano mamai","Ending":"a","En":"mother"},{"NounToChange":"Mano mokytoja","Answer":"Mano mokytojai","Ending":"a","En":"teacher"},{"NounToChange":"Mano teta","Answer":"Mano tetai","Ending":"a","En":"aunt"},{"NounToChange":"Mano draugas","Answer":"Mano draugui","Ending":"as","En":"friend"},{"NounToChange":"Mano kirpėjas","Answer":"Mano kirpėjui","Ending":"as","En":"hairdresser"},{"NounToChange":"Mano mokytojas","Answer":"Mano mokytojui","Ending":"as","En":"teacher"},{"NounToChange":"Mano odontologas","Answer":"Mano odontologui","Ending":"as","En":"dantist"},{"NounToChange":"Mano anūkė","Answer":"Mano anūkei","Ending":"ė","En":"granddaughter"},{"NounToChange":"Mano dėdė","Answer":"Mano dėdei","Ending":"ė","En":"uncle"},{"NounToChange":"Mano draugė","Answer":"Mano draugei","Ending":"ė","En":"friend"},{"NounToChange":"Mano duktė","Answer":"Mano duktei","Ending":"ė","En":"daughter"},{"NounToChange":"Mano močiutė","Answer":"Mano močiutei","Ending":"ė","En":"grandmother"},{"NounToChange":"Mano senelis","Answer":"Mano seneliui","Ending":"is","En":"grandfather"},{"NounToChange":"Mano tetis","Answer":"tėčiui","Ending":"is","En":"father"},{"NounToChange":"Mano brolis","Answer":"Mano broliui","Ending":"is","En":"brother"},{"NounToChange":"Mano giminaitis","Answer":"giminaičiui","Ending":"is","En":"relative"},{"NounToChange":"Mano direktorius","Answer":"Mano direktoriui","Ending":"us","En":"director, principal"},{"NounToChange":"Mano sūnus","Answer":"Mano sūnui","Ending":"us","En":"son"},{"NounToChange":"Andrius","Answer":"Andriui","Ending":"us","En":"LT name"},{"NounToChange":"Saulius","Answer":"Sauliui","Ending":"us","En":"LT name"},{"NounToChange":"Paulius","Answer":"Pauliui","Ending":"us","En":"LT name"},{"NounToChange":"Balys","Answer":"Baliui","Ending":"ys","En":"LT name"},{"NounToChange":"Kazys","Answer":"Kaziui","Ending":"ys","En":"LT name"},{"NounToChange":"Stasys","Answer":"Stasiui","Ending":"ys","En":"LT name"}]';			
+			var objects = [{"Object":"automobiliai","En":"Cars"},{"Object":"saldainiai","En":"Candies"},{"Object":"teatras","En":"Theater"},{"Object":"obuoliai","En":"Apples"},{"Object":"alus","En":"Beer"},{"Object":"šokti","En":"To Dance"},{"Object":"išmokti","En":"To Learn"},{"Object":"bėgioti","En":"To Run"},{"Object":"vairuoti","En":"To Drive"},{"Object":"skaityti","En":"To Read"}];
 			
 			// Get array of objects {ending, values:[{ending, NounToChange, Answer, en}]}
 			var result = JSON
 				.parse(subjects)
 				.GroupBy((elem) => (elem.Ending), "Ending");
 			
-			var currentSample = result.random().values.random();
-			var sampleVerb = objects.random();
+			var currentSample = 
+			{
+				subject: result.random().values.random(),				
+				object: objects.random()
+			}
+			var notification = {};
 			
 			function onNextActionButtonClick(){
 				// Check if it's answer request or next sample request
@@ -43,13 +47,15 @@
 			
 			function onAnswerRequest(){
 				// Show answer
-				var answerDiv = document.getElementById('Answer');
-				//answerDiv.innerHTML = currentSample.Answer;
+				var answerDiv = document.getElementById('Answer');				
 				answerDiv.innerHTML = BuildAnswer(currentSample.object, currentSample.subject);
 				
 				// Amend button text
 				var button = document.getElementById('NextActionButton');			
 				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;				
 			}
 			
 			function onNextSampleRequest(){
@@ -71,13 +77,19 @@
 				
 				// Setup question div
 				var divToAmend = document.getElementById('Question');
-				var subject = currentSample.subject;
-				//divToAmend.innerHTML = '<div class="tooltip">' + subject.NounToChange +'  <span class="tooltiptext">' + subject.En + ' </span> </div>' + " patinka " + currentSample.object.Object;
+				var subject = currentSample.subject;				
 				divToAmend.innerHTML = BuildQuestion(currentSample.object, currentSample.subject);
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
 			}
 
 			function BuildQuestion(object, subject){
-				var html = subject.NounToChange + ' patinka ' + object.Object;
+				var html = '<div class="tooltip"> ' + subject.NounToChange +'  <span class="tooltiptext"> ' + subject.En + ' </span> </div> '
+					+ ' patinka '
+					+ '<div class="tooltip"> ' + object.Object +'  <span class="tooltiptext rightTooltip"> ' + object.En.toLowerCase() + ' </span> </div> ';
+				 
 				return html;
 			}
 
@@ -104,7 +116,7 @@
 				</div>		
 				<div class="issueNotificationDiv">
 					<button id='notifyButton'
-						onclick="notify(sampleVerb.Lt + ' į ' + currentSample.Nominative, document.getElementById('Answer').innerHTML)">
+						onclick="notify(notification.Question, notification.Answer)">
 						Tell about an error
 					</button>
 				</div>			
