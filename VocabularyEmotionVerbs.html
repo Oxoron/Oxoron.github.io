@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- First Child Verbs
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"Infinitive":"šypsotis","ThirdPresent":"šypsosi","ThirdPast":"šypsojosi","En":"to smile","Question1":""},{"Infinitive":"verkti","ThirdPresent":"verkia","ThirdPast":"verkė","En":"to cry","Question1":"kas"},{"Infinitive":"miegoti","ThirdPresent":"miega","ThirdPast":"miegojo","En":"to sleep","Question1":""},{"Infinitive":"valgyti","ThirdPresent":"valgo","ThirdPast":"valgė","En":"to eat","Question1":"ką"},{"Infinitive":"vaikščioti","ThirdPresent":"vaikščioja","ThirdPast":"vaikščiojo","En":"to walk","Question1":"kur"},{"Infinitive":"eiti","ThirdPresent":"eina","ThirdPast":"ėjo","En":"to go","Question1":"kur/į kur"},{"Infinitive":"žaisti","ThirdPresent":"žaidžia","ThirdPast":"žaidė","En":"to play","Question1":"ką"},{"Infinitive":"skaityti","ThirdPresent":"skaito","ThirdPast":"skaitė","En":"to read","Question1":"ką"},{"Infinitive":"rašyti","ThirdPresent":"rašo","ThirdPast":"rašė","En":"to write","Question1":"ką"},{"Infinitive":"Išmokti","ThirdPresent":"išmoksta","ThirdPast":"išmoko","En":"to learn","Question1":""},{"Infinitive":"kalbėti","ThirdPresent":"kalba","ThirdPast":"kalbėjo","En":"to speak","Question1":"ką"},{"Infinitive":"gerti","ThirdPresent":"geria","ThirdPast":"gėrė","En":"to drink","Question1":"ką"},{"Infinitive":"braižyti","ThirdPresent":"braižo","ThirdPast":"braižė","En":"to draw","Question1":"ką"}]';
+			var samples = JSON.parse(samplesAsJson);
+
+			var currentSample = samples[0];
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			// Returns a string containing HTML like <div> Infinitive, Present, Past</div>
+			function BuildAnswer(sample){
+				var infinitive = "<span style='margin-right:30px'>" + sample.Infinitive + '</span>';
+				var present = "<span style='margin-right:30px'>" + sample.ThirdPresent + '</span>';
+				var past = "<span>" + sample.ThirdPast + '</span>';
+				
+				var content = '<div>' + infinitive + present + past + '</div>';
+				return content;				
+			}
+
+			// Returns a string containing HTML like <div> Verb in English </div>
+			function BuildQuestion(sample){
+				return '<div>' + sample.En + '</div>';
+			}
+
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = BuildAnswer(currentSample);
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = samples.notRepeatingRandom(currentSample);
+				currentSample = randomSample;				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');				
+				divToAmend.innerHTML = BuildQuestion(currentSample);
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	to sleep	</div>	
+					<div id='Answer'> miegoti miega miegojo	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</body>
+</html>
+
+
