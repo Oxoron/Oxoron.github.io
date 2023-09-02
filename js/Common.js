@@ -1,3 +1,28 @@
+///////////////////// Table of Content (TOC) ////////////////////////
+// Get all hrefs in the ToC
+function GetArrayOfUrls()
+{
+	var tocId = 'ToC'; // TODO move to constant?
+	var urls = [...document.getElementById(tocId).children]
+		.filter(elem => elem.tagName == 'A')
+		.map(href => {return {
+			url: href.href.substring(href.href.lastIndexOf('/') + 1), 
+			text: href.innerText}});
+	
+	var currentPage = this.document.URL.substring(this.document.URL.lastIndexOf('/')+1);
+	var host = this.document.URL.substring(0, this.document.URL.lastIndexOf('/'));
+
+	var tocIndex = urls.indexOf(urls.filter(url => url.url == currentPage)[0]);
+	if((tocIndex +1) < urls.length){tocIndex = tocIndex + 1;}
+
+	var toc = 	document.getElementById(tocId);
+	
+	var nextLink = host + urls[tocIndex].url;
+	var nextElem = '<div id="NextLink"><a href="'+ nextLink + '"> '+ urls[tocIndex].text+' </a> <br/></div>';
+
+	toc.innerHTML = nextElem + toc.innerHTML	
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Focus on the Next button
 function FocusNextButtonOnPageLoad()
