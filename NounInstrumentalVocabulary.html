@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Noun Instrumental Vocabulary
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			FocusNextButtonOnPageLoad();
+			SetupArrayFunctions();
+			
+			// All samples : just 3 different groups of adjectives
+			var samples = '[{"Lt":"automobilis","En":"car","Group":"1"},{"Lt":"dviratis","En":"bicycle","Group":"1"},{"Lt":"paspirtukas","En":"scooter","Group":"1"},{"Lt":"autobusas","En":"bus","Group":"1"},{"Lt":"traukinys","En":"train","Group":"1"},{"Lt":"lėktuvas","En":"airplane","Group":"1"},{"Lt":"troleibusas","En":"trolleybus","Group":"1"},{"Lt":"laivas","En":"ship","Group":"1"},{"Lt":"sraigtasparnis","En":"helicopter","Group":"1"},{"Lt":"oro balionas","En":"air balloon","Group":"1"},{"Lt":"raketa","En":"rocket","Group":"1"},{"Lt":"tramvajus","En":"tram","Group":"1"},{"Lt":"šaldytuvas","En":"fridge","Group":"2"},{"Lt":"orkaitė","En":"oven","Group":"2"},{"Lt":"viryklė","En":"stove","Group":"2"},{"Lt":"indaplovė","En":"dishwasher","Group":"2"},{"Lt":"skalbyklė","En":"washing machine","Group":"2"},{"Lt":"džiovyklė","En":"dryer machine","Group":"2"},{"Lt":"virdulys","En":"kettle","Group":"2"},{"Lt":"kavos aparatas","En":"coffee machine","Group":"2"},{"Lt":"dulkių siurblys","En":"vacuum cleaner","Group":"2"},{"Lt":"lygintuvas","En":"iron","Group":"2"},{"Lt":"lempa","En":"lamp","Group":"3"},{"Lt":"televizorius","En":"TV","Group":"3"},{"Lt":"langas","En":"window","Group":"3"},{"Lt":"šviesa","En":"light","Group":"3"},{"Lt":"siena","En":"wall","Group":"3"},{"Lt":"radiatorius","En":"heater","Group":"3"},{"Lt":"lentyna","En":"shelf","Group":"3"},{"Lt":"laikrodis","En":"clock","Group":"3"}]';
+			
+			
+			// Build 4 groups: with group 1, 2, 3, and alltogether
+			samples1 = JSON.parse(samples).filter(sample => sample.Group == 1).map((sample) => ({...sample, Level:1}));
+			samples2 = JSON.parse(samples).filter(sample => sample.Group == 2).map((sample) => ({...sample, Level:2}));
+			samples3 = JSON.parse(samples).filter(sample => sample.Group == 3).map((sample) => ({...sample, Level:3}));
+			samples4 = JSON.parse(samples).map((sample) => ({...sample, Level:4}));
+
+			// Build leveller
+			var leveller = CreateLevelledArray(
+				[...samples1, ...samples2, ...samples3, ...samples4], 
+				elem => elem.Level
+			); 	
+			
+			// Setup content
+			var content = leveller.GetContent();
+			var fullButtonsElementHtml = leveller.RegenerateButtons();
+
+			var currentSample = content[0];
+			var notification = {};
+		
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			// Returns a string containing HTML like <div> LtForm </div>
+			function BuildAnswer(sample){
+				var content = '<div>' + sample.Lt + '</div>';
+				return content;				
+			}
+
+			// Returns a string containing HTML like <div> Word in English </div>
+			function BuildQuestion(sample){
+				return '<div>' + sample.En + '</div>';
+			}
+
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = BuildAnswer(currentSample);
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');				
+				divToAmend.innerHTML = BuildQuestion(currentSample);
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
+			}
+
+			function OnLevelButtonClick(button){
+				// Setup  level
+				leveller.SetupLevel(button.value);
+
+				// Update innerHtml for level buttons div
+				let newHtml = leveller.RegenerateButtons("OnLevelButtonClick");
+				var buttonsElement = document.getElementById("levelButtonsDiv");
+				buttonsElement.innerHTML = newHtml;
+
+				// Update content
+				content = leveller.GetContent()
+					.filter(elem => elem.Level == leveller.CurrentLevel);				
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	dark	</div>	
+					<div id='Answer'>	tamsus / tamsi	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+
+				
+				<div id="levelButtonsDiv" class="levelButtonsDiv"></div>		
+				<script>
+					var buttonsElement = document.getElementById("levelButtonsDiv");
+					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
+				</script>
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</body>
+</html>
+
+
