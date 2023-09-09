@@ -74,14 +74,7 @@
 				// Amend notification
 				notification.Question = divToAmend.innerHTML;
 				notification.Answer = null;
-			}
-
-			function handleNextButtonKeyPress(event)
-			{
-				if(event.key == "ArrowDown"){
-					GoToNextPage();
-				}
-			}
+			}			
 		</script>
 	</head>
 	<body>
@@ -95,8 +88,7 @@
 				<div id='Answer'>	Aš iš Vilniaus	</div>			
 				<div id='Button'> 
 					<button id='NextActionButton'
-						onclick="onNextActionButtonClick()"
-						onkeydown="handleNextButtonKeyPress(event)">
+						onclick="onNextActionButtonClick()">
 						Next
 					</button>
 				</div>		

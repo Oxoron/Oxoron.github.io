@@ -13,6 +13,13 @@ function GoToNextPage(){
 	window.location.href = urls[currentUrlIndex];
 }
 
+function OnNextButtonKeyDown(event)
+{
+	if(event.key == "ArrowDown"){
+		GoToNextPage();
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Focus on the Next button
 function FocusNextButtonOnPageLoad()
@@ -25,8 +32,11 @@ function FocusNextButtonOnPageLoad()
 	}
 }
 
-function FocusButtonNext(event) {
-	document.getElementById("NextActionButton").focus();
+function FocusButtonNext() {
+	var button = document.getElementById("NextActionButton");
+	
+	button.focus();
+	button.addEventListener('keydown', OnNextButtonKeyDown);
 }
 
 
