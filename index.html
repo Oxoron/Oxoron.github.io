@@ -35,6 +35,9 @@
 					onAnswerRequest();
 				}
 				else { onNextSampleRequest(); }
+
+				// Temp - output ToC
+				// GetArrayOfUrls();
 			}
 			
 			
@@ -72,6 +75,13 @@
 				notification.Question = divToAmend.innerHTML;
 				notification.Answer = null;
 			}
+
+			function handleNextButtonKeyPress(event)
+			{
+				if(event.key == "ArrowDown"){
+					GoToNextPage();
+				}
+			}
 		</script>
 	</head>
 	<body>
@@ -85,7 +95,8 @@
 				<div id='Answer'>	Aš iš Vilniaus	</div>			
 				<div id='Button'> 
 					<button id='NextActionButton'
-						onclick="onNextActionButtonClick()">
+						onclick="onNextActionButtonClick()"
+						onkeydown="handleNextButtonKeyPress(event)">
 						Next
 					</button>
 				</div>		
