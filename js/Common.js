@@ -13,10 +13,28 @@ function GoToNextPage(){
 	window.location.href = urls[currentUrlIndex];
 }
 
+// Redirects to the previous exercise page
+function GoToPreviousPage(){	
+	var currentUrl = this.document.URL;
+		
+	var urls = [...document.getElementById('ToC').children]
+		.filter(elem => elem.tagName == 'A')
+		.map(href => {return href.href;});
+
+	var currentUrlIndex = urls.lastIndexOf(currentUrl) - 1;
+	if(currentUrlIndex < 0) {currentUrlIndex = 0;}
+
+	window.location.href = urls[currentUrlIndex];
+}
+
 function OnNextButtonKeyDown(event)
 {
+	event.preventDefault();
 	if(event.key == "ArrowDown"){
 		GoToNextPage();
+	}
+	else if(event.key == "ArrowUp"){
+		GoToPreviousPage();
 	}
 }
 
