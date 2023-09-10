@@ -36,6 +36,35 @@ function OnNextButtonKeyDown(event)
 	else if(event.key == "ArrowUp"){
 		GoToPreviousPage();
 	}
+	else if(event.key == "ArrowRight"){
+		var levelButtonsDiv = document.getElementById("levelButtonsDiv");
+		if(!levelButtonsDiv) { return; }
+
+		var buttons = [...levelButtonsDiv.childNodes[0].childNodes];
+		var activeButton = buttons.filter((btn) => (btn.className == "levelButtonActive"))[0];
+
+		var indexOfActiveButton = buttons.lastIndexOf(activeButton);
+		var indexOfNextButton = 1 + indexOfActiveButton;
+		if(indexOfNextButton >= buttons.length){indexOfNextButton = indexOfActiveButton;}
+
+		buttons[indexOfNextButton].click();
+	}
+	else if(event.key == "ArrowLeft"){
+		var levelButtonsDiv = document.getElementById("levelButtonsDiv");
+		if(!levelButtonsDiv) { return; }
+
+		var buttons = [...levelButtonsDiv.childNodes[0].childNodes];
+		var activeButton = buttons.filter((btn) => (btn.className == "levelButtonActive"))[0];
+
+		var indexOfActiveButton = buttons.lastIndexOf(activeButton);
+		var indexOfPrevButton = indexOfActiveButton - 1;
+		if(indexOfPrevButton < 0){indexOfPrevButton = indexOfActiveButton;}
+
+		buttons[indexOfPrevButton].click();
+	}
+	else if(event.key == "Enter" || event.key == " "){
+		document.getElementById("NextActionButton").click();
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
