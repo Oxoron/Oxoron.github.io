@@ -27,6 +27,9 @@ function GoToPreviousPage(){
 	window.location.href = urls[currentUrlIndex];
 }
 
+const LEVELBUTTONS_DIVID = 'levelButtonsDiv'; // Id of the div containing all level buttons
+const BUTTON_NEXT_ID = 'NextActionButton'; // An id of the button requesting next question or answer
+
 function OnNextButtonKeyDown(event)
 {
 	event.preventDefault();
@@ -37,7 +40,7 @@ function OnNextButtonKeyDown(event)
 		GoToPreviousPage();
 	}
 	else if(event.key == "ArrowRight"){
-		var levelButtonsDiv = document.getElementById("levelButtonsDiv");
+		var levelButtonsDiv = document.getElementById(LEVELBUTTONS_DIVID);
 		if(!levelButtonsDiv) { return; }
 
 		var buttons = [...levelButtonsDiv.childNodes[0].childNodes];
@@ -50,7 +53,7 @@ function OnNextButtonKeyDown(event)
 		buttons[indexOfNextButton].click();
 	}
 	else if(event.key == "ArrowLeft"){
-		var levelButtonsDiv = document.getElementById("levelButtonsDiv");
+		var levelButtonsDiv = document.getElementById(LEVELBUTTONS_DIVID);
 		if(!levelButtonsDiv) { return; }
 
 		var buttons = [...levelButtonsDiv.childNodes[0].childNodes];
@@ -63,7 +66,7 @@ function OnNextButtonKeyDown(event)
 		buttons[indexOfPrevButton].click();
 	}
 	else if(event.key == "Enter" || event.key == " "){
-		document.getElementById("NextActionButton").click();
+		document.getElementById(BUTTON_NEXT_ID).click();
 	}
 }
 
@@ -73,17 +76,25 @@ function FocusNextButtonOnPageLoad()
 {
 	if (window.addEventListener) 
 	{ // Mozilla, Netscape, Firefox
-		window.addEventListener('load', FocusButtonNext, false);
+		window.addEventListener('load', ButtonNext_OnPageLoad_AllActions, false);
 	} else if (window.attachEvent) { // IE
-		window.attachEvent('onload', FocusButtonNext);
+		window.attachEvent('onload', ButtonNext_OnPageLoad_AllActions);
 	}
 }
 
-function FocusButtonNext() {
-	var button = document.getElementById("NextActionButton");
-	
-	button.focus();
-	button.addEventListener('keydown', OnNextButtonKeyDown);
+function ButtonNext_OnPageLoad_AllActions() {
+	ButtonNext_AddKeydownEventHandler();
+	ButtonNext_Focus();
+}
+
+function ButtonNext_AddKeydownEventHandler(){
+	document.getElementById(BUTTON_NEXT_ID)
+		.addEventListener('keydown', OnNextButtonKeyDown);
+}
+
+function ButtonNext_Focus(){
+	document.getElementById(BUTTON_NEXT_ID)
+		.focus();
 }
 
 
@@ -270,7 +281,7 @@ function CreateLevelledArray(arr, functionToLevel){
 		let className = buttonObject.isActive ? "levelButtonActive" : "levelButtonNotActive";
 		let level = buttonObject.level;		
 
-		var result = '<button class="' + className +'" onclick="' + onClickFunctionName + '(this);FocusButtonNext();" value="' + level + '">' + level + '</button>'
+		var result = '<button class="' + className +'" onclick="' + onClickFunctionName + '(this);ButtonNext_Focus();" value="' + level + '">' + level + '</button>'
 
 		return result;
 	}
