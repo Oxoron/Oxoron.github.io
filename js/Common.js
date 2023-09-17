@@ -72,7 +72,7 @@ function OnNextButtonKeyDown(event)
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Focus on the Next button
-function FocusNextButtonOnPageLoad()
+function ButtonNext_OnPageLoad()
 {
 	if (window.addEventListener) 
 	{ // Mozilla, Netscape, Firefox
