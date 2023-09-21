@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Instrumental Singular Noun
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"Starter":"Aš važioju","NounToChange":"automobilis","En":"car","Group":"1","Answer":"Aš važioju automobiliu"},{"Starter":"Aš važioju","NounToChange":"dviratis","En":"bicycle","Group":"1","Answer":"Aš važioju dviračiu"},{"Starter":"Aš važioju","NounToChange":"paspirtukas","En":"scooter","Group":"1","Answer":"Aš važioju paspirtuku"},{"Starter":"Aš važioju","NounToChange":"autobusas","En":"bus","Group":"1","Answer":"Aš važioju autobusu"},{"Starter":"Aš važioju","NounToChange":"traukinys","En":"train","Group":"1","Answer":"Aš važioju traukiniu"},{"Starter":"Aš važioju","NounToChange":"lėktuvas","En":"airplane","Group":"1","Answer":"Aš važioju lėktuvu"},{"Starter":"Aš važioju","NounToChange":"troleibusas","En":"trolleybus","Group":"1","Answer":"Aš važioju troleibusu"},{"Starter":"Aš važioju","NounToChange":"laivas","En":"ship","Group":"1","Answer":"Aš važioju laivu"},{"Starter":"Aš važioju","NounToChange":"sraigtasparnis","En":"helicopter","Group":"1","Answer":"Aš važioju sraigtasparniu"},{"Starter":"Aš važioju","NounToChange":"oro balionas","En":"air balloon","Group":"1","Answer":"Aš važioju oro balionu"},{"Starter":"Aš važioju","NounToChange":"raketa","En":"rocket","Group":"1","Answer":"Aš važioju raketa"},{"Starter":"Aš važioju","NounToChange":"tramvajus","En":"tram","Group":"1","Answer":"Aš važioju tramvajumi"},{"Starter":"Po","NounToChange":"šaldytuvas","En":"fridge","Group":"2","Answer":"Po šaldytuvu"},{"Starter":"Po","NounToChange":"orkaitė","En":"oven","Group":"2","Answer":"Po orkaite"},{"Starter":"Po","NounToChange":"viryklė","En":"stove","Group":"2","Answer":"Po virykle"},{"Starter":"Po","NounToChange":"indaplovė","En":"dishwasher","Group":"2","Answer":"Po indaplove"},{"Starter":"Po","NounToChange":"skalbyklė","En":"washing machine","Group":"2","Answer":"Po skalbykle"},{"Starter":"Po","NounToChange":"džiovyklė","En":"dryer machine","Group":"2","Answer":"Po džiovykle"},{"Starter":"Po","NounToChange":"virdulys","En":"kettle","Group":"2","Answer":"Po virduliu"},{"Starter":"Po","NounToChange":"kavos aparatas","En":"coffee machine","Group":"2","Answer":"Po kavos aparatu"},{"Starter":"Po","NounToChange":"dulkių siurblys","En":"vacuum cleaner","Group":"2","Answer":"Po dulkių siurbliu"},{"Starter":"Po","NounToChange":"lygintuvas","En":"iron","Group":"2","Answer":"Po lygintuvu"},{"Starter":"Po","NounToChange":"lempa","En":"lamp","Group":"3","Answer":"Po lempa"},{"Starter":"Po","NounToChange":"televizorius","En":"TV","Group":"3","Answer":"Po televizoriumi"}]';
+			
+			// Setup leveller, content and buttons	
+			var samples = JSON.parse(samplesAsJson);
+			var leveller = CreateLevelledArray(
+				samples, 
+				elem => elem.Group
+			); 				
+			var content = leveller.GetContent();
+			var fullButtonsElementHtml = leveller.RegenerateButtons();
+
+			var currentSample = content[0];
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			// Returns a string containing HTML like <div> Infinitive, Present, Past</div>
+			function BuildAnswer(sample){
+				return sample.Answer;	
+			}
+
+			// Returns a string containing HTML like <div> Verb in Ennglish </div>
+			function BuildQuestion(sample){
+				return sample.Starter + " " + sample.NounToChange;
+			}
+
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = BuildAnswer(currentSample);
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');				
+				divToAmend.innerHTML = BuildQuestion(currentSample);
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
+			}
+
+			function OnLevelButtonClick(button){
+				// Setup  level
+				leveller.SetupLevel(button.value);
+
+				// Update innerHtml for level buttons div
+				let newHtml = leveller.RegenerateButtons("OnLevelButtonClick");
+				var buttonsElement = document.getElementById("levelButtonsDiv");
+				buttonsElement.innerHTML = newHtml;
+
+				// Update content
+				content = leveller.GetContent();
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	Aš važioju automobilis	</div>	
+					<div id='Answer'>	Aš važioju automobiliu	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+
+				
+				<div id="levelButtonsDiv" class="levelButtonsDiv"></div>		
+				<script>
+					var buttonsElement = document.getElementById("levelButtonsDiv");
+					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
+				</script>
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</body>
+</html>
+
+
