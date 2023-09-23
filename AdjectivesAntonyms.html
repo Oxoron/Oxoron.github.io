@@ -15,7 +15,7 @@
 			ButtonNext_OnPageLoad();
 			SetupArrayFunctions();
 			
-			var adjectivesAsJson = '[{"En":"Tall","EnAntonym":"short","Lt":"aukštas","LtAntonym":"žemas"},{"En":"old","EnAntonym":"young","Lt":"senas","LtAntonym":"jaunas"},{"En":"funny","EnAntonym":"sad","Lt":"linksmas","LtAntonym":"liūdnas"},{"En":"talk??","EnAntonym":"silent","Lt":"šnekus","LtAntonym":"tylus"},{"En":"interesting","EnAntonym":"boring","Lt":"įdomus","LtAntonym":"nuobodus"},{"En":"fast","EnAntonym":"slow","Lt":"greitas","LtAntonym":"lėtas"},{"En":"black","EnAntonym":"white","Lt":"juodas","LtAntonym":"baltas"}]';
+			var adjectivesAsJson = '[{"En":"Tall","EnAntonym":"short","Lt":"aukštas","LtAntonym":"žemas"},{"En":"old","EnAntonym":"young","Lt":"senas","LtAntonym":"jaunas"},{"En":"funny","EnAntonym":"sad","Lt":"linksmas","LtAntonym":"liūdnas"},{"En":"talk","EnAntonym":"silent","Lt":"šnekus","LtAntonym":"tylus"},{"En":"interesting","EnAntonym":"boring","Lt":"įdomus","LtAntonym":"nuobodus"},{"En":"fast","EnAntonym":"slow","Lt":"greitas","LtAntonym":"lėtas"},{"En":"black","EnAntonym":"white","Lt":"juodas","LtAntonym":"baltas"}]';
 			
 			// Parse json and duplicate array elements (aukstas+zemas => zemas+aukstas)
 			var adjectives = JSON.parse(adjectivesAsJson);
