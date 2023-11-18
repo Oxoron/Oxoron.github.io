@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Directions
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+			
+			// Init data as strings
+			var waypointsAsString = '[{"En":"Shop","Nom":"Parduotuvė","Gen":"Parduotuvės","Acc":"Parduotuvę"},{"En":"Office","Nom":"Biuras","Gen":"Biuro","Acc":"Biurą"},{"En":"Crossroad","Nom":"Sankryža","Gen":"Sankryžos","Acc":"Sankryžą"},{"En":"Square","Nom":"Aikštė","Gen":"Aikštės","Acc":"Aikštę"},{"En":"Monument","Nom":"Paminklas","Gen":"Paminklo","Acc":"Paminklą"},{"En":"Bus stop","Nom":"Stotelė","Gen":"Stotelės","Acc":"Stotelę"},{"En":"Hotel","Nom":"Viešbutis","Gen":"Viešbučio","Acc":"Viešbutį"},{"En":"Club","Nom":"Klubas","Gen":"Klubo","Acc":"Klubą"},{"En":"Restaurant","Nom":"Restoranas","Gen":"Restorano","Acc":"Restoraną"}]';
+			var directionAccusativeAsString = '[{"En":"At left","Lt":"kairę"},{"En":"At right","Lt":"dešinę"}]';
+			var directionsLocativeAsString = '[{"En":"Left","Lt":"kairėje"},{"En":"Right","Lt":"dešinėje"}]';
+
+			// Init data as objects
+			var waypoints = JSON.parse(waypointsAsString);
+			var directionAccusative = JSON.parse(directionAccusativeAsString);
+			var directionsLocative	= JSON.parse(directionsLocativeAsString);
+			var sample2Prepositions = [{"Lt": "Už ", "En":"Behind"}, {"Lt": "Prie ", "En":"Near"}, {"Lt": "Prieš ", "En":"Before"}];
+			var sample2ActionVerbs = [{"Lt": " eik ", "En":"go"},{"Lt": " pasukite ", "En":"turn"}];			
+
+			// Init Level 1 samples (like parduotuvė yra bibliotekos kairėje)
+			var level1Samples = [];
+			for(var i=0; i<waypoints.length; i++){
+				for(var j=0; j<waypoints.length; j++){
+					if(i == j){continue;} // We don't need samples like Biuras yra biure kaireje
+					for(var k=0; k<directionsLocative.length; k++){
+						level1Samples.push({
+							noun1: waypoints[i], 
+							noun2:waypoints[j], 
+							direction:directionsLocative[k],
+							level: 1
+						});
+					}
+				}
+			}
+
+			// Init level2 samples (like Prie parduotuvės pasukite į kairę)
+			var level2Samples = [];
+			for(var i=0; i<waypoints.length; i++){				
+				for(var k=0; k<directionAccusative.length; k++){
+					level2Samples.push({
+						noun1: waypoints[i], 							
+						direction:directionAccusative[k],
+						level: 2
+					});					
+				}
+			}
+
+
+			// Init level3 samples (like eik iki parduotuvės nuo bibliotekos)
+			var level3Samples = [];
+			for(var i=0; i<waypoints.length; i++){
+				for(var j=0; j<waypoints.length; j++){
+					if(i == j){continue;} // We don't need samples like eik iki biures nuo biures					
+					level3Samples.push({
+						noun1: waypoints[i], 
+						noun2:waypoints[j], 
+						direction:directionsLocative[k],
+						level: 3
+					});					
+				}
+			}
+
+			var allSamples = [...level1Samples, ...level2Samples, ...level3Samples];
+
+
+			// Setup leveller, content and buttons				
+			var leveller = CreateLevelledArray(
+				allSamples, 
+				elem => elem.level
+			); 				
+			var content = leveller.GetContent();
+			var fullButtonsElementHtml = leveller.RegenerateButtons();
+
+			var currentSample = content[0];
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			// Returns a string containing HTML like <div> Infinitive, Present, Past</div>
+			function BuildAnswer(sample){
+				switch(sample.level){
+					case 1: return BuildAnswerForSample1(sample);
+					case 2: return BuildAnswerForSample2(sample);
+					case 3: return BuildAnswerForSample3(sample);
+				}		
+			}
+
+			/* parduotuvė yra bibliotekos kairėje is converted to 
+				Shop is at the left of library
+			*/
+			function BuildAnswerForSample1(sample){
+				return sample.noun1.En 
+					+ " is at the " 
+					+ sample.direction.En.toLowerCase() 
+					+ " of " 
+					+ sample.noun2.En.toLowerCase();				
+			}
+
+			/* Prie parduotuvės pasukite į kairę is converted to 
+				Near the shop turn left
+			*/
+			function BuildAnswerForSample2(sample){
+				return sample.preposition.En + " the " + sample.noun1.En.toLowerCase() + " " 
+				+ sample.actionVerb.En + " " + sample.direction.En.replace("At", "");	
+			}
+
+			/*  eik iki parduotuvės nuo bibliotekos is converted to 
+				Go from library till shop
+			*/
+			function BuildAnswerForSample3(sample){
+				return "Go from " + sample.noun2.En.toLowerCase() 
+					+ " till " + sample.noun1.En.toLowerCase();
+			}
+
+			// Returns a string containing HTML like <div> Verb in Ennglish </div>
+			function BuildQuestion(sample){
+				switch(sample.level){
+					case 1: return BuildQuestionForLevel1(sample);
+					case 2: return BuildQuestionForLevel2(sample);
+					case 3: return BuildQuestionForLevel3(sample);
+				}
+			}
+
+			// parduotuvė yra bibliotekos kairėje
+			function BuildQuestionForLevel1(sample){
+				return sample.noun1.Nom + " yra " + sample.noun2.Gen.toLowerCase() + " " + sample.direction.Lt;				
+			}
+
+			// Prie parduotuvės pasukite į kairę
+			// Mutates sample
+			function BuildQuestionForLevel2(sample){
+				var preposition = sample2Prepositions.random();
+				var actionVerb = sample2ActionVerbs.random();
+				
+				sample.preposition = preposition;
+				sample.actionVerb = actionVerb;
+
+				return preposition.Lt + sample.noun1.Gen.toLowerCase() + actionVerb.Lt + sample.direction.Lt;						
+			} 
+
+			// eik iki parduotuvės nuo bibliotekos
+			function BuildQuestionForLevel3(sample){
+				return "Eik iki " + sample.noun1.Gen.toLowerCase() + " nuo " + sample.noun2.Gen.toLowerCase() ;				
+			} 
+
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = BuildAnswer(currentSample);
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');				
+				divToAmend.innerHTML = BuildQuestion(currentSample);
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
+			}
+
+			function OnLevelButtonClick(button){
+				// Setup  level
+				leveller.SetupLevel(button.value);
+
+				// Update innerHtml for level buttons div
+				let newHtml = leveller.RegenerateButtons("OnLevelButtonClick");
+				var buttonsElement = document.getElementById("levelButtonsDiv");
+				buttonsElement.innerHTML = newHtml;
+
+				// Update content
+				content = leveller.GetContent()
+					.filter(elem => elem.level == leveller.CurrentLevel);
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	to wait	</div>	
+					<div id='Answer'>	laukti laukia laukė	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+
+				
+				<div id="levelButtonsDiv" class="levelButtonsDiv"></div>		
+				<script>
+					var buttonsElement = document.getElementById("levelButtonsDiv");
+					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
+				</script>
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</body>
+</html>
+
+
