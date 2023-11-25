@@ -14,7 +14,9 @@
 			ButtonNext_OnPageLoad();
 			SetupArrayFunctions();
 			
-			var samplesAsJson = '[{"Starter":"Aš važioju","NounToChange":"automobilis","En":"car","Group":"1","Answer":"Aš važioju automobiliu"},{"Starter":"Aš važioju","NounToChange":"dviratis","En":"bicycle","Group":"1","Answer":"Aš važioju dviračiu"},{"Starter":"Aš važioju","NounToChange":"paspirtukas","En":"scooter","Group":"1","Answer":"Aš važioju paspirtuku"},{"Starter":"Aš važioju","NounToChange":"autobusas","En":"bus","Group":"1","Answer":"Aš važioju autobusu"},{"Starter":"Aš važioju","NounToChange":"traukinys","En":"train","Group":"1","Answer":"Aš važioju traukiniu"},{"Starter":"Aš važioju","NounToChange":"lėktuvas","En":"airplane","Group":"1","Answer":"Aš važioju lėktuvu"},{"Starter":"Aš važioju","NounToChange":"troleibusas","En":"trolleybus","Group":"1","Answer":"Aš važioju troleibusu"},{"Starter":"Aš važioju","NounToChange":"laivas","En":"ship","Group":"1","Answer":"Aš važioju laivu"},{"Starter":"Aš važioju","NounToChange":"sraigtasparnis","En":"helicopter","Group":"1","Answer":"Aš važioju sraigtasparniu"},{"Starter":"Aš važioju","NounToChange":"oro balionas","En":"air balloon","Group":"1","Answer":"Aš važioju oro balionu"},{"Starter":"Aš važioju","NounToChange":"raketa","En":"rocket","Group":"1","Answer":"Aš važioju raketa"},{"Starter":"Aš važioju","NounToChange":"tramvajus","En":"tram","Group":"1","Answer":"Aš važioju tramvajumi"},{"Starter":"Po","NounToChange":"šaldytuvas","En":"fridge","Group":"2","Answer":"Po šaldytuvu"},{"Starter":"Po","NounToChange":"orkaitė","En":"oven","Group":"2","Answer":"Po orkaite"},{"Starter":"Po","NounToChange":"viryklė","En":"stove","Group":"2","Answer":"Po virykle"},{"Starter":"Po","NounToChange":"indaplovė","En":"dishwasher","Group":"2","Answer":"Po indaplove"},{"Starter":"Po","NounToChange":"skalbyklė","En":"washing machine","Group":"2","Answer":"Po skalbykle"},{"Starter":"Po","NounToChange":"džiovyklė","En":"dryer machine","Group":"2","Answer":"Po džiovykle"},{"Starter":"Po","NounToChange":"virdulys","En":"kettle","Group":"2","Answer":"Po virduliu"},{"Starter":"Po","NounToChange":"kavos aparatas","En":"coffee machine","Group":"2","Answer":"Po kavos aparatu"},{"Starter":"Po","NounToChange":"dulkių siurblys","En":"vacuum cleaner","Group":"2","Answer":"Po dulkių siurbliu"},{"Starter":"Po","NounToChange":"lygintuvas","En":"iron","Group":"2","Answer":"Po lygintuvu"},{"Starter":"Po","NounToChange":"lempa","En":"lamp","Group":"3","Answer":"Po lempa"},{"Starter":"Po","NounToChange":"televizorius","En":"TV","Group":"3","Answer":"Po televizoriumi"}]';
+			var samplesAsJson = '[{"Starter":"Aš važioju","NounToChange":"automobilis","En":"car","Group":"1","Answer":"Aš važioju automobiliu"},{"Starter":"Aš važioju","NounToChange":"dviratis","En":"bicycle","Group":"1","Answer":"Aš važioju dviračiu"},{"Starter":"Aš važioju","NounToChange":"paspirtukas","En":"scooter","Group":"1","Answer":"Aš važioju paspirtuku"},{"Starter":"Aš važioju","NounToChange":"autobusas","En":"bus","Group":"1","Answer":"Aš važioju autobusu"},{"Starter":"Aš važioju","NounToChange":"traukinys","En":"train","Group":"1","Answer":"Aš važioju traukiniu"},{"Starter":"Aš važioju","NounToChange":"lėktuvas","En":"airplane","Group":"1","Answer":"Aš važioju lėktuvu"},{"Starter":"Aš važioju","NounToChange":"troleibusas","En":"trolleybus","Group":"1","Answer":"Aš važioju troleibusu"},{"Starter":"Aš važioju","NounToChange":"laivas","En":"ship","Group":"1","Answer":"Aš važioju laivu"},{"Starter":"Aš važioju","NounToChange":"sraigtasparnis","En":"helicopter","Group":"1","Answer":"Aš važioju sraigtasparniu"},{"Starter":"Aš važioju","NounToChange":"oro balionas","En":"air balloon","Group":"1","Answer":"Aš važioju oro balionu"},{"Starter":"Aš važioju","NounToChange":"raketa","En":"rocket","Group":"1","Answer":"Aš važioju raketa"},{"Starter":"Aš važioju","NounToChange":"tramvajus","En":"tram","Group":"1","Answer":"Aš važioju tramvajumi"},' +
+				'{"Starter":"Po","NounToChange":"šaldytuvas","En":"fridge","Group":"2","Answer":"Po šaldytuvu"},{"Starter":"Po","NounToChange":"orkaitė","En":"oven","Group":"2","Answer":"Po orkaite"},{"Starter":"Po","NounToChange":"viryklė","En":"stove","Group":"2","Answer":"Po virykle"},{"Starter":"Po","NounToChange":"indaplovė","En":"dishwasher","Group":"2","Answer":"Po indaplove"},{"Starter":"Po","NounToChange":"skalbyklė","En":"washing machine","Group":"2","Answer":"Po skalbykle"},{"Starter":"Po","NounToChange":"džiovyklė","En":"dryer machine","Group":"2","Answer":"Po džiovykle"},{"Starter":"Po","NounToChange":"virdulys","En":"kettle","Group":"2","Answer":"Po virduliu"},{"Starter":"Po","NounToChange":"kavos aparatas","En":"coffee machine","Group":"2","Answer":"Po kavos aparatu"},{"Starter":"Po","NounToChange":"dulkių siurblys","En":"vacuum cleaner","Group":"2","Answer":"Po dulkių siurbliu"},{"Starter":"Po","NounToChange":"lygintuvas","En":"iron","Group":"2","Answer":"Po lygintuvu"},' +
+				'{"Starter":"Po","NounToChange":"lempa","En":"lamp","Group":"3","Answer":"Po lempa"},{"Starter":"Po","NounToChange":"televizorius","En":"TV","Group":"3","Answer":"Po televizoriumi"}]';
 			
 			// Setup leveller, content and buttons	
 			var samples = JSON.parse(samplesAsJson);
@@ -98,7 +100,17 @@
 				buttonsElement.innerHTML = newHtml;
 
 				// Update content
-				content = leveller.GetContent();
+				// A bit differs from other pages: 
+				// 		first 2 levels grant separate groups of exercises,
+				// 		last level gives all samples
+				var currentLevel = leveller.CurrentLevel;
+				if(currentLevel > 2){
+					content = leveller.GetContent();
+				}
+				else{
+					content = leveller.GetContent()
+						.filter(elem => elem.Group == leveller.CurrentLevel);
+				}				
 			}
 		</script>
 	</head>
