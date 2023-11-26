@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Time Words
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+
+			// Take samples as strings
+			var group1AsText = '[{"En":"Second","Lt":"secundė"},{"En":"Minute","Lt":"Minutė"},{"En":"Hour","Lt":"Valanda"},{"En":"Day","Lt":"Diena"},{"En":"Week","Lt":"Savaitė"},{"En":"Month","Lt":"Mėnuo"},{"En":"Year","Lt":"Metai ??"},{"En":"Morning","Lt":"Rytas"},{"En":"Day","Lt":"Diena"},{"En":"Evening","Lt":"Vakaras"},{"En":"Night","Lt":"Naktis"}]';
+			var group2AsText = '[{"En":"Monday","Lt":"Pirmadienis"},{"En":"Tuesday","Lt":"Antradienis"},{"En":"Wednesday","Lt":"Treciadienis"},{"En":"Thursday","Lt":"Ketvirtadienis"},{"En":"Friday","Lt":"Penktadienis"},{"En":"Saturday","Lt":"Šeštadienis"},{"En":"Sunday","Lt":"Sekmadienis"},{"En":"Winter","Lt":"Žiema"},{"En":"Spring","Lt":"Pavasaris"},{"En":"Summer","Lt":"Vasara"},{"En":"Autumn","Lt":"Ruduo"}]';
+			var group3AsText = '[{"En":"January","Lt":"sausis"},{"En":"February","Lt":"vasaris"},{"En":"March","Lt":"kovas"},{"En":"April","Lt":"balandis"},{"En":"May","Lt":"gegužė"},{"En":"June","Lt":"birželis"},{"En":"July","Lt":"liepa"},{"En":"August","Lt":"rugpjūtis"},{"En":"September","Lt":"rugsėjis"},{"En":"October","Lt":"spalis"},{"En":"November","Lt":"lapkritis"},{"En":"December","Lt":"gruodis"}]';
+			var group4AsText = '[{"En":"yesterday","Lt":"vakar"},{"En":"last","Lt":"praeitas"},{"En":"next time","Lt":"kitą kartą"},{"En":"next","Lt":"kitas"},{"En":"today","Lt":"šiandien"},{"En":"tomorrow","Lt":"rytoj"},{"En":"the day before yesterday","Lt":"užvakar"},{"En":"the day after yesterday","Lt":"poryt"}]';
+
+			// Build samples as json objects
+			var samples1 = JSON.parse(group1AsText)
+				.map(elem => Object.assign(elem, {Level:1}));
+			var samples2 = JSON.parse(group2AsText)
+				.map(elem => Object.assign(elem, {Level:2}));
+			var samples3 = JSON.parse(group3AsText)
+				.map(elem => Object.assign(elem, {Level:3}));
+			var samples4 = JSON.parse(group4AsText)
+				.map(elem => Object.assign(elem, {Level:4}));
+			var samples5 =  [...samples1, ...samples2, ...samples3, ...samples4] // All previous samples - in the same group
+				.map(elem => ({...elem, ...{Level:5}}));
+
+			// Setup leveller, content and buttons	
+			var samples = [...samples1, ...samples2, ...samples3, ...samples4, ...samples5];
+			var leveller = CreateLevelledArray(
+				samples, 
+				elem => elem.Level
+			); 				
+			var content = leveller.GetContent();
+			var fullButtonsElementHtml = leveller.RegenerateButtons();
+
+			var currentSample = content[0];
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function BuildAnswer(sample){
+				return sample.Lt;	
+			}
+
+			
+			function BuildQuestion(sample){
+				return sample.En;
+			}
+
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = BuildAnswer(currentSample);
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');				
+				divToAmend.innerHTML = BuildQuestion(currentSample);
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
+			}
+
+			function OnLevelButtonClick(button){
+				// Setup  level
+				leveller.SetupLevel(button.value);
+
+				// Update innerHtml for level buttons div
+				let newHtml = leveller.RegenerateButtons("OnLevelButtonClick");
+				var buttonsElement = document.getElementById("levelButtonsDiv");
+				buttonsElement.innerHTML = newHtml;
+
+				// Update content				
+				content = leveller.GetContent()
+					.filter(elem => elem.Level == leveller.CurrentLevel);
+						
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	Day	</div>	
+					<div id='Answer'>	Diena	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+
+				
+				<div id="levelButtonsDiv" class="levelButtonsDiv"></div>		
+				<script>
+					var buttonsElement = document.getElementById("levelButtonsDiv");
+					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
+				</script>
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</body>
+</html>
+
+
