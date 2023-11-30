@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Noun Plurals Genitive
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+
+			// Take samples as strings
+			var group1AsText = '[{"En":"second","LtNom":"sekundė","LtGenPlural":"sekundžių"},{"En":"minute","LtNom":"minutė","LtGenPlural":"minučių"},{"En":"hour","LtNom":"valanda","LtGenPlural":"valandų"},{"En":"day","LtNom":"diena","LtGenPlural":"dienų"},{"En":"evening","LtNom":"vakaras","LtGenPlural":"vakarų"}]';
+			var group2AsText = '[{"En":"cat","Lt":"katinas","LtGenPlural":"katinų"},{"En":"name","Lt":"vardas","LtGenPlural":"vardų"},{"En":"evening","Lt":"vakaras","LtGenPlural":"vakarų"},{"En":"","Lt":"","LtGenPlural":""},{"En":"computer","Lt":"komputeris","LtGenPlural":"komputerių"},{"En":"clock","Lt":"laikrodis","LtGenPlural":"laikrodžių"}]';
+
+			// Build samples as json objects
+			var samples1 = JSON.parse(group1AsText)
+				.map(elem => Object.assign(elem, {Level:1}));
+			var samples2 = JSON.parse(group2AsText)
+				.map(elem => Object.assign(elem, {Level:2}));			
+			
+
+			// Setup leveller, content and buttons	
+			var samples = [...samples1, ...samples2];
+			var leveller = CreateLevelledArray(
+				samples, 
+				elem => elem.Level
+			); 				
+			var content = leveller.GetContent();
+			var fullButtonsElementHtml = leveller.RegenerateButtons();
+
+			var currentSample = content[0];
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function BuildAnswer(sample){
+				if(sample.Level == 1){
+					return "10 " + sample.LtGenPlural;
+				}
+				else{
+					return "Daug " + sample.LtGenPlural;
+				}
+			}
+
+			
+			function BuildQuestion(sample){
+				if(sample.Level == 1){
+					return "10 " + sample.LtNom;
+				}
+				else{
+					return "Daug " + sample.Lt;
+				}
+			}
+
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = BuildAnswer(currentSample);
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');				
+				divToAmend.innerHTML = BuildQuestion(currentSample);
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
+			}
+
+			function OnLevelButtonClick(button){
+				// Setup  level
+				leveller.SetupLevel(button.value);
+
+				// Update innerHtml for level buttons div
+				let newHtml = leveller.RegenerateButtons("OnLevelButtonClick");
+				var buttonsElement = document.getElementById("levelButtonsDiv");
+				buttonsElement.innerHTML = newHtml;
+
+				// Update content				
+				content = leveller.GetContent()
+					.filter(elem => elem.Level == leveller.CurrentLevel);
+						
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	10 diena	</div>	
+					<div id='Answer'>	10 dienų	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+
+				
+				<div id="levelButtonsDiv" class="levelButtonsDiv"></div>		
+				<script>
+					var buttonsElement = document.getElementById("levelButtonsDiv");
+					buttonsElement.innerHTML = leveller.RegenerateButtons("OnLevelButtonClick");
+				</script>
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</body>
+</html>
+
+
