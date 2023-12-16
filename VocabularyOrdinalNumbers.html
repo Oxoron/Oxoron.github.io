@@ -15,7 +15,7 @@
 			SetupArrayFunctions();
 
 			// Take samples as strings
-			var group1AsText = '[{"Number":0,"LtMasc":"nulinis","LtFem":"nulinė"},{"Number":1,"LtMasc":"pirmas","LtFem":"pirma"},{"Number":2,"LtMasc":"antras","LtFem":"antra"},{"Number":3,"LtMasc":"trečias","LtFem":"trecia"},{"Number":4,"LtMasc":"ketvirtas","LtFem":"ketvirta"},{"Number":5,"LtMasc":"penktas","LtFem":"penkta"},{"Number":6,"LtMasc":"šeštas","LtFem":"šešta"},{"Number":7,"LtMasc":"septintas","LtFem":"septinta"},{"Number":8,"LtMasc":"aštuontas","LtFem":"aštuonta"},{"Number":9,"LtMasc":"denyntas","LtFem":"dyvynta"}]';
+			var group1AsText = '[{"Number":0,"LtMasc":"nulinis","LtFem":"nulinė"},{"Number":1,"LtMasc":"pirmas","LtFem":"pirma"},{"Number":2,"LtMasc":"antras","LtFem":"antra"},{"Number":3,"LtMasc":"trečias","LtFem":"trečia"},{"Number":4,"LtMasc":"ketvirtas","LtFem":"ketvirta"},{"Number":5,"LtMasc":"penktas","LtFem":"penkta"},{"Number":6,"LtMasc":"šeštas","LtFem":"šešta"},{"Number":7,"LtMasc":"septintas","LtFem":"septinta"},{"Number":8,"LtMasc":"aštuntas","LtFem":"aštunta"},{"Number":9,"LtMasc":"devintas","LtFem":"devinta"}]';
 			var group2AsText = '[{"Number":10,"LtMasc":"dešimtas","LtFem":"dešimta"},{"Number":11,"LtMasc":"vienuoliktas","LtFem":"vienuolikta"},{"Number":12,"LtMasc":"dvyliktas","LtFem":"dvylikta"},{"Number":13,"LtMasc":"tryliktas","LtFem":"trylikta"},{"Number":14,"LtMasc":"keturioliktas","LtFem":"keturiolikta"},{"Number":15,"LtMasc":"penkioliktas","LtFem":"penkiolikta"},{"Number":16,"LtMasc":"šešioliktas","LtFem":"šešiolikta"},{"Number":17,"LtMasc":"septynioliktas","LtFem":"septyniolikta"},{"Number":18,"LtMasc":"aštuonoliktas","LtFem":"aštuonolikta"},{"Number":19,"LtMasc":"devynioliktas","LtFem":"devyniolikta"},{"Number":20,"LtMasc":"dvidešimtas","LtFem":"dvidešimta"}]';
 			var group3AsText = '[{"Number":20,"LtMasc":"dvidešimtas","LtFem":"dvidešimta","LtCard":"dvidešimt"},{"Number":30,"LtMasc":"trisdešimtas","LtFem":"trisdešimta","LtCard":"trisdešimt"},{"Number":40,"LtMasc":"keturiasdešimtas","LtFem":"keturiasdešimta","LtCard":"keturiasdešimt"},{"Number":50,"LtMasc":"penkiasdešimtas","LtFem":"penkiasdešimta","LtCard":"penkiasdešimt"},{"Number":60,"LtMasc":"šešiasdešimtas","LtFem":"šešiasdešimta","LtCard":"šešiasdešimt"},{"Number":70,"LtMasc":"septyniasdešimtas","LtFem":"septyniasdešimta","LtCard":"septyniasdešimt"},{"Number":80,"LtMasc":"aštuoniasdešimtas","LtFem":"aštuoniasdešimta","LtCard":"aštuoniasdešimt"},{"Number":90,"LtMasc":"devyniasdešimtas","LtFem":"devyniasdešimta","LtCard":"devyniasdešimt"}]';
 
@@ -29,11 +29,12 @@
 			
 			// Build samples for the group 4
 			var samples4 = samples1
+				.filter((s1) => s1.Number > 0)
 				.reduce((acc, sample1) => [...acc,  
 					...samples3.map(sample3 => ({
 						Number:sample1.Number + sample3.Number,
 						LtMasc: sample3.LtCard + " " + sample1.LtMasc,
-						LtFem: sample3.LtFem + " " + sample1.LtFem,
+						LtFem: sample3.LtCard + " " + sample1.LtFem,
 						Level: 4
 					}))],
 					[]
