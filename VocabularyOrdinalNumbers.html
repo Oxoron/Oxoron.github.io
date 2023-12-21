@@ -114,7 +114,10 @@
 				button.innerText = 'Check answer';
 				
 				// Setup new sample
-				var randomSample = content.notRepeatingRandom(currentSample);
+				// As group 5 contains objects similar to all other groups, we have to 
+				//	clarify notRepeatingRandom() transform paramets.
+				//	We don't try to avoid repeatitive samples, we try to avoid repeatitive numbers instead
+				var randomSample = content.notRepeatingRandom(currentSample.Number, (sample) => (sample.Number) );
 				currentSample = randomSample;				
 				
 				// Setup question div				
