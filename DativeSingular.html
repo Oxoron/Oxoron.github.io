@@ -70,7 +70,7 @@
 				// Setup new sample
 				var randomSample = 
 				{
-					subject: result.notRepeatingRandom(currentSample.Ending,(group) => (group.Ending)).values.random(),
+					subject: result.notRepeatingRandom(currentSample.subject.Ending,(group) => (group.Ending)).values.random(),
 					object: objects.notRepeatingRandom(currentSample.object)
 				};
 				currentSample = randomSample;
