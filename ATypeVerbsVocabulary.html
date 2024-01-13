@@ -18,9 +18,21 @@
 			
 			// Setup leveller, content and buttons	
 			var samples = JSON.parse(samplesAsJson).filter(verb => !!verb.Past);
+			samples = samples
+				.map(sample => ({...sample, Level:(1 + Math.floor(samples.indexOf(sample) / 9))}));
+
+			var samples1 = samples.filter(sample => sample.Level === 1);
+			var samples2 = samples.filter(sample => sample.Level === 2);
+			var samples3 = samples.filter(sample => sample.Level === 3);
+			var samples4 = samples.filter(sample => sample.Level === 4);
+			var samples5 = [...samples1, ...samples2, ...samples3, ...samples4]
+				.map(sample => ({...sample, Level:5}));
+
+			samples = [...samples1, ...samples2, ...samples3, ...samples4, ...samples5];
+
 			var leveller = CreateLevelledArray(
 				samples, 
-				elem => 1 + Math.floor(samples.indexOf(elem) / 9)
+				elem => elem.Level
 			); 				
 			var content = leveller.GetContent();
 			var fullButtonsElementHtml = leveller.RegenerateButtons();
@@ -103,7 +115,8 @@
 				buttonsElement.innerHTML = newHtml;
 
 				// Update content
-				content = leveller.GetContent();
+				content = leveller.GetContent()
+					.filter(elem => elem.Level == leveller.CurrentLevel);
 			}
 		</script>
 	</head>
