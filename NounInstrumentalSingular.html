@@ -14,20 +14,34 @@
 			ButtonNext_OnPageLoad();
 			SetupArrayFunctions();
 			
-			var samplesAsJson = '[{"Starter":"Aš važiuoju","NounToChange":"automobilis","En":"car","Group":"1","Answer":"Aš važiuoju automobiliu"},{"Starter":"Aš važiuoju","NounToChange":"dviratis","En":"bicycle","Group":"1","Answer":"Aš važiuoju dviračiu"},{"Starter":"Aš važiuoju","NounToChange":"paspirtukas","En":"scooter","Group":"1","Answer":"Aš važiuoju paspirtuku"},{"Starter":"Aš važiuoju","NounToChange":"autobusas","En":"bus","Group":"1","Answer":"Aš važiuoju autobusu"},{"Starter":"Aš važiuoju","NounToChange":"traukinys","En":"train","Group":"1","Answer":"Aš važiuoju traukiniu"},{"Starter":"Aš skrendu","NounToChange":"lėktuvas","En":"airplane","Group":"1","Answer":"Aš skrendu lėktuvu"},{"Starter":"Aš važiuoju","NounToChange":"troleibusas","En":"trolleybus","Group":"1","Answer":"Aš važiuoju troleibusu"},{"Starter":"Aš plaukiu","NounToChange":"laivas","En":"ship","Group":"1","Answer":"Aš plaukiu laivu"},{"Starter":"Aš skrendu","NounToChange":"sraigtasparnis","En":"helicopter","Group":"1","Answer":"Aš skrendu sraigtasparniu"},{"Starter":"Aš skrendu","NounToChange":"oro balionas","En":"air balloon","Group":"1","Answer":"Aš skrendu oro balionu"},{"Starter":"Aš skrendu","NounToChange":"raketa","En":"rocket","Group":"1","Answer":"Aš skrendu raketa"},{"Starter":"Aš važiuoju","NounToChange":"tramvajus","En":"tram","Group":"1","Answer":"Aš važiuoju tramvajumi"},' + 
-				'{"Starter":"Po","NounToChange":"šaldytuvas","En":"fridge","Group":"2","Answer":"Po šaldytuvu"},{"Starter":"Po","NounToChange":"orkaitė","En":"oven","Group":"2","Answer":"Po orkaite"},{"Starter":"Po","NounToChange":"viryklė","En":"stove","Group":"2","Answer":"Po virykle"},{"Starter":"Po","NounToChange":"indaplovė","En":"dishwasher","Group":"2","Answer":"Po indaplove"},{"Starter":"Po","NounToChange":"skalbyklė","En":"washing machine","Group":"2","Answer":"Po skalbykle"},{"Starter":"Po","NounToChange":"džiovyklė","En":"dryer machine","Group":"2","Answer":"Po džiovykle"},{"Starter":"Po","NounToChange":"virdulys","En":"kettle","Group":"2","Answer":"Po virduliu"},{"Starter":"Po","NounToChange":"kavos aparatas","En":"coffee machine","Group":"2","Answer":"Po kavos aparatu"},{"Starter":"Po","NounToChange":"dulkių siurblys","En":"vacuum cleaner","Group":"2","Answer":"Po dulkių siurbliu"},{"Starter":"Po","NounToChange":"lygintuvas","En":"iron","Group":"2","Answer":"Po lygintuvu"},' + 
-				'{"Starter":"Po","NounToChange":"lempa","En":"lamp","Group":"3","Answer":"Po lempa"},{"Starter":"Po","NounToChange":"televizorius","En":"TV","Group":"3","Answer":"Po televizoriumi"}]'			
+			
+			var samplesAsJson = '[{"Starter":"Aš važiuoju","NounToChange":"automobilis","Ending":"is","En":"car","Group":"1","Answer":"Aš važiuoju automobiliu"},{"Starter":"Aš važiuoju","NounToChange":"dviratis","Ending":"is","En":"bicycle","Group":"1","Answer":"Aš važiuoju dviračiu"},{"Starter":"Aš važiuoju","NounToChange":"paspirtukas","Ending":"as","En":"scooter","Group":"1","Answer":"Aš važiuoju paspirtuku"},{"Starter":"Aš važiuoju","NounToChange":"autobusas","Ending":"as","En":"bus","Group":"1","Answer":"Aš važiuoju autobusu"},{"Starter":"Aš važiuoju","NounToChange":"traukinys","Ending":"ys","En":"train","Group":"1","Answer":"Aš važiuoju traukiniu"},{"Starter":"Aš skrendu","NounToChange":"lėktuvas","Ending":"as","En":"airplane","Group":"1","Answer":"Aš skrendu lėktuvu"},{"Starter":"Aš važiuoju","NounToChange":"troleibusas","Ending":"as","En":"trolleybus","Group":"1","Answer":"Aš važiuoju troleibusu"},{"Starter":"Aš plaukiu","NounToChange":"laivas","Ending":"as","En":"ship","Group":"1","Answer":"Aš plaukiu laivu"},{"Starter":"Aš skrendu","NounToChange":"sraigtasparnis","Ending":"is","En":"helicopter","Group":"1","Answer":"Aš skrendu sraigtasparniu"},{"Starter":"Aš skrendu","NounToChange":"oro balionas","Ending":"as","En":"air balloon","Group":"1","Answer":"Aš skrendu oro balionu"},{"Starter":"Aš skrendu","NounToChange":"raketa","Ending":"a","En":"rocket","Group":"1","Answer":"Aš skrendu raketa"},{"Starter":"Aš važiuoju","NounToChange":"tramvajus","Ending":"us","En":"tram","Group":"1","Answer":"Aš važiuoju tramvajumi"},{"Starter":"Po","NounToChange":"šaldytuvas","Ending":"as","En":"fridge","Group":"2","Answer":"Po šaldytuvu"},{"Starter":"Po","NounToChange":"orkaitė","Ending":"ė","En":"oven","Group":"2","Answer":"Po orkaite"},{"Starter":"Po","NounToChange":"viryklė","Ending":"ė","En":"stove","Group":"2","Answer":"Po virykle"},{"Starter":"Po","NounToChange":"indaplovė","Ending":"ė","En":"dishwasher","Group":"2","Answer":"Po indaplove"},{"Starter":"Po","NounToChange":"skalbyklė","Ending":"ė","En":"washing machine","Group":"2","Answer":"Po skalbykle"},{"Starter":"Po","NounToChange":"džiovyklė","Ending":"ė","En":"dryer machine","Group":"2","Answer":"Po džiovykle"},{"Starter":"Po","NounToChange":"virdulys","Ending":"ys","En":"kettle","Group":"2","Answer":"Po virduliu"},{"Starter":"Po","NounToChange":"kavos aparatas","Ending":"as","En":"coffee machine","Group":"2","Answer":"Po kavos aparatu"},{"Starter":"Po","NounToChange":"dulkių siurblys","Ending":"ys","En":"vacuum cleaner","Group":"2","Answer":"Po dulkių siurbliu"},{"Starter":"Po","NounToChange":"lygintuvas","Ending":"as","En":"iron","Group":"2","Answer":"Po lygintuvu"},{"Starter":"Po","NounToChange":"lempa","Ending":"a","En":"lamp","Group":"3","Answer":"Po lempa"},{"Starter":"Po","NounToChange":"televizorius","Ending":"us","En":"TV","Group":"3","Answer":"Po televizoriumi"},{"Starter":"Po","NounToChange":"langas","Ending":"as","En":"window","Group":"3","Answer":"Po langu"},{"Starter":"Po","NounToChange":"radiatorius","Ending":"us","En":"heater","Group":"3","Answer":"Po radiatoriumi"},{"Starter":"Po","NounToChange":"lentyna","Ending":"a","En":"shelf","Group":"3","Answer":"Po lentyna"},{"Starter":"Po","NounToChange":"laikrodis","Ending":"is","En":"clock","Group":"3","Answer":"Po laikrodžiu"}]';
 			
 			
-			// Setup leveller, content and buttons	
+			// Parse samples
 			var samples = JSON.parse(samplesAsJson);
+			
+			// Group up samples for levelling
+			var samples1 = samples.filter(sample => sample.Group == 1).map(elem => ({...elem, Level:1}));
+			var samples2 = samples.filter(sample => sample.Group == 2).map(elem => ({...elem, Level:2}));
+			var samples3 = samples.filter(sample => sample.Group == 3).map(elem => ({...elem, Level:3}));			
+			var samples4 = [...samples1, ...samples2, ...samples3]				
+				.GroupBy((elem) => (elem.Ending), "Ending")
+				.map(elem => ({...elem, Level:4}));
+
+			var finalSamples = [...samples1, ...samples2, ...samples3, ...samples4];
+
+
+			// Build leveller
 			var leveller = CreateLevelledArray(
-				samples, 
-				elem => elem.Group
+				finalSamples, 
+				elem => elem.Level
 			); 				
 			var content = leveller.GetContent();
 			var fullButtonsElementHtml = leveller.RegenerateButtons();
 
+
+			// Init state
 			var currentSample = content[0];
 			var notification = {};
 		
@@ -79,8 +93,17 @@
 				button.innerText = 'Check answer';
 				
 				// Setup new sample
-				var randomSample = content.notRepeatingRandom(currentSample);
-				currentSample = randomSample;				
+				if(leveller.CurrentLevel < 4){
+					var randomSample = content.notRepeatingRandom(currentSample);
+					currentSample = randomSample;				
+				}
+				else{
+					var randomSample = content
+						.notRepeatingRandom(currentSample.Ending, (group) => (group.Ending))
+						.values
+						.random();
+					currentSample = randomSample;
+				}
 				
 				// Setup question div				
 				var divToAmend = document.getElementById('Question');				
@@ -100,18 +123,10 @@
 				var buttonsElement = document.getElementById("levelButtonsDiv");
 				buttonsElement.innerHTML = newHtml;
 
-				// Update content
-				// A bit differs from other pages: 
-				// 		first 2 levels grant separate groups of exercises,
-				// 		last level gives all samples
-				var currentLevel = leveller.CurrentLevel;
-				if(currentLevel > 2){
-					content = leveller.GetContent();
-				}
-				else{
-					content = leveller.GetContent()
-						.filter(elem => elem.Group == leveller.CurrentLevel);
-				}				
+				// Update content						
+				content = leveller.GetContent()
+					.filter(elem => elem.Level == leveller.CurrentLevel);
+							
 			}
 		</script>
 	</head>
