@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Negative Verbs Sentences
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"En":"We do not go to clubs","Lt":"Į klubus nevaikštome"},{"En":"We do not dance","Lt":"Mes nešokame"},{"En":"We do not drink coffee","Lt":"Mes negeriame kavos"},{"En":"We do not eat meat","Lt":"Mes nevalgome mėsos"},{"En":"We do not listen for music","Lt":"Mes neklausome muzikos"},{"En":"We do not play games","Lt":"Mes nežaidžiame žaidimų"},{"En":"We do not buy cars","Lt":"Mes neperkame automobilių"},{"En":"We do not watch TV","Lt":"Mes nežiūrime televizoriaus"},{"En":"We do not read books","Lt":"Mes neskaitome knygų"},{"En":"We do not do anything","Lt":"Mes nieko nedarome"}]';
+
+			// Parse pure json to js object
+			var samples = JSON.parse(samplesAsJson)
+			var currentSample = samples.random();
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = currentSample.Lt;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = answerDiv.innerHTML;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = samples.notRepeatingRandom(currentSample);
+				currentSample = randomSample;				
+				
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');				
+				divToAmend.innerHTML = currentSample.En;
+
+				// Amend notification
+				notification.Answer = null;
+				notification.Question = divToAmend.innerHTML;
+			}
+
+			
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id="exercise" class="exercise">
+				<div id='table' class='content'>		
+					<div id='Question'>	We do not drink coffee	</div>	
+					<div id='Answer'>	Mes negeriame kavos	</div>			
+					<div id='Button'> 
+						<button id='NextActionButton'
+							onclick="onNextActionButtonClick()">
+							Next
+						</button>
+					</div>				
+				</div>
+				
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>	
+		</div>
+	</body>
+</html>
+
+
