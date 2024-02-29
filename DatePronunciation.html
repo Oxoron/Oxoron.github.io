@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Date Pronunciation
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+			
+			var monthsJson = '[{"En":"Jan","LtNom":"Sausis","LtGen":"Sausio","MaxDays":31},{"En":"Feb","LtNom":"Vasaris","LtGen":"Vasario","MaxDays":29},{"En":"Mar","LtNom":"Kovas","LtGen":"Kovo","MaxDays":31},{"En":"Apr","LtNom":"Balandis","LtGen":"Balandžio","MaxDays":30},{"En":"May","LtNom":"Gegužė","LtGen":"Gegužės","MaxDays":31},{"En":"Jun","LtNom":"Birželis","LtGen":"Birželio","MaxDays":30},{"En":"Jul","LtNom":"Liepa","LtGen":"Liepos","MaxDays":31},{"En":"Aug","LtNom":"Rugpjūtis","LtGen":"Rugpjūčio","MaxDays":31},{"En":"Sep","LtNom":"Rugsėjis","LtGen":"Rugsėjio","MaxDays":30},{"En":"Oct","LtNom":"Spalis","LtGen":"Spalio","MaxDays":31},{"En":"Nov","LtNom":"Lapkritis","LtGen":"Lapkričio","MaxDays":30},{"En":"Dec","LtNom":"Gruodis","LtGen":"Gruodžio","MaxDays":31}]';
+			var daysJson = '[{"Number":"1","OrdinalFem":"Pirma","OrdinalAcc":""},{"Number":"2","OrdinalFem":"Antra","OrdinalAcc":""},{"Number":"3","OrdinalFem":"Trečia","OrdinalAcc":""},{"Number":"4","OrdinalFem":"Ketvirta","OrdinalAcc":""},{"Number":"5","OrdinalFem":"Penkta","OrdinalAcc":""},{"Number":"6","OrdinalFem":"Šešta","OrdinalAcc":""},{"Number":"7","OrdinalFem":"Septinta","OrdinalAcc":""},{"Number":"8","OrdinalFem":"Aštunta","OrdinalAcc":""},{"Number":"9","OrdinalFem":"Devinta","OrdinalAcc":""},{"Number":"10","OrdinalFem":"Dešimta","OrdinalAcc":""},{"Number":"11","OrdinalFem":"Vienuolikta","OrdinalAcc":""},{"Number":"12","OrdinalFem":"Dvylikta","OrdinalAcc":""},{"Number":"13","OrdinalFem":"Trylikta","OrdinalAcc":""},{"Number":"14","OrdinalFem":"Keturiolikta","OrdinalAcc":""},{"Number":"15","OrdinalFem":"Penkiolikta","OrdinalAcc":""},{"Number":"16","OrdinalFem":"Šešiolikta","OrdinalAcc":""},{"Number":"17","OrdinalFem":"Septiniolikta","OrdinalAcc":""},{"Number":"18","OrdinalFem":"Aštuonuolikta","OrdinalAcc":""},{"Number":"19","OrdinalFem":"Devyniolikta","OrdinalAcc":""},{"Number":"20","OrdinalFem":"Dvidešimta","OrdinalAcc":""},{"Number":"21","OrdinalFem":"Dvidešimt pirma","OrdinalAcc":""},{"Number":"22","OrdinalFem":"Dvidešimt antra","OrdinalAcc":""},{"Number":"23","OrdinalFem":"Dvidešimt trečia","OrdinalAcc":""},{"Number":"24","OrdinalFem":"Dvidešimt ketvirta","OrdinalAcc":""},{"Number":"25","OrdinalFem":"Dvidešimt penkta","OrdinalAcc":""},{"Number":"26","OrdinalFem":"Dvidešimt šešta","OrdinalAcc":""},{"Number":"27","OrdinalFem":"Dvidešimt septinta","OrdinalAcc":""},{"Number":"28","OrdinalFem":"Dvidešimt aštunta","OrdinalAcc":""},{"Number":"29","OrdinalFem":"Dvidešimt devinta","OrdinalAcc":""},{"Number":"30","OrdinalFem":"Trisdešimta","OrdinalAcc":""},{"Number":"31","OrdinalFem":"Trisdešimt pirma","OrdinalAcc":""}]';
+
+			// Get arrays of objects {En, Lt}
+			var months = JSON.parse(monthsJson);
+			var days = JSON.parse(daysJson);
+			var content = months
+				.reduce(
+					(accumulator, currentMonth) => {
+						var daysForMonth = days	
+							.filter(day => day.Number <= currentMonth.MaxDays)
+							.map(day => ({...day, ...currentMonth, monthNumber: 1+months.indexOf(currentMonth)}));
+						accumulator = [...(accumulator??[]), ...daysForMonth];
+						return accumulator;
+					},	
+					[]
+				);
+
+			var currentSample = content[0];
+			var notification = {};
+		
+			
+			function ToTwoDigitNumberFormat(number){
+				if(number.toString().length < 2){
+					return '0' + number;
+				}
+				return number;
+			}
+
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			function BuildAnswer(sample){
+				return sample.LtGen + ' ' + sample.OrdinalFem.toLowerCase() + ' diena';
+			}
+
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = BuildAnswer(currentSample);
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = currentSample.Lt;
+			}
+			
+			function BuildQuestion(sample){
+				return ToTwoDigitNumberFormat(sample.monthNumber) + '.' + ToTwoDigitNumberFormat(sample.Number);
+			}
+
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;
+			
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');	
+				question = BuildQuestion(currentSample)
+				divToAmend.innerHTML = question;
+
+				// Notification
+				notification.Question = question;
+				notification.Answer = null;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>		
+				<div id='Question'>	01.14	</div>	
+				<div id='Answer'>	Sausio trylikta diena	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>		
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
