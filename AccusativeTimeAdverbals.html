@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Time Adverbals
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>		
+		
+		<script type="text/javascript">
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+			
+			// Prepare data
+			var samplesAsJson = '[{"Nom":"Vakaras","Acc":"Vakarą"},{"Nom":"Rytas","Acc":"Rytą"},{"Nom":"Diena","Acc":"Dieną"},{"Nom":"Pirmadienis","Acc":"Pirmadienį"},{"Nom":"Antradienis","Acc":"Antradienį"},{"Nom":"Trečiadienis","Acc":"Trečiadienį"},{"Nom":"Ketvirtadiesnis","Acc":"Ketvirtadienį"},{"Nom":"Penktadienis","Acc":"Penktadienį"},{"Nom":"Šeštadienis","Acc":"Šeštadienį"},{"Nom":"Sekmadienis","Acc":"Sekmadienį"}]';
+			var verbs = ["mes einame","mes ėjome","jie eina","jie ėjo","aš einu","aš ėjau","jos eina","jos ėjo"]
+				.map((verb) => (' ' + verb + ' '));
+			var locations = ["į parką","į kavinę","į barą","į klubą","į teatrą","į kiną","į muziejų","į baseiną","į turgų"];
+			var questions = JSON.parse(samplesAsJson);
+			
+			// Form initial state
+			var currentSample = {question:questions[0], verb:verbs[0], location:locations[0]};
+			var notification = {};
+			
+			// A function to build current sample from the page data
+			function GenerateCurrentSample(){
+				var question = questions.notRepeatingRandom(currentSample.question);
+				var verb = verbs.notRepeatingRandom(currentSample.verb);
+				var location = locations.notRepeatingRandom(currentSample.location);
+
+				currentSample = {question:question, verb:verb, location:location};
+
+				return currentSample;
+			}
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				var answer = currentSample.question.Acc + '' + currentSample.verb + currentSample.location;
+				answerDiv.innerHTML = answer;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification 
+				notification.Answer = answer;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample				
+				currentSample = GenerateCurrentSample();
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');						
+				divToAmend.innerHTML = currentSample.question.Nom + ' ' + currentSample.verb + currentSample.location;
+
+				// Amend notification
+				notification.Question = divToAmend.innerHTML;
+				notification.Answer = null;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+			<div id='table' class='content'>
+				<div id='Question'>	Rytas jie ėjo į baseiną	</div>	
+				<div id='Answer'>	Rytą jie ėjo į baseiną	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>			
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>		
+			</div>
+		</div>
+	</body>
+</html>
