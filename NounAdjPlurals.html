@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- Noun Adjective Plurals
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		<link rel="stylesheet" href="css/tooltip.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">		
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"Adj":"sena","Noun":"mašina","Answer":"senos mašinos"},{"Adj":"sena","Noun":"lova","Answer":"senos lovos"},{"Adj":"sena","Noun":"kepurė","Answer":"senos kepurės"},{"Adj":"senas","Noun":"automobilis","Answer":"seni automobiliai"},{"Adj":"senas","Noun":"šaldytuvas","Answer":"seni šaldytuvai"},{"Adj":"senas","Noun":"batas","Answer":"seni batai"},{"Adj":"aukštas","Noun":"namas","Answer":"aukšti namai"},{"Adj":"aukštas","Noun":"traukinys","Answer":"aukšti traukiniai"},{"Adj":"aukštas","Noun":"karalius","Answer":"aukšti karaliai"},{"Adj":"aukšta","Noun":"mergina","Answer":"aukštos merginos"},{"Adj":"aukšta","Noun":"eglė","Answer":"aukštos eglės"},{"Adj":"aukšta","Noun":"siena","Answer":"aukštos sienos"},{"Adj":"skanus","Noun":"tortas","Answer":"skanūs tortai"},{"Adj":"skanus","Noun":"sultys","Answer":"skanūs sultiai"},{"Adj":"skanus","Noun":"sausenis","Answer":"skanūs sauseniai"},{"Adj":"skani","Noun":"sriuba","Answer":"skanios sriubos"},{"Adj":"skani","Noun":"kriaušė","Answer":"skanios kriaušės"},{"Adj":"skani","Noun":"braškė","Answer":"skanios braškės"},{"Adj":"didelis","Noun":"laivas","Answer":"didelei laivai"},{"Adj":"didelis","Noun":"puslapis","Answer":"didelei puslapiai"},{"Adj":"didelis","Noun":"radiatorius","Answer":"didelei radiatoriai"},{"Adj":"didelė","Noun":"mašina","Answer":"didelės mašinos"},{"Adj":"didelė","Noun":"pica","Answer":"didelės picos"},{"Adj":"didelė","Noun":"plokštė","Answer":"didelės plokštės"}]';
+			
+			// Get array of groups [Adj, [{Adj, Noun, Answer}]]
+			var result = JSON
+				.parse(samplesAsJson)
+				.GroupBy((elem) => (elem.Adj), "Adj");
+			
+			var currentSample = result.random().values.random();
+			var notification = {};
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = currentSample.Answer;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Amend notification
+				notification.Answer = currentSample.Answer;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = result.notRepeatingRandom(currentSample.Adj, (group) => (group.Adj)).values.random();
+				currentSample = randomSample;
+				
+				// Setup question div
+				var divToAmend = document.getElementById('Question');						
+				divToAmend.innerHTML = currentSample.Adj + ' ' + currentSample.Noun;
+
+				// Amend notification
+				notification.Question = divToAmend.innerHTML;
+				notification.Answer = null;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>
+				<div id='Question'>	sena kepurė	</div>	
+				<div id='Answer'>	senos kepurės	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>	
+			</div>
+		</div>
+	</body>
+</html>
