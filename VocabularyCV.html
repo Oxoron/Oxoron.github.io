@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			LT Exercise -- CV Wording
+		</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/ToC.css">
+		<link rel="stylesheet" href="css/pageStructure.css">
+		
+		<script type="text/javascript" src="js/Common.js"> </script>
+		
+		<script type="text/javascript">
+			ButtonNext_OnPageLoad();
+			SetupArrayFunctions();
+			
+			var samplesAsJson = '[{"LT":"Vardas","EN":"Name"},{"LT":"Pavardė","EN":"Surname"},{"LT":"Gimino data","EN":"Date of birth"},{"LT":"Adresas","EN":"Address"},{"LT":"Telefono numeris","EN":"Phone number"},{"LT":"Elektroninis pastas","EN":"Email"},{"LT":"Šeiminė padėtis","EN":"Marital status"},{"LT":"Išsilavinimas","EN":"Education"},{"LT":"Darbo patirtis","EN":"Work experience"},{"LT":"Kalbos","EN":"Languages"},{"LT":"Pomėgiai","EN":"Hobbies"},{"LT":"Asmeninės savybės","EN":"Personal characteristics"},{"LT":"Kita","EN":"Other"}]';
+
+			// Get arrays of objects {En, Lt}
+			var content = JSON.parse(samplesAsJson);
+			
+			var currentSample = content[0];
+			var notification = {};
+		
+			
+			function onNextActionButtonClick(){
+				// Check if it's answer request or next sample request
+				var isAnswerRequest = false;
+				var button = document.getElementById('NextActionButton');
+				if(button.innerText == 'Check answer') {isAnswerRequest = true;}
+				else {isAnswerRequest = false;}
+				
+				// Call the respective function based on the request type
+				if(isAnswerRequest){
+					onAnswerRequest();
+				}
+				else { onNextSampleRequest(); }
+			}
+			
+			
+			function onAnswerRequest(){
+				// Show answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = currentSample.LT;
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Next';
+
+				// Notification
+				notification.Answer = currentSample.LT;
+			}
+			
+			function onNextSampleRequest(){
+				// Clean up answer
+				var answerDiv = document.getElementById('Answer');
+				answerDiv.innerHTML = '';
+				
+				// Amend button text
+				var button = document.getElementById('NextActionButton');			
+				button.innerText = 'Check answer';
+				
+				// Setup new sample
+				var randomSample = content.notRepeatingRandom(currentSample);
+				currentSample = randomSample;
+			
+				// Setup question div				
+				var divToAmend = document.getElementById('Question');
+				var question = currentSample.EN;				
+				divToAmend.innerHTML = question;
+
+				// Notification
+				notification.Question = question;
+				notification.Answer = null;
+			}
+		</script>
+	</head>
+	<body>
+		<div id='pageStructure' class="pageStructure">
+			<div id='ToC' class='ToC'></div>		
+				<script type="text/javascript" src="js/ToC.js"> </script>				
+				<script> uploadToC(); </script>
+				
+				
+			<div id='table' class='content'>		
+				<div id='Question'>	Work experience	</div>	
+				<div id='Answer'>	Darbo patirtis	</div>			
+				<div id='Button'> 
+					<button id='NextActionButton'
+						onclick="onNextActionButtonClick()">
+						Next
+					</button>
+				</div>		
+
+				<div class="issueNotificationDiv">
+					<button id='notifyButton'
+						onclick="notify(notification.Question, notification.Answer)">
+						Tell about an error
+					</button>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
